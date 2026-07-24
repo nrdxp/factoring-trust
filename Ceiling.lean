@@ -3,6 +3,7 @@ import Ceiling.Evidence
 import Ceiling.Classify
 import Ceiling.Accounting
 import Ceiling.Gate
+import Ceiling.Junction
 
 /-!
 # Ceiling — the neutral verification ceiling
@@ -41,8 +42,11 @@ third instance — two instances, one fixed shape.
   cascade lemmas.
 * `Ceiling.Accounting` — `trustSurface`, `basis`, `Total`, and the
   completeness/non-vacuity theorems.
-* `Ceiling.Gate` — `binding_admits_no_scheme` and the `ceiling` bundle
-  (imports `Core`).
+* `Ceiling.Gate` — `binding_admits_no_scheme`, the record-side gate applied
+  to a domain's own binding claim (imports `Core`).
+* `Ceiling.Junction` — `Discharges` and the `ceiling` display: the actual
+  junction between the accounting world (`Node`) and the scheme world
+  (`Record`/`Claim`/`Scheme`), plus growth alignment.
 
 ## The instance interface
 

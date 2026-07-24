@@ -8,8 +8,9 @@ import Transport
 The generality witness: a cryptographic identity system whose record is a
 hash chain of key events and whose genesis is a single binding commitment.
 Instantiates `Ceiling`'s neutral verification ceiling at this domain and
-exercises the T1 (verifiable) and T3 (split-view / freshness) cells; its
-companion `Instance.SuretyLite` exercises T1 and T2.
+exercises the verifiable case, T1 (determination-failure, via the gate) and
+T3 (monotonicity, split-view / freshness); its companion
+`Instance.SuretyLite` exercises the verifiable case, T1, and T2.
 
 No Mathlib, no `Effective` — a TCB line the paper states: neither of the
 generality witnesses needs a computability library.
@@ -187,18 +188,172 @@ theorem principal_trust_bounded (P : Policy Signer) (σ : Snapshot Signer Princi
   rw [hchainNodes, hseed]
   rfl
 
+omit [DecidableEq PrincipalId] in
+/-- **The chain-specific check.** `recCount` on a `chain` is exactly the
+    event count — verified against `depclosure_chain`'s own
+    characterization of the closure (`chainNodes evs`, all non-seed,
+    `chainNodes_not_seed`, plus the one genesis seed) rather than trusted
+    from `Ceiling.recCount_mono`'s generic bound alone. Kept as a real,
+    independently useful fact about `chain`, even though `identityRealization`
+    below no longer uses `countRealization`. -/
+theorem identity_recCount_chain (evs : List (Nat × KeyEvent PrincipalId)) :
+    Ceiling.recCount (chain evs) = evs.length := by
+  induction evs with
+  | nil => simp [chain, genesisSeed, Ceiling.recCount]
+  | cons hd tl ih =>
+      obtain ⟨i, ev⟩ := hd
+      show Ceiling.recCount (Node.derived i ev [chain tl]) = tl.length + 1
+      simp only [Ceiling.recCount, List.attach_cons, List.map_cons, List.sum_cons,
+        List.attach_nil, List.map_nil, List.sum_nil, ih]
+      omega
+
+/-! ## Round 4 — discharging (H1)/(H2) from `chain`'s own structure
+
+`chain` takes ids as arbitrary caller-supplied `Nat`s; nothing in its
+definition forces monotonicity. The two obligations `logRealization`
+needs are named here as explicit hypotheses on `evs` — not on the whole
+`Node` type, and not smuggled into `chain`'s own signature (which stays
+untouched): **(hSorted)** ids are non-increasing as `evs` is read
+front-to-back — since `chain` nests newest-first, this is exactly
+"dependencies have lower-or-equal ids than dependents." **(hPos)** no
+event is assigned id `0` — id `0` is reserved for `genesisSeed`. Both are
+properties a real monotonic-counter-backed log genuinely has; neither is
+enforced by `chain`'s type, so both are threaded through explicitly,
+exactly like `hfiber`. -/
+
+omit [DecidableEq PrincipalId] in
+/-- Every member of `chain evs`'s closure has id at most `chain evs`'s own
+    — the "member ≤ root" half `identity_id_mono` below assembles into the
+    fully general (R1) obligation. -/
+theorem identity_id_le_root (evs : List (Nat × KeyEvent PrincipalId))
+    (hSorted : evs.Pairwise (fun p q => q.1 ≤ p.1)) :
+    ∀ m ∈ depclosure (chain evs), m.id ≤ (chain evs).id := by
+  induction evs with
+  | nil =>
+      intro m hmem
+      simp only [chain, genesisSeed, depclosure, List.mem_cons, List.not_mem_nil, or_false] at hmem
+      subst hmem
+      exact Nat.le_refl _
+  | cons hd tl ih =>
+      obtain ⟨i, ev⟩ := hd
+      rw [List.pairwise_cons] at hSorted
+      obtain ⟨hHead, hTail⟩ := hSorted
+      intro m hmem
+      change m ∈ depclosure (Node.derived i ev [chain tl]) at hmem
+      rw [depclosure_derived_singleton] at hmem
+      show m.id ≤ i
+      simp only [List.mem_cons] at hmem
+      rcases hmem with rfl | hmem
+      · exact Nat.le_refl _
+      · have h1 : m.id ≤ (chain tl).id := ih hTail m hmem
+        have h2 : (chain tl).id ≤ i := by
+          cases tl with
+          | nil => simp [chain, genesisSeed, Node.id]
+          | cons hd2 tl2 =>
+              obtain ⟨j, ev2⟩ := hd2
+              have hmemtl : (j, ev2) ∈ (j, ev2) :: tl2 := List.mem_cons_self
+              have hle := hHead (j, ev2) hmemtl
+              show (chain ((j, ev2) :: tl2)).id ≤ i
+              simpa [chain, Node.id] using hle
+        omega
+
+omit [DecidableEq PrincipalId] in
+/-- **(H1), discharged.** `depclosure (chain evs)`-internal dependency-order
+    faithfulness for `id`: every closure member `n`'s own dependencies (also
+    in the closure) have `id ≤ n.id` — the exact shape
+    `Ceiling.logRealization` needs. Proved by induction on `evs`, applying
+    `identity_id_le_root` at the SUFFIX corresponding to whichever closure
+    member `n` turns out to be. -/
+theorem identity_id_mono (evs : List (Nat × KeyEvent PrincipalId))
+    (hSorted : evs.Pairwise (fun p q => q.1 ≤ p.1)) :
+    ∀ n ∈ depclosure (chain evs), ∀ m ∈ depclosure n, m.id ≤ n.id := by
+  induction evs with
+  | nil =>
+      intro n hn m hm
+      simp only [chain, genesisSeed, depclosure, List.mem_cons, List.not_mem_nil, or_false] at hn
+      subst hn
+      simp only [depclosure, List.mem_cons, List.not_mem_nil, or_false] at hm
+      subst hm
+      exact Nat.le_refl _
+  | cons hd tl ih =>
+      obtain ⟨i, ev⟩ := hd
+      rw [List.pairwise_cons] at hSorted
+      obtain ⟨hHead, hTail⟩ := hSorted
+      intro n hn m hm
+      change n ∈ depclosure (Node.derived i ev [chain tl]) at hn
+      rw [depclosure_derived_singleton] at hn
+      simp only [List.mem_cons] at hn
+      rcases hn with rfl | hn
+      · exact identity_id_le_root ((i, ev) :: tl) (by rw [List.pairwise_cons]; exact ⟨hHead, hTail⟩) m hm
+      · exact ih hTail n hn m hm
+
+omit [DecidableEq PrincipalId] in
+/-- **(H2), discharged.** `depclosure (chain evs)`-internal seed boundary
+    for `id`: `genesisSeed` (id `0`) is the only seed; every event (never a
+    seed, `Node.seed?`'s `.derived` case) has `id ≠ 0` under `hPos`. -/
+theorem identity_id_seedBoundary (evs : List (Nat × KeyEvent PrincipalId))
+    (hPos : ∀ p ∈ evs, p.1 ≠ 0) :
+    ∀ m ∈ depclosure (chain evs), m.seed? = true ↔ m.id = 0 := by
+  induction evs with
+  | nil =>
+      intro m hm
+      simp only [chain, genesisSeed, depclosure, List.mem_cons, List.not_mem_nil, or_false] at hm
+      subst hm
+      simp [Node.seed?, Node.id]
+  | cons hd tl ih =>
+      obtain ⟨i, ev⟩ := hd
+      intro m hm
+      change m ∈ depclosure (Node.derived i ev [chain tl]) at hm
+      rw [depclosure_derived_singleton] at hm
+      simp only [List.mem_cons] at hm
+      rcases hm with rfl | hm
+      · have hi0 : i ≠ 0 := hPos (i, ev) (List.mem_cons_self)
+        simp [Node.seed?, Node.id, hi0]
+      · exact ih (fun p hp => hPos p (List.mem_cons_of_mem _ hp)) m hm
+
+/-- **`identityRealization`** — the identity domain's `RecordRealization`,
+    CONSTRUCTED, not assumed, and content-VARYING: `Ceiling.logRealization`,
+    discharged for `a := chain evs` from `chain`'s own structure
+    (`identity_id_mono`/`identity_id_seedBoundary`) rather than
+    `Ceiling.countRealization`'s content-neutral fallback. `globalLog : Nat
+    → Entry` supplies one entry per log position — `Core.Model.Entry`
+    carries no inhabitedness axiom, so this, like every entry-parametric
+    construction in the corpus, takes it as a hypothesis. -/
+def identityRealization (globalLog : Nat → Entry) (evs : List (Nat × KeyEvent PrincipalId))
+    (hSorted : evs.Pairwise (fun p q => q.1 ≤ p.1)) (hPos : ∀ p ∈ evs, p.1 ≠ 0) :
+    Ceiling.RecordRealization (KeyEvent PrincipalId) (chain evs) :=
+  Ceiling.logRealization globalLog (chain evs) (identity_id_mono evs hSorted)
+    (identity_id_seedBoundary evs hPos)
+
 /-- **`identity_ceiling`** — the paper's "identity is at the ceiling"
     corollary: one application of `Ceiling.ceiling` at this domain, under
-    the domain's own `hfiber`. -/
+    the domain's own `hfiber`, over the CONSTRUCTED, content-varying
+    `identityRealization` — scoped to `a := chain evs` (round 4: the
+    ceiling is always a statement about one specific `a`, and `chain evs`
+    is the identity system's own). `hSorted`/`hPos` are the two remaining
+    explicit hypotheses (H1)/(H2), threaded exactly like `hfiber`, never
+    discharged here because they are facts about the CALLER's own `evs`,
+    not about `chain`'s shape (which is fixed). The second conjunct is L2
+    (`Ceiling.seeds_undischargeable_and_residual`): for every scheme
+    `S : Scheme Γ (bindingClaim BindsTo)`, the genesis seed is both
+    undischargeable by `S` and resident in the trust surface regardless. -/
 theorem identity_ceiling {Comm : Type} (Γ : Commitment Comm)
     (BindsTo : Record → Context → Prop) (hfiber : ¬ Determined (bindingClaim BindsTo))
-    (P : Policy Signer) (σ : Snapshot Signer PrincipalId) (a : Node (KeyEvent PrincipalId)) :
+    (globalLog : Nat → Entry) (evs : List (Nat × KeyEvent PrincipalId))
+    (hSorted : evs.Pairwise (fun p q => q.1 ≤ p.1)) (hPos : ∀ p ∈ evs, p.1 ≠ 0)
+    (P : Policy Signer) (σ : Snapshot Signer PrincipalId) :
     (¬ ∃ S : Scheme Γ (bindingClaim BindsTo), SnapshotSound S) ∧
-    (∀ m ∈ depclosure a, m.seed? = true → m ∈ trustSurfaceI P σ a) ∧
-    (TotalI P σ a → ∀ m ∈ depclosure a, m.seed? = false →
-      (∃ e ∈ basisI P σ a, ∃ s t, e = .corroboration s t) ∧
-      (∃ e ∈ basisI P σ a, ∃ s t tag, e = .vouch s t tag)) :=
-  Ceiling.ceiling Γ (bindingClaim BindsTo) hfiber gate tagOf closureOk P σ a
+    (∀ S : Scheme Γ (bindingClaim BindsTo), ∀ m ∈ depclosure (chain evs), m.seed? = true →
+      ¬ Ceiling.Discharges Γ (bindingClaim BindsTo)
+        (identityRealization globalLog evs hSorted hPos) S m ∧
+        m ∈ trustSurfaceI P σ (chain evs)) ∧
+    (TotalI P σ (chain evs) →
+      trustSurfaceI P σ (chain evs) = (depclosure (chain evs)).filter (fun m => m.seed?)) ∧
+    (TotalI P σ (chain evs) → ∀ m ∈ depclosure (chain evs), m.seed? = false →
+      (∃ e ∈ basisI P σ (chain evs), ∃ s t, e = .corroboration s t) ∧
+      (∃ e ∈ basisI P σ (chain evs), ∃ s t tag, e = .vouch s t tag)) :=
+  Ceiling.ceiling Γ (bindingClaim BindsTo) hfiber (chain evs)
+    (identityRealization globalLog evs hSorted hPos) gate tagOf closureOk P σ
 
 /-! ## The four non-vacuity witnesses (concrete `Unit` types) -/
 
