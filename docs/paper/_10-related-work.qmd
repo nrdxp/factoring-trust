@@ -127,8 +127,7 @@ and Wheeler is explicit that the technique "by itself does not
 guarantee" that the compiler is not malicious [@wheeler-2005]: what
 stays trusted afterwards is a second compiler, its environment, and the
 determinism of both. A smaller base, and nowhere an argued-minimal one.
-Reproducible and bootstrappable builds push the same reduction along the
-same axis. Durán and Formanek give the closest genuine
+Durán and Formanek give the closest genuine
 decomposition of a verification barrier this sweep found, into two
 agent-relative conditions, accessibility and surveyability — but with no
 computability-theoretic content, and a framing that treats epistemic
