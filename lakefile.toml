@@ -1,7 +1,7 @@
 name = "FactoringTrust"
 version = "0.1.0"
 keywords = ["math", "formal-verification"]
-defaultTargets = ["Core", "Effective", "Transport", "Witness", "Ceiling"]
+defaultTargets = ["Core", "Effective", "Transport", "Witness", "Ceiling", "Instance"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
@@ -30,3 +30,6 @@ name = "Witness"
 
 [[lean_lib]]
 name = "Ceiling"
+
+[[lean_lib]]
+name = "Instance"
