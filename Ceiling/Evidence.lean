@@ -1,7 +1,7 @@
 /-!
 # Ceiling — Evidence: the derived/asserted evidence split
 
-`Evidence` mirrors `docs/models/lean-surety/SuretyCeiling/Basic.lean`'s
+`Evidence` mirrors the axios `docs/models/lean-surety/SuretyCeiling/Basic.lean`'s
 derived/asserted split (atom-model §4): a **corroboration** is a re-runnable
 record — closing what is certifiable from the record itself — and a
 **vouch** is pure keyed judgment naming a target and a tag — closing what is

@@ -74,12 +74,13 @@ abbrev TotalI (P : Policy Signer) (σ : Snapshot Signer PrincipalId)
     (a : Node (KeyEvent PrincipalId)) : Prop :=
   Ceiling.Total gate tagOf closureOk P σ a
 
-/-! ## The binding claim (the `SuretyEonEalm` pattern, verbatim) -/
+/-! ## The binding claim (the axios `SuretyEonEalm` pattern, verbatim) -/
 
 variable (BindsTo : Record → Context → Prop)
 
 /-- The genesis binding claim as an `EonEalm.Claim` — no new structure, the
-    direct identification `SuretyEonEalm.genuineness` uses for genuineness,
+    direct identification the axios `SuretyEonEalm.genuineness` uses for
+    genuineness,
     read here for binding: `w` is the committed chain bytes, `ξ` is the
     unrecorded key-custody/provenance context they were actually produced
     under. -/

@@ -3,8 +3,8 @@ import Ceiling.Classify
 /-!
 # Ceiling — Accounting: the trust surface, the assumption basis, and `Total`
 
-Mirrors `docs/models/lean-surety/SuretyCeiling/Ceiling.lean`'s accounting
-layer over `Ceiling.Classify`'s inductive `classify`, generalized off the
+Mirrors the axios `docs/models/lean-surety/SuretyCeiling/Ceiling.lean`'s
+accounting layer over `Ceiling.Classify`'s inductive `classify`, generalized off the
 domain-specific field list onto the abstract `Payload`/`gate`/`tagOf`/
 `closureOk` parametrization.
 -/

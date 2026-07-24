@@ -67,11 +67,11 @@ abbrev TotalI (P : Policy Signer) (σ : Snapshot Signer ClassName)
     (a : Node (LitePayload ClassName)) : Prop :=
   Ceiling.Total gate tagOf closureOk P σ a
 
-/-! ## The binding claim (the `SuretyEonEalm` pattern, verbatim) -/
+/-! ## The binding claim (the axios `SuretyEonEalm` pattern, verbatim) -/
 
 variable (Genuine : Record → Context → Prop)
 
-/-- Genuineness as an `EonEalm.Claim` — the direct identification
+/-- Genuineness as an `EonEalm.Claim` — the direct identification the axios
     `SuretyEonEalm.genuineness` states: `w` is the committed source bytes,
     `ξ` is the unrecorded authorship/provenance context they were actually
     produced under. -/
@@ -79,7 +79,7 @@ def bindingClaim : Claim := fun w ξ => Genuine w ξ
 
 /-! `hfiber : ¬ Determined (bindingClaim Genuine)` — a **modeling
 hypothesis, never a theorem**, the same discipline `Instance.Identity` and
-`SuretyEonEalm` use: carried explicitly on every theorem that needs it,
+the axios `SuretyEonEalm` use: carried explicitly on every theorem that needs it,
 never proved here, never a fresh axiom. -/
 
 /-! ## Seeds -/

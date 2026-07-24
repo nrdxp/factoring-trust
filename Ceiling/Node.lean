@@ -4,7 +4,8 @@
 A closure member is either `ground` (no domain payload — a raw admitted
 input, a genesis seed when `isSeed = true`, or any other build-recordless
 member) or `derived` (a domain payload plus a list of build inputs). Mirrors
-`docs/models/lean-surety/SuretyCeiling/Basic.lean`'s `Artifact` shape, with
+the axios `docs/models/lean-surety/SuretyCeiling/Basic.lean`'s `Artifact`
+shape, with
 the domain-specific fields (class, mode, gates, …) collapsed into one
 abstract `Payload` — the domain supplies its own predicates over `Payload`
 in `Ceiling.Classify`, rather than this file baking in any particular
