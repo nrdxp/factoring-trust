@@ -229,16 +229,18 @@ section DischargesNonvacuity
 /-- The trivial binding claim: holds everywhere, hence `Determined` for
     free — used only to witness that `Discharges` is genuinely SATISFIABLE
     in general (contrast `ceiling_nonvacuous` below, where `hfiber` makes it
-    never hold): a `Determined` claim admits a snapshot-sound scheme
-    (`snapshot_characterization_backward`, `npMembership_trivial`). -/
+    never hold). -/
 def trivialClaim : Claim := fun _ _ => True
 
 theorem trivialClaim_determined : Determined trivialClaim := fun _ _ _ => Iff.rfl
 
+/-- Reuses `Core.Corollaries.snapshot_iff_determined_ALL` rather than
+    re-deriving `Determined → scheme exists` from `snapshot_characterization
+    _backward` + `npMembership_trivial` by hand — the corpus already proves
+    exactly this. -/
 theorem trivialClaim_scheme_exists {Comm : Type} (Γ : Commitment Comm) :
     ∃ S : Scheme Γ trivialClaim, SnapshotSound S :=
-  snapshot_characterization_backward Γ trivialClaim trivialClaim_determined
-    (npMembership_trivial (determinedProj trivialClaim trivialClaim_determined))
+  (snapshot_iff_determined_ALL Γ trivialClaim).mpr trivialClaim_determined
 
 /-- `Discharges` is inhabited FOR ANY node `m` and ANY realization `ρ` — not
     just seeds: `trivialClaim`'s scheme accepts a certificate at every
