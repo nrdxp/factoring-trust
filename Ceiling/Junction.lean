@@ -235,6 +235,100 @@ def countRealization (e : Entry) : RecordRealization Payload where
 
 end RecordRealizationNonvacuity
 
+section LogRealization
+
+/-! ## `logRealization` — content-VARYING, but conditional, and here is exactly why
+
+**The proposed fix, checked precisely.** "`recordOf m` is the log prefix up
+to `m`'s position" reads two ways, and only one survives.
+
+**Reading A (rejected) — `recordOf m` built from `m`'s OWN `depclosure`,
+sorted by `id`.** Take `n` with non-seed siblings `c₁ (id 5) ≠ c₂ (id 7)`,
+both leaves, `n.id = 10`. Even granting id-monotonicity (dependencies have
+lower ids than dependents — `5, 7 < 10` here), `recordOf n` (built from
+`n`'s full closure `{c₁, c₂, n}`, id-sorted) is `[encode c₁, encode c₂,
+encode n]`. But `recordOf c₂` is built from `c₂`'s OWN closure, `{c₂}`
+alone — `[encode c₂]`. `[encode c₂] ⊑ [encode c₁, encode c₂, …]` fails
+(it does not even start with `encode c₂`) UNLESS `encode c₁ = encode c₂`,
+collapsing content exactly as before. `recordOf`, computed via ordinary
+structural recursion on `c₂` ALONE, has no way to know `c₁` exists — `c₁`
+is `c₂`'s sibling, not `c₂`'s dependency, so nothing about id-monotonicity
+(an ordering fact) puts `c₁`'s content INSIDE `c₂`'s own record. Same
+obstruction, id-sorted dressing.
+
+**Reading B (works) — `recordOf m` is a prefix of ONE AMBIENT,
+externally-supplied log, indexed by `id`, not assembled from `m`'s own
+subtree at all.** `logRecordOf globalLog m := (List.range m.id).map
+globalLog` for a domain-supplied `globalLog : Nat → Entry`. Two siblings
+under `n` are now both literal prefixes of the SAME `globalLog`-indexed
+sequence, so they ARE comparable — proved below
+(`logRecordOf_faithful`/`logRecordOf_seedBoundary`), unconditionally
+GIVEN two named hypotheses. This is genuinely content-VARYING (unlike
+`countRealization`, two different ids get different entries whenever
+`globalLog` does).
+
+**What Reading B costs, stated precisely, not smuggled — matching (R1)/
+(R2) exactly:**
+- **(H1) id-monotonicity**: `m ∈ depclosure n → m.id ≤ n.id`.
+- **(H2) the seed boundary transported to `id`**: `m.seed? = true ↔
+  m.id = 0`.
+
+**What Reading B does NOT deliver, honestly**: `globalLog : Nat → Entry`
+is indexed by POSITION, not by PAYLOAD — it is not literally `encode :
+Payload → Entry` applied to `m`'s own content. Two DIFFERENT non-seed
+nodes sharing an `id` (`Node`'s type does not forbid this) would collide
+regardless of payload. Recovering genuine payload-faithfulness needs a
+THIRD hypothesis (id-injectivity keyed to payload identity, i.e. an
+inverse `id → Payload` lookup) that neither `Instance.Identity`'s `chain`
+nor `Instance.SuretyLite`'s witnesses currently expose — `chain` takes
+its ids as arbitrary caller-supplied `Nat`s with no monotonicity or
+uniqueness obligation in its type today.
+
+This is offered, not applied: (H1)/(H2) are NOT discharged for either
+instance below (neither `chain`'s nor `LitePayload`'s current type proves
+them), so `logRealization` is not what `identityRealization`/
+`suretyRealization` use — `countRealization` is, since it needs nothing
+beyond what the types already guarantee. Adopting `logRealization`
+instead is a domain-model decision (adding a monotonicity/id-discipline
+obligation to `chain`'s own signature), not a proof-engineering one. -/
+
+def logRecordOf (globalLog : Nat → Entry) (m : Node Payload) : Record :=
+  (List.range m.id).map globalLog
+
+theorem range_eq_nil_iff (a : Nat) : List.range a = [] ↔ a = 0 := by
+  cases a <;> simp [List.range_succ]
+
+theorem logRecordOf_faithful (globalLog : Nat → Entry)
+    (hMono : ∀ m n : Node Payload, m ∈ depclosure n → m.id ≤ n.id) (m n : Node Payload)
+    (hmem : m ∈ depclosure n) :
+    logRecordOf globalLog m ⊑ logRecordOf globalLog n := by
+  obtain ⟨k, hk⟩ := Nat.le.dest (hMono m n hmem)
+  refine ⟨(List.range k).map (fun x => globalLog (m.id + x)), ?_⟩
+  show logRecordOf globalLog n = logRecordOf globalLog m ++ (List.range k).map (fun x => globalLog (m.id + x))
+  unfold logRecordOf
+  rw [← hk, List.range_add, List.map_append, List.map_map]
+  rfl
+
+theorem logRecordOf_seedBoundary (globalLog : Nat → Entry)
+    (hSeedZero : ∀ m : Node Payload, m.seed? = true ↔ m.id = 0) (m : Node Payload) :
+    m.seed? = true ↔ logRecordOf globalLog m = [] := by
+  rw [hSeedZero, ← range_eq_nil_iff]
+  unfold logRecordOf
+  exact List.map_eq_nil_iff.symm
+
+/-- The conditional, content-varying construction — GIVEN (H1)/(H2), a
+    genuine `RecordRealization`, distinct from `countRealization`'s
+    content-neutral one. Not instantiated on either instance below (see
+    the section doc for exactly why). -/
+def logRealization (globalLog : Nat → Entry)
+    (hMono : ∀ m n : Node Payload, m ∈ depclosure n → m.id ≤ n.id)
+    (hSeedZero : ∀ m : Node Payload, m.seed? = true ↔ m.id = 0) : RecordRealization Payload where
+  recordOf := logRecordOf globalLog
+  faithful := logRecordOf_faithful globalLog hMono
+  seedBoundary := logRecordOf_seedBoundary globalLog hSeedZero
+
+end LogRealization
+
 -- ===========================================================================
 -- Discharges, round 2 — a genuine relation
 -- ===========================================================================
