@@ -12,5 +12,6 @@ machine-checked biconditional, not a taxonomy.
 This repository is the canonical, self-contained home of that result: the Lean
 artifact and the paper, built to be reviewed as one small whole.
 
-> Status: **under construction.** The mechanization is being assembled into its
-> minimal published form. See `AGENTS.md` for the project boundary.
+> Status: **under construction.** The `rc1` tag freezes the **Lean model**
+> (the mechanization); `docs/paper/` is a **work-in-progress draft**, not
+> part of that freeze. See `AGENTS.md` for the project boundary.
