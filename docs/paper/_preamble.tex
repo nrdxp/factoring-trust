@@ -7,18 +7,3 @@
 \setlength{\emergencystretch}{3em}   % extra stretch before overflow
 \allowdisplaybreaks                  % allow page breaks in display math
 
-% ─── Suppress amsthm auto-numbering ──────────────────────────────
-% Quarto generates \newtheorem{definition}{Definition}[section] and
-% also writes "Definition N" in the prose body, causing duplication
-% (e.g. "Definition 4.3. Definition 3"). We override both environments
-% at \begin{document} with minimal pass-through wrappers that emit no
-% header text. Using \renewenvironment avoids the text leakage caused
-% by calling \newtheorem* after \begin{document}.
-\AtBeginDocument{%
-  \renewenvironment{definition}[1][]%
-    {\par\vspace{3pt}\itshape\ignorespaces}%
-    {\par\vspace{3pt}}%
-  \renewenvironment{theorem}[1][]%
-    {\par\vspace{3pt}\itshape\ignorespaces}%
-    {\par\vspace{3pt}}%
-}
