@@ -412,21 +412,37 @@ theorem no_seed_discharged {Comm : Type} {a : Node Payload} (Γ : Commitment Com
 
 section DischargesNonvacuity
 
-/-- The trivial binding claim: holds everywhere, hence `Determined` for
-    free — used only to witness that `Discharges` is genuinely SATISFIABLE
-    in general (contrast `ceiling_nonvacuous` below, where `hfiber` makes it
-    never hold). -/
+/-- The trivial binding claim: holds everywhere, at every record AND every
+    context — genuinely context-free by inspection, not merely `Determined`
+    (a weaker, context-INDEPENDENT-VALUE fact) in the sense the general
+    machinery below would need. Used only to witness that `Discharges` is
+    genuinely SATISFIABLE in general (contrast `ceiling_nonvacuous` below,
+    where `hfiber` makes it never hold). -/
 def trivialClaim : Claim := fun _ _ => True
 
-theorem trivialClaim_determined : Determined trivialClaim := fun _ _ _ => Iff.rfl
+/-- **Hand-built, not routed through `snapshot_characterization_backward`.**
+    That general machinery goes through `Core.Axes.determinedProj`, which is
+    `noncomputable` and picks a canonical `Context` witness from
+    `EonEalm.Context.inhabited`'s bare `Nonempty` — i.e. `Classical.choice`,
+    unconditionally, for ANY claim routed through it. `trivialClaim` never
+    needs to inspect `ξ` at all, so the always-accepting verifier below is
+    `SnapshotSound` by a one-line `trivial`, with no canonical-witness
+    machinery and no `Classical.choice` anywhere in reach — this is exactly
+    the difference between "a scheme exists because SOME claim is
+    `Determined`" (needs choice to name a representative world) and "THIS
+    claim needs no representative at all." -/
+def trivialScheme {Comm : Type} (Γ : Commitment Comm) : Scheme Γ trivialClaim where
+  Proof := Unit
+  V := fun _ _ => True
+  completeness := fun _ _ _ => ⟨(), trivial⟩
 
-/-- Reuses `Core.Corollaries.snapshot_iff_determined_ALL` rather than
-    re-deriving `Determined → scheme exists` from `snapshot_characterization
-    _backward` + `npMembership_trivial` by hand — the corpus already proves
-    exactly this. -/
+theorem trivialScheme_snapshotSound {Comm : Type} (Γ : Commitment Comm) :
+    SnapshotSound (trivialScheme Γ) :=
+  fun _ _ _ _ => trivial
+
 theorem trivialClaim_scheme_exists {Comm : Type} (Γ : Commitment Comm) :
     ∃ S : Scheme Γ trivialClaim, SnapshotSound S :=
-  (snapshot_iff_determined_ALL Γ trivialClaim).mpr trivialClaim_determined
+  ⟨trivialScheme Γ, trivialScheme_snapshotSound Γ⟩
 
 /-- `Discharges` is inhabited FOR ANY node `m` and ANY realization `ρ` — not
     just seeds: `trivialClaim`'s scheme accepts a certificate at every
@@ -434,12 +450,17 @@ theorem trivialClaim_scheme_exists {Comm : Type} (Γ : Commitment Comm) :
     AT `ρ.recordOf m` specifically produces the second conjunct. This is the
     design's falsification signpost — were `Discharges` identically `False`
     (or the two conjuncts unreachable together), neither L1 nor this witness
-    would say anything. -/
+    would say anything. **`ξ` is an explicit parameter, not `default`**: the
+    conclusion never mentions `ξ` (`Discharges` has none), so manufacturing
+    one internally would only be for `S.completeness`'s sake — and manufacturing
+    a `Context` value from the bare `Nonempty` `Context.inhabited` needs
+    `Classical.choice`. Taking `ξ` from the caller keeps this theorem, and
+    everything in `Ceiling/` that depends on it, in that choice's absence. -/
 theorem discharges_nonvacuous {Comm : Type} {a : Node Payload} (Γ : Commitment Comm)
-    (ρ : RecordRealization Payload a) (m : Node Payload) :
+    (ρ : RecordRealization Payload a) (m : Node Payload) (ξ : Context) :
     ∃ S : Scheme Γ trivialClaim, Discharges Γ trivialClaim ρ S m := by
   obtain ⟨S, hS⟩ := trivialClaim_scheme_exists Γ
-  obtain ⟨c, hc⟩ := S.completeness (ρ.recordOf m) default trivial
+  obtain ⟨c, hc⟩ := S.completeness (ρ.recordOf m) ξ trivial
   exact ⟨S, hS, c, hc⟩
 
 end DischargesNonvacuity
