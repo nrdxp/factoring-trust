@@ -112,43 +112,32 @@ it is stated; the development accompanies this paper as anonymized
 supplementary material. There is no separate mechanization section
 because there is nothing to segregate.
 
-**C1. The trichotomy, as a biconditional, in both directions**
-(@sec-theorem). $\TTsnap$ and $\TTend$ characterize snapshot- and
-enduring-sound evidence at the oracle and computable strata
-(`trichotomy_ALL_iff`, `trichotomy_snap_COMP_iff`, `comp_COMP_iff`); the
-polynomial stratum is an open conjecture and is stated as one. Both
-legs are proved, which is what makes "exactly three" a fact about the
-conditions rather than about the cases we thought to check.
+**C1.** The trichotomy as a biconditional, both legs proved, at the
+oracle and computable strata (@sec-theorem: `trichotomy_ALL_iff`,
+`trichotomy_snap_COMP_iff`, `comp_COMP_iff`). The polynomial stratum is
+an open conjecture and is stated as one.
 
-**C2. The determination axis and its gate** (@sec-model, @sec-theorem).
-Determination is formalized as a condition on a claim, and its failure
-is proved fatal: a claim not determined by the record admits no scheme,
-at any stratum, of any soundness flavor (`determination_gate`). The axis
-is non-vacuous unconditionally — undetermined claims are proved to
-exist, not assumed (`exists_undetermined_claim`).
+**C2.** The determination axis and its gate, non-vacuous
+unconditionally (@sec-model, @sec-theorem: `determination_gate`,
+`exists_undetermined_claim`).
 
-**C3. The factorization display** (@sec-factorization). At the
-computable stratum and enduring flavor, the claims admitting a scheme
-are exactly the effective observables frame pulled back along the
-projection that forgets context (`factorization_COMP`). Separately, and
-as this paper's own delta inside that inherited algebra, the
+**C3.** The factorization display, at the computable stratum and
+enduring flavor: evidence-admitting claims are the effective observables
+frame pulled back along the context-forgetting projection
+(@sec-factorization: `factorization_COMP`). Separately, the
 snapshot/enduring split *factors* the tradition's bundled "observable"
-into certifiability and monotonicity as two independent axes.
+into two independent axes — this paper's own delta inside an inherited
+algebra.
 
-**C4. The verification ceiling** (@sec-instances). A companion theorem,
-not a corollary: it shares the trichotomy's gate, and carries its own
-fail-closed accounting and minimality machinery over any well-founded
-justification structure (`Ceiling.ceiling`). It is instantiated twice
-over one neutral core — a hash-chain identity system
-(`principal_trust_bounded`) and a light source-integrity system
-(`surety_ceiling`) — chosen to exercise complementary failure cells, so
-that generality is exhibited rather than asserted.
+**C4.** The verification ceiling — a companion theorem, not a corollary
+— over any well-founded justification structure, instantiated twice over
+one neutral core (@sec-instances: `Ceiling.ceiling`,
+`principal_trust_bounded`, `surety_ceiling`).
 
-**C5. The cell table** (@sec-cell-table). Eight nominal combinations of
-the three axes; two of them empty *by theorem* rather than for want of a
-witness (`undetermined_cell_empty`); six inhabited, one verifiable and
-five distinct flavors of trust, each deriving its own anchor and its own
-minimal cure.
+**C5.** The cell table: eight nominal cells, two empty *by theorem*
+rather than for want of a witness, six inhabited — one verifiable and
+five flavors of trust, each with its own anchor and minimal cure
+(@sec-cell-table: `undetermined_cell_empty`).
 
 The remaining sections carry the scaffolding these five stand on:
 @sec-model fixes the vocabulary, @sec-floor states the two residuals,
