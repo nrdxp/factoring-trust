@@ -2,24 +2,36 @@
 
 Trust, in the setting this paper formalizes, is not a residual category
 for whatever verification happens not to reach. Above a floor of two
-named physical residuals, it factors into exactly three causes —
-determination, certifiability, monotonicity — each proved, not
-postulated, to be exhaustive; each naming a specific anchor a verifier
-must rely on; each priced by a distinct, named repair. Two axes of the
-three live inside an algebra synthetic topology has studied for four
-decades; the third is tested, independently, by archival science's own
-empirical methods. None of the three subfields this paper draws its
-axes from composes them, and none states the biconditional this paper's
-Lean artifact proves.
+physical residuals it factors into exactly three causes — determination,
+certifiability, monotonicity — and the count is derived from what an
+evidence scheme is rather than imposed on the cases. Each cause names an
+anchor a verifier must rely on, and a repair priced in its own currency.
+Two of the three axes live inside an algebra synthetic topology has
+studied for four decades; the third was tested, and reported refuted, by
+archival science's own empirical methods. No source this paper's sweep
+reached composes them, or names their common complement as trust.
 
-The result is stated once, at the strata where it is proved, honestly
-marked where it is not yet proved, and demonstrated on two independent
-domains rather than one — because a claim of generality that rests on a
-single instance is a special case wearing a general theorem's clothes,
-and this paper does not want to be that. What remains open — the
-polynomial stratum, the source-integrity instantiation's frontier
-tightness results, the entailment calculus this paper deliberately keeps
-parked — is stated as open, not smoothed over, in keeping with the
-posture the whole paper tries to hold: minimize trust is not a slogan
-here. It is a theorem's exact accounting of where verification ends and
-who is asked to stand in for it.
+What is open is stated as open: the polynomial stratum, the
+source-integrity instance's frontier tightness results, and the floor's
+two residuals, which concern physical realization rather than the model
+of @sec-model.
+
+Three lines of work follow. The first is semantic: the display of
+@sec-factorization asks to be stated as a morphism between categories of
+claims rather than as a membership condition, which is a
+programming-languages paper and not a security one. The second is
+empirical: the full source-integrity treatment — corroboration quorums,
+format and parse gates, and the forced-generator tightness results the
+light instance of @sec-instances omits by design — is conditional and
+prose-grade where this paper is machine-checked, and belongs in its own
+venue.
+
+The third is a diagnostic rather than a result, and is offered as such.
+Machine-learned alignment resists verification on all three axes at
+once: behavior on unseen inputs is not *determined* by any finite
+training record; semantic behavioral properties are not *certifiable*,
+by Rice's theorem; and an alignment claim over an open input space is
+not *monotone*, since one adversarial input falsifies it after
+arbitrarily much confirming evidence. Turning that into a theorem
+requires pinning down what "aligned" means as a claim in this paper's
+sense, which is not attempted here.
