@@ -8,9 +8,10 @@ this paper's use of it from the source's own.
 ## (a) The residue thesis, stated repeatedly, never factored
 
 The thesis that trust occupies exactly the space verification cannot
-reach is old. For Frankel, trust takes the place of an assessment that
-cannot easily be made, or is too costly to attempt; it enters "where
-more exact knowledge is not available" [@frankel-1977]. The Lewis and
+reach is old. For Frankel, trusting means "going beyond the mere
+assessment of probabilities," and trust takes that assessment's place
+precisely when it cannot easily be made or is too costly to attempt; it
+enters "where more exact knowledge is not available" [@frankel-1977]. The Lewis and
 Weigert formulation — trust "begins where prediction ends"
 [@lewis-weigert-1985] — reaches this paper through Möllering's
 genealogy, where the tradition's unfactored form is plainest: trust as a
