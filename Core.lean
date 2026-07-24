@@ -15,8 +15,10 @@ Three axioms beyond Lean's built-ins (`propext`, `Classical.choice`, `Quot.sound
 `EonEalm.Entry` (the abstract entry alphabet), `EonEalm.Context` and
 `EonEalm.Context.inhabited` (the ambient-context type and its non-vacuity).
 `EonEalm.Context.nontrivial` (`|Ξ| ≥ 2`) is consumed by `Core.Axes.exists_undetermined_claim`,
-which witnesses that `Determined` is a genuine restriction rather than vacuous truth; it
-appears nowhere else.
+which witnesses that `Determined` is a genuine restriction rather than vacuous truth, and —
+by design — by the cell table's two `¬D` rows (`Witness.Cells.exists_undetermined_monotone`,
+`Witness.Cells.authoredAbsentClaim_not_determined`), which are that same witness shape
+carried into the table; it appears nowhere else.
 
 ## Module map
 * `Core.Model` — records, the extension order `⊑`, worlds, claims.
