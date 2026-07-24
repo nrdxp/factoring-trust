@@ -111,6 +111,17 @@ Trust, on this account, is not eliminated. It is located, typed, priced,
 and bounded. A system whose trusted remainder equals its named genesis
 base sits *at* the verification ceiling — provably, not by inspection.
 
+This general form is stated as it is now — over any well-founded
+justification structure, not just append-only records — because of
+where the question first came from: it was originally asked of a single
+domain, source-build integrity, under the name **surety ceiling** — how
+small can a build's trusted remainder provably be? Recognizing that the
+same gate, completeness, and minimality argument holds with the record
+structure itself abstracted away is what turns a build-specific result
+into the general companion theorem of @sec-instances; that section
+names the build domain's own specialization by its original name, and
+this paper's follow-up work stays there.
+
 ## Roadmap
 
 @sec-model gives the model: records, contexts, claims, and the offline
