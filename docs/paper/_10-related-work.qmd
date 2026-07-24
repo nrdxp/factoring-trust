@@ -8,13 +8,15 @@ this paper's use of it from the source's own.
 ## (a) The residue thesis, stated repeatedly, never factored
 
 The thesis that trust occupies exactly the space verification cannot
-reach is old. "Trust enters where more exact knowledge is not
-available" [@frankel-1977]; "trust begins where prediction ends"
-[@lewis-weigert-1985]. Later work inherits the same unfactored
-formulation: trust as an attitude that lowers "the barrier of
-monitoring, challenging, checking, and questioning" [@nguyen-unquestioning],
-or as a leap "across the gorge of the unknowable" that "brackets out
-uncertainty and ignorance" as one undifferentiated act [@mollering-2001].
+reach is old. For Frankel, trust enters "where more exact knowledge is
+not available" [@frankel-1977]; for Lewis and Weigert it "begins where
+prediction ends" [@lewis-weigert-1985]. Both reach this paper through
+Möllering's genealogy of the idea, which is also where the tradition's
+unfactored formulation is plainest: trust as a leap "across the gorge of
+the unknowable" that "brackets out uncertainty and ignorance" as one
+undifferentiated act [@mollering-2001]. Later work inherits it intact —
+an attitude that lowers "the barrier of monitoring, challenging,
+checking, and questioning" [@nguyen-unquestioning].
 Security-requirements engineering operationalizes the same residue as a
 discretionary argument-stopper: "trust assumptions are unsubstantiated
 grounds used in security satisfaction arguments... because trust

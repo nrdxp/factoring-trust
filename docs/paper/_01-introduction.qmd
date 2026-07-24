@@ -43,9 +43,10 @@ without bounding it, and bounding it is what @sec-instances does.
 
 ## The question folklore has always asked, never answered
 
-Folklore has long said what the remainder *is*. "Trust enters where more
-exact knowledge is not available" [@frankel-1977]. "Trust begins where
-prediction ends" [@lewis-weigert-1985]. These are the ancestors of this
+Folklore has long said what the remainder *is*. For Frankel, trust
+enters "where more exact knowledge is not available" [@frankel-1977];
+for Lewis and Weigert it "begins where prediction ends"
+[@lewis-weigert-1985]. These are the ancestors of this
 paper's thesis-half, and the sociological and epistemological work
 descending from them inherits the same unfactored formulation
 (@sec-related-work).
