@@ -27,43 +27,58 @@ non-residue classifications actually rest on (`basis`). `Total` names
 the state in which every non-seed member of the closure is `closed`
 (`total_iff_every_nonseed_closed`).
 
+**Joining the two worlds.** The accounting vocabulary above — artifacts,
+buckets, policies — and the scheme vocabulary of @sec-model share no
+object either is defined in terms of, so a statement about the trust
+surface says nothing about evidence schemes until the two are linked.
+The link is a **record realization** for a closure
+(`RecordRealization`): a map $\mathit{recordOf}$ from artifacts to
+records satisfying two conditions on that closure — **(R1)** building on
+an artifact extends its record, $m \in \mathit{depclosure}\ n
+\Rightarrow \mathit{recordOf}\ m \sqsubseteq \mathit{recordOf}\ n$, and
+**(R2)** an artifact is a genesis seed exactly when its record commits
+no prior entries.
+
+The neutral core cannot supply this and should not. $\mathit{Entry}$ is
+opaque by construction (@sec-model), so no map into $\Record$ is
+definable there at all; the realization is the domain's to provide,
+bundled as a structure the way a commitment is. Given one, "$S$
+establishes artifact $m$ without admission" becomes a genuine relation —
+$S$ is snapshot-sound *and* accepts a certificate for $m$'s own record
+(`Discharges`) — whose two halves are consumed in a single step
+(`discharges_forces_binding`).
+
 ::: {.theorem}
-**The verification ceiling** (`Ceiling.ceiling`). For such a structure,
-under an explicit underdetermination hypothesis on the domain's binding
-claim:
+**The verification ceiling** (`Ceiling.ceiling`). For such a structure
+with a record realization, under an explicit underdetermination
+hypothesis on the domain's binding claim:
 
 (i) **Gate.** The binding or genuineness claim admits no snapshot-sound
     evidence scheme over any commitment (`binding_admits_no_scheme`).
 
-(ii) **Completeness.** Every seed in the closure is irreducibly part of
-    the trust surface (`seeds_always_residual`), and under `Total` every
-    non-seed member carries both evidence species — a corroboration and
-    a vouch — in the assumption basis
-    (`total_carries_both_species`). Nothing is silently trusted.
+(ii) **Seed junction.** For *every* scheme, every seed in the closure is
+    undischarged and lies in the trust surface
+    (`seeds_undischargeable_and_residual`).
 
-(iii) **Minimality.** The trust surface therefore contains the seed set
-    required by *every* scheme, because (i) makes the genesis claim
-    permanently underivable. Equality between trust surface and seed set
-    is the *ceiling*: a system achieving it cannot be improved on.
+(iii) **Minimality.** Under `Total`, the trust surface *equals* the
+    closure's seeds (`ceiling_minimality`). That equality is the
+    *ceiling*: a system achieving it cannot be improved on.
+
+(iv) **Completeness.** Under `Total`, every non-seed member carries both
+    evidence species — a corroboration and a vouch — in the assumption
+    basis (`total_carries_both_species`). Nothing is silently trusted.
 :::
 
-**What this theorem is, exactly.** It is a bundle of three mechanized
-facts plus one interpretive reading, not a single deep result, and the
-distinction matters to anyone auditing the artifact. Parts (i) and (ii)
-are proved. Part (iii)'s force comes from reading them together, and the
-reading crosses a seam the mechanization does not close: the accounting
-world (artifacts, buckets, policies) and the scheme world (records,
-contexts, claims, commitments) share no object either is defined in
-terms of. The only bridge is the gate — a domain's genuineness claim,
-once cast as a record claim, *is* an instance of the trichotomy's own
-determination gate. Building a formal junction between the two worlds is
-real modeling work with no display value at this stage, and it is left
-open rather than quietly assumed.
+All four are proved. Minimality is an equality rather than an inference
+drawn by the reader, and (ii) is quantified over schemes rather than
+argued from the gate case by case — which is what the realization buys
+and what makes the surface's minimality a statement about evidence at
+all.
 
-That is also why this is a **companion** and not a corollary. It shares
-the gate; everything else in it — the classification, the two evidence
-species, the accounting, the minimality argument — is its own machinery,
-proved independently over vocabulary $\TTsnap$/$\TTend$ never mentions.
+This remains a **companion** and not a corollary. It shares the gate;
+everything else — the classification, the two evidence species, the
+accounting, the junction — is its own machinery, proved over vocabulary
+$\TTsnap$/$\TTend$ never mentions.
 
 The underdetermination hypothesis is likewise a **modeling hypothesis,
 never a theorem and never an axiom**: it is the domain's own fiber
@@ -99,6 +114,17 @@ forced-generator or Rice-theoretic tightness result stands between the
 model and the theorem — which makes it the cleanest evidence that the
 completeness and minimality machinery is not build-specific.
 
+**Its records are proved to realize the ceiling, not assumed to.**
+`identityRealization` constructs the realization rather than positing
+it: records are prefixes of an ambient append-only log keyed on artifact
+identifier, and (R1) and (R2) are discharged by induction on the chain's
+own structure (`identity_id_mono`, `identity_id_seedBoundary`) under two
+hypotheses about the caller's event list — that identifiers do not
+increase toward the root, and that identifier zero is reserved for
+genesis. The realization therefore carries content: what an artifact's
+record *is* depends on what the chain actually contains. A real system's
+records are shown to be the kind of thing the ceiling is about.
+
 **A light source-integrity instance.** Its build-domain name, wherever
 the general ceiling is instantiated to source integrity, is the **surety
 ceiling** (`surety_ceiling`). It exercises **T1** — genuineness of a
@@ -116,6 +142,20 @@ follow-up paper, cited and not included.** Folding it in would mix
 conditional, prose-grade frontier content into a paper whose epistemic
 grade is otherwise uniformly machine-checked, and that uniformity is
 what the split protects.
+
+**Its realization is content-neutral, and the asymmetry with identity is
+real.** `suretyRealization` instantiates the general `countRealization`,
+which satisfies (R1) and (R2) unconditionally — it is also what
+establishes that those two conditions are jointly satisfiable at all —
+but distinguishes artifacts only by how many entries they commit. The
+light payload carries no chain-like structure to discharge a
+content-bearing realization from, and building one belongs to the
+follow-up rather than here. So the ceiling holds at this instance over a
+realization that does not depend on what the records say. One instance
+exhibits a content-carrying realization discharged from its own
+structure; the other instantiates over a neutral one. What the two
+jointly witness is *axis coverage* — T1 with T3, and T1 with T2 — which
+is the claim @sec-cell-table's table makes and the only one made here.
 
 Neither instance imports a computability library — the ceiling's content
 is accounting and impossibility, and neither needs one.

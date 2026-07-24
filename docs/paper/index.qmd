@@ -21,12 +21,13 @@ abstract: |
   derived rather than stipulated: a biconditional machine-checked in Lean
   4 across a tower of verifier strata (oracle, computable; the polynomial
   stratum remains an open conjecture), whose reverse direction constructs
-  the evidence scheme out of the three conditions. A companion theorem — the verification
-  ceiling — generalizes the same trichotomy from append-only records to
-  any well-founded justification structure, and we instantiate it twice,
-  once as a cryptographic identity system and once as a follow-up
-  source-integrity system, to demonstrate that the factoring, and not
-  merely one instance of it, is the contribution. Every ingredient of
+  the evidence scheme out of the three conditions. A companion theorem —
+  the verification ceiling — carries the factoring from append-only
+  records to any well-founded justification structure that admits a
+  record realization, and we instantiate it twice over one neutral core:
+  a cryptographic identity system, whose own records are proved to be
+  such a realization, and a deliberately light source-integrity system,
+  which instantiates the ceiling over a neutral realization instead. Every ingredient of
   this factoring is independently attested in the literature — the
   observables-frame algebra of synthetic topology, CALM's
   monotonicity-coordination biconditional, archival diplomatics'

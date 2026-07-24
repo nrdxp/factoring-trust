@@ -138,9 +138,15 @@ into two independent axes — this paper's own delta inside an inherited
 algebra.
 
 **C4.** The verification ceiling — a companion theorem, not a corollary
-— over any well-founded justification structure, instantiated twice over
-one neutral core (@sec-instances: `Ceiling.ceiling`,
-`principal_trust_bounded`, `surety_ceiling`).
+— over any well-founded justification structure admitting a record
+realization, with the accounting and scheme worlds joined by a proved
+relation rather than an analogy (@sec-instances: `Ceiling.ceiling`,
+`RecordRealization`, `Discharges`). It is instantiated twice over one
+neutral core: the identity instance discharges a content-carrying
+realization from its own structure (`identityRealization`,
+`principal_trust_bounded`), and the light source-integrity instance
+instantiates over a content-neutral one (`suretyRealization`,
+`surety_ceiling`).
 
 **C5.** The cell table: eight nominal cells, two empty *by theorem*
 rather than for want of a witness, six inhabited — one verifiable and
