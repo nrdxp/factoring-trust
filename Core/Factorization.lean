@@ -11,6 +11,13 @@ projection along `⊑`.
 
 namespace EonEalm
 
+/-- A determined claim equals its own record-only projection, restated as
+    ambient-context-blind. The `Eq` (not just `Iff`) form `determined_iff_factors`
+    packages existentially. -/
+theorem determined_eq_proj {φ : Claim} (hd : Determined φ) :
+    φ = fun w _ => determinedProj φ hd w :=
+  funext fun w => funext fun ξ => propext (determinedProj_iff hd w ξ).symm
+
 /-- Determination, restated: `φ` is record-determined iff it factors through some
     record-only predicate `ψ`, i.e. is in the image of the pullback along
     `World → Record`. -/
@@ -18,8 +25,7 @@ theorem determined_iff_factors (φ : Claim) :
     Determined φ ↔ ∃ ψ : Record → Prop, φ = fun w _ => ψ w := by
   constructor
   · intro hd
-    exact ⟨determinedProj φ hd, funext fun w => funext fun ξ =>
-      propext (determinedProj_iff hd w ξ).symm⟩
+    exact ⟨determinedProj φ hd, determined_eq_proj hd⟩
   · rintro ⟨ψ, rfl⟩
     exact fun _ _ _ => Iff.rfl
 
