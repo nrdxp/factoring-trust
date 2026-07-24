@@ -2,8 +2,9 @@
 
 **Trust is the complement of verifiability — and above a floor, that
 complement factors: verification fails for exactly three reasons, each
-failure names whom you must trust and what the cure costs, and the
-"exactly" is a machine-checked biconditional, not a taxonomy.**
+failure names whom you must trust and what the cure costs, and the count
+is derived rather than stipulated, in a machine-checked biconditional
+whose reverse direction *constructs* the evidence scheme.**
 
 ## The asymmetry that motivates the question
 
@@ -82,10 +83,10 @@ refereed for relational transducers and since generalized
 
 The composition is ours. No source we reached factors the residue *by
 cause*, pairs these axes as a joint characterization of *trust*, or
-states the biconditional form. And "exactly three" is not an empirical
-count: it is the $\Leftarrow$ direction of a machine-checked
-if-and-only-if — satisfy all three conditions and the evidence scheme is
-*constructed*, not merely presumed to exist.
+states the biconditional form. And "exactly three" is derived: it is the
+$\Leftarrow$ direction of a machine-checked if-and-only-if — satisfy all
+three conditions, and the evidence scheme is *constructed* on the spot
+out of them.
 
 ## The payoff
 

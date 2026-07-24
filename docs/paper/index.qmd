@@ -17,10 +17,11 @@ abstract: |
   reasons — the claim is not determined by the record, the record does
   not certify it at the verifier's computational power, or the claim
   does not survive the record's growth — and each failure names whom the
-  verifier must trust and what repairing it costs. The "exactly" is not
-  a taxonomy but a machine-checked biconditional, proved in Lean 4 across
-  a tower of verifier strata (oracle, computable; the polynomial stratum
-  remains an open conjecture). A companion theorem — the verification
+  verifier must trust and what repairing it costs. The "exactly" is
+  derived rather than stipulated: a biconditional machine-checked in Lean
+  4 across a tower of verifier strata (oracle, computable; the polynomial
+  stratum remains an open conjecture), whose reverse direction constructs
+  the evidence scheme out of the three conditions. A companion theorem — the verification
   ceiling — generalizes the same trichotomy from append-only records to
   any well-founded justification structure, and we instantiate it twice,
   once as a cryptographic identity system and once as a follow-up

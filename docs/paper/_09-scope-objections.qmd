@@ -35,7 +35,8 @@ three independent prongs.
 
 First, each definition has an independently-adequate home outside this
 paper: monotonicity's upward-closed outcomes are CALM's monotone
-specifications [@hellerstein-2026]; certifiability's semi-decidable
+specifications [@ameloot-neven-vandenbussche-2013; @hellerstein-2026];
+certifiability's semi-decidable
 class is synthetic topology's affirmable properties [@escardo-2004];
 determination, given a mechanism, is the finding archival diplomatics
 reports from case-study evidence [@interpares-2002]. Three fields that
@@ -54,10 +55,21 @@ which is not a check definitions can be tuned to pass.
 
 ## Does the factoring distinguish anything? (W2)
 
-The hardest objection is that the three causes collapse under pressure:
-follow any of them far enough and you arrive at the same place, trusting
-the machine in front of you. The cell table (@sec-cell-table) is the
-exhibit against that. Three claims, all *above* the floor — binding
+Two suspicions attach to any three-way split. The first is that it is a
+taxonomy wearing a theorem's clothes: categories somebody chose, with
+exhaustiveness asserted once the choosing is done. Here the count runs
+the other way. The $\Leftarrow$ leg of $\TTsnap$/$\TTend$ takes the three
+conditions and *constructs* a scheme out of them, so exhaustiveness
+follows from what a scheme is rather than from how the cases were drawn.
+A taxonomy whose exhaustiveness is proved is a fair description of this
+result — the proof is exactly what separates it from one merely
+proposed.
+
+The second suspicion is harder: that the three causes collapse under
+pressure, since following any of them far enough lands you in the same
+place, trusting the machine in front of you. The cell table
+(@sec-cell-table) is the exhibit against that. Three claims, all *above*
+the floor — binding
 commitments and a faithful verifier already granted — fail on three
 different axes and take three visibly different repairs.
 
