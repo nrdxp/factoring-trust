@@ -30,11 +30,9 @@ either).
 Exactly twice — rows 2 and 5 below — each stating a *fresh* concrete
 witness of the `Core.Axes.exists_undetermined_claim` shape (rather than
 extracting the existential's opaque witness, which would not expose the
-shape a monotonicity proof needs). This deliberately **expands**
-`Context.nontrivial`'s footprint beyond `Core.Axes.exists_undetermined_claim`,
-the only site claimed for it in `Core.lean`'s own module doc-comment; that
-claim goes stale once this file lands (flagged, not corrected here — this
-file does not touch `Core/`).
+shape a monotonicity proof needs). This footprint is documented in
+`Core.lean`'s own module note, which names all three consuming sites:
+`Core.Axes.exists_undetermined_claim` and these two rows.
 -/
 
 namespace Witness.Cells
