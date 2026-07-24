@@ -15,7 +15,6 @@ format:
     pdf-engine: pdflatex
     cite-method: natbib
     number-sections: true
-    shift-heading-level-by: -1
     fig-pos: "tbp"
     tbl-cap-location: top
     filters:
