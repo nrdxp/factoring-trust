@@ -34,6 +34,13 @@ on the trust assumptions their own analysis holds fixed
 enumerates *assume* — consistently, across subfields that do not cite
 one another.
 
+The pattern is old enough to date. A self-maintaining compiler trapdoor
+— one that survives recompilation because the compiler compiles itself —
+was described and costed in the 1974 security evaluation of Multics
+[@karger-schell-1974], ten years before the lecture that made it famous
+[@thompson-1984]. The work since has shrunk that trusted base repeatedly
+without bounding it, and bounding it is what @sec-instances does.
+
 ## The question folklore has always asked, never answered
 
 Folklore has long said what the remainder *is*. "Trust enters where more

@@ -119,9 +119,15 @@ Woo prove a trusted state *reachable*, unconditionally, from an
 untrusted starting point — a positive construction that makes *how small
 can the trusted remainder be?* well-posed without answering it
 [@gligor-woo-2019]; this paper's verification ceiling (@sec-instances)
-is that answer. The lineage descending from Thompson's attack
-[@thompson-1984] *reduces or diversifies* the trusted base without ever
-proving a residual base *minimal*. Diverse double-compiling is its
+is that answer. The self-maintaining compiler trapdoor was described,
+and costed, in the 1974 security evaluation of Multics: a trapdoor
+placed in the PL/I compiler that reinstates itself on every rebuild.
+"Since the PL/I compiler is itself written in PL/I, the trap door can
+maintain itself, even when the compiler is recompiled"
+[@karger-schell-1974]. Thompson named the problem ten years later and
+is the reason the field knows it [@thompson-1984]. The lineage
+descending from it *reduces or diversifies* the trusted base without
+ever proving a residual base *minimal*. Diverse double-compiling is its
 sharpest instance — rebuild with an independent compiler and compare —
 and Wheeler enumerates what the technique still requires: a trusted
 compilation process, a trusted comparer, trusted environments, and a
