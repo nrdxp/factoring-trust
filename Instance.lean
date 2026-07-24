@@ -1,4 +1,5 @@
 import Instance.Identity
+import Instance.SuretyLite
 
 /-!
 # Instance — the two generality witnesses over the neutral ceiling
