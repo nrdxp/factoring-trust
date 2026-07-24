@@ -1,0 +1,5 @@
+# Acknowledgment {.unnumbered}
+
+[AI-DISCLOSURE PLACEHOLDER — to be worded before submission: names the AI
+system, the sections it drafted, and the level of use; note the Lean
+artifact is machine-checked, not generated prose]
