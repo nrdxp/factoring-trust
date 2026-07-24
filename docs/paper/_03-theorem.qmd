@@ -29,30 +29,22 @@ than a taxonomy asserted from the outside.
 
 ## Per-stratum status
 
-The tower is graded honestly. Some cells are proved at every stratum
-this paper claims; two are open holes still being closed by the
-mechanization this paper's Lean artifact is drawn from; the polynomial
-stratum is conjectural throughout.
+The tower is graded honestly. Every cell is proved at every stratum this
+paper claims, except the polynomial stratum, which is conjectural
+throughout.
 
 | flavor $\times$ stratum | verifier condition | status |
 |---|---|---|
 | snapshot $\times$ oracle | none | proved |
-| enduring $\times$ oracle | none | proved (unfibered packaging pending — TODO) |
-| snapshot $\times$ computable | commitment components computable | TODO — pending mechanization |
+| enduring $\times$ oracle | none | proved (`trichotomy_ALL_iff`) |
+| snapshot $\times$ computable | commitment components computable | proved (`trichotomy_snap_COMP_iff`) |
 | enduring $\times$ computable | + verification-certificate predicate computable | proved |
 | snapshot/enduring $\times$ polynomial | polynomial time/size | open (conjectured) |
 
-The two `TODO` cells are small, mechanical gaps against an already-proved
-neighbor, not open mathematical questions: the oracle-stratum enduring
-result currently exists only as an assembly of four separate lemmas
-rather than one packaged theorem, and the computable-stratum snapshot
-result is an unmechanized port of a shape already proved one stratum up.
-Both are expected to close before this paper's next revision; neither
-bears on the truth of the theorem as stated, only on whether a reader
-can point at a single Lean declaration for it. The polynomial stratum is
-different in kind: it is stated as a conjecture because the corresponding
-theorems have not been proved at all, and the paper says so rather than
-implying three proved strata where one is open.
+The polynomial stratum is different in kind from the rest of the tower:
+it is stated as a conjecture because the corresponding theorems have not
+been proved at all, and the paper says so rather than implying three
+proved strata where one is open.
 
 ## Corollaries
 
