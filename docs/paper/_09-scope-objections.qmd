@@ -1,106 +1,120 @@
 # Scope and Objections {#sec-scope-objections}
 
+Three scope concessions and two challenges to the result's adequacy,
+under the labels these objections were first posed with. The missing one
+— O2, whether the framework *derives* practice's trust anchors or merely
+relabels them — is answered as a result rather than defended as an
+objection (@sec-introduction, @sec-cell-table).
+
 **Locus, not degree (O1).** This paper formalizes *where* verification
 fails and *why*, in three exhaustive cases. It does not formalize how
-much trust a failure costs in any graded sense — a single admitted
-signer and a globally corrupt certificate authority are the same
-determination-failure cell, distinguished only by how badly the
-admitted trust can be abused, which is a question this model does not
-ask.
+much trust a failure costs: a single admitted signer and a globally
+corrupt certificate authority sit in the same determination-failure
+cell, distinguished only by how badly the admitted trust can be abused —
+a question this model does not ask.
 
 **Reliance-structure, not trust-proper (O3).** What is formalized is the
-structural precondition for trust — an unverifiable gap that something
-must fill — not trust as a psychological or social attitude in the sense
-the philosophy-of-trust literature studies it (@sec-related-work). This
-paper is conceded ground, not a hidden weakness: it formalizes the
-*reliance* a rational agent is forced into once verification is
-exhausted, which is necessary for, but does not by itself constitute,
-trust in the fuller sense that literature uses the word.
+structural precondition for trust — an unverifiable gap something must
+fill — not trust as the psychological or social attitude the
+philosophy-of-trust literature studies (@sec-related-work). This is
+conceded ground: the *reliance* a rational agent is forced into once
+verification is exhausted is necessary for trust in that fuller sense,
+not identical to it.
 
 **Necessary versus elective trust (O4).** The trichotomy characterizes
-trust that is *forced* — there is no scheme, at any stratum, for the
-claim in question. It says nothing about *elective* trust, where a
-verifier could in principle check a claim but chooses reliance instead
-for cost or convenience reasons. Both are real; only the forced kind is
-this paper's object.
+trust that is *forced* — no scheme exists, at any stratum, for the claim
+in question. It says nothing about *elective* trust, where a verifier
+could check but chooses reliance for cost or convenience; only the
+forced kind is this paper's object.
 
 ## Model adequacy (W1)
 
 The sharpest exposure of a result this abstract is whether its
-definitions are actually the right ones — convergent validity, argued
-on three independent prongs, rather than asserted from the definitions
-alone.
+definitions are the right ones. The argument is convergent validity on
+three independent prongs.
 
 First, each definition has an independently-adequate home outside this
-paper: monotonicity's upward-closed outcomes are exactly Complete CALM's
-monotone specifications [@hellerstein-2026]; certifiability's
-semi-decidable class is exactly the affirmable-properties tradition of
-synthetic topology [@escardo-2004]; determination, given a mechanism, is
-exactly the finding archival diplomatics reports from case-study
-evidence [@interpares-2002].
+paper: monotonicity's upward-closed outcomes are CALM's monotone
+specifications [@hellerstein-2026]; certifiability's semi-decidable
+class is synthetic topology's affirmable properties [@escardo-2004];
+determination, given a mechanism, is the finding archival diplomatics
+reports from case-study evidence [@interpares-2002]. Three fields that
+do not cite one another arrived at these conditions for their own
+reasons.
 
-Second, the instances bite on real systems: the light surety-ceiling
-witness, the identity domain, and — most concretely — the split-view
-reduction of @sec-instances, which predicts a transparency log's actual
-deployed defenses rather than merely classifying the attack after the
-fact.
+Second, the instances bite on real systems — most concretely the
+split-view reduction of @sec-instances, which predicts a transparency
+log's actual deployed defenses rather than classifying the attack after
+the fact.
 
-Third, and most directly: the framework *derives* a result rather than
-merely accommodating one. The claim in @sec-instances that a failed axis
-names a specific trust anchor — signer, voucher, witness quorum — is
-itself an adequacy check, because it recovers, from first principles,
-exactly the anchor inventory that deployed practice converged on by
-other means.
+Third, the framework *derives* rather than accommodates: that a failed
+axis names a specific anchor — signer, voucher, witness quorum —
+recovers the inventory deployed practice converged on by other means,
+which is not a check definitions can be tuned to pass.
 
-## What was searched, and what was not (honest scope statement)
+## Does the factoring distinguish anything? (W2)
 
-The related-work sweep behind @sec-related-work reached arXiv, open
-bibliographic indices, author-hosted PDFs, institutional repositories,
-and the Internet Archive. Several major venues remained hostile across
-repeated attempts — paywalled philosophy-of-trust archives, several
-publisher search interfaces, and citation-graph APIs that rate-limited
-every attempt. Two consequences follow, stated plainly rather than left
-for a reviewer to discover: post-2022 philosophy-of-trust literature is
-effectively unsampled, and several of the negative findings below rest
-on an exhaustive check of *one document each*, which closes that
-document, not the literature it sits in.
+The hardest objection is that the three causes collapse under pressure:
+follow any of them far enough and you arrive at the same place, trusting
+the machine in front of you. The cell table (@sec-cell-table) is the
+exhibit against that. Three claims, all *above* the floor — binding
+commitments and a faithful verifier already granted — fail on three
+different axes and take three visibly different repairs.
 
-Absence of a hit under these conditions is not claimed as proof of
-absence — it is the expected observation for a genuine unification
-claim. If this composition had already been published, it would likely
-be known in the subfields it draws from, several of which are
-well-studied and actively cited. What @sec-related-work offers instead
-of a clean-room "we searched and found nothing" is the closest prior art
-found at each of five clusters, with the specific line that distinguishes
-this paper's claim from each — the shape a well-read related-work
-section takes, not the shape a defensive one takes.
+**T1, determination.** "The entry at position $k$ was authored by
+principal $A$." Authorship is a fact about key custody, which is
+context, not bytes; the gate of @sec-theorem fires and no scheme exists
+at any stratum. Such claims provably exist
+(`Witness.Cells.exists_undetermined_monotone`); reading any *particular*
+genuineness or binding claim as one of them is an explicit modeling
+hypothesis about the fiber over the record, never a theorem. **Cure:**
+admit a witness of history — a signer or attestor whose say-so stands in
+for what the record cannot settle.
 
-## Future work
+**T2, certifiability.** "The generator committed at the current head is
+degenerate" — that a build emits from a finite table rather than
+computing its output. The claim is fixed by the committed bytes and
+independent of how the generator is written
+(`Witness.Generator.degenerate`, `degenerate_extensional`), and it is
+monotone, since a committed generator stays committed. It is not
+semi-decidable: a purely semantic property of an unbounded-domain
+denotation, which Rice–Shapiro places outside $\Sigma_1$. That last step
+is cited mathematics, not mechanized here — this paper builds no
+computation model and does not imply one. **Cure:** admit a voucher — a
+party's judgment that the generator is genuine, standing in for a check
+no procedure can perform — or restrict to a decidable subclass.
 
-**A diagnostic lens for alignment, not a formalization (C3).** The three
-axes give a diagnostic vocabulary for why a machine-learned model's
-alignment resists verification, and it is worth naming precisely because
-it hits all three at once rather than one: a model's behavior is not
-*determined* by anything a verifier can commit to in advance (behavior
-on unseen inputs is not a function of any finite training record); it is
-not *certifiable* even in principle, by Rice's theorem applied to
-semantic behavioral properties; and any alignment claim stated as a
-universal over an open input space is not *monotone* — one adversarial
-input can falsify it after arbitrarily much confirming evidence. This is
-offered as a one-paragraph diagnostic mention, deliberately not pursued
-further here: turning it into a formal result first requires pinning
-down what "aligned" means as a claim in this paper's sense, which is
-future work in its own right and would sidetrack the introduction if
-attempted now.
+**T3, monotonicity.** "Entry $e$ is absent from the record,"
+equivalently "$w$ is the current head." Determined, certifiable, and
+refuted by the next append
+(`Witness.Cells.absenceClaim_not_monotone`). **Cure:** admit a holder of
+liveness on the present — a witness quorum or gossip protocol — or
+restrict to "absent as of time $t$," or accept an expiry window.
 
-**The full surety ceiling (the axios follow-up).** @sec-instances
-includes a deliberately light, zero-frontier-machinery witness of the
-verification ceiling's build-domain specialization, the **surety
-ceiling**. The full treatment — corroboration quorums, format/parse
-gates, and the forced-generator tightness results resting on Rice and
-Rice–Shapiro that the light witness omits by design — is empirical,
-conditional in places, and prose-grade rather than machine-checked
-throughout; it is the subject of a separate, follow-up paper on
-source-build integrity (the axios project), cited from this paper but
-not included in it, so that this paper's own epistemic grade stays
-uniformly machine-checked.
+Three kinds of party, and three failure modes when the cure is
+misplaced: a bad signer yields forged history, a bad voucher a laundered
+artifact whose record is nonetheless perfectly consistent, a bad
+liveness holder a stale but genuine view. The remaining inhabited cells
+compose these failures, and their cures compose too.
+
+None of the three is "trust your CPU." That assumption is real and this
+paper names it — it is one of the two residuals of @sec-floor, which the
+trichotomy sits strictly above by construction. The objection conflates
+the floor with the factoring: the floor is where hardware and toolchain
+trust lives, it is bounded at two items, and above it the three causes
+remain distinct.
+
+## Coverage of the prior-art sweep
+
+The sweep behind @sec-related-work reached arXiv, open bibliographic
+indices, author-hosted PDFs, institutional repositories, and the
+Internet Archive; paywalled philosophy-of-trust archives, publisher
+search interfaces, and rate-limiting citation-graph APIs stayed out of
+reach. Two consequences, stated here rather than left for a reviewer to
+find: post-2022 philosophy-of-trust literature is
+effectively unsampled, and several negative findings rest on an
+exhaustive check of *one document each*, which closes that document and
+not the literature around it. The composition claim is therefore
+access-bounded throughout — composed nowhere this sweep could reach,
+never a clean-room negative — and @sec-related-work makes the case
+positively instead, from what the field demonstrably *did* do.
