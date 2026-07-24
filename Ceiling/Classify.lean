@@ -117,45 +117,31 @@ theorem seeds_are_imports (gate : Payload → Bool) (tagOf : Payload → Tag)
   | ground i isSeed => simp [classify]
   | derived i payload inputs => simp [Node.seed?] at hseed
 
-/-- `closed` is never reached by testimony alone (or record alone): every
-    `closed` verdict carries both an actual establishment witness and an
-    actual corroboration. -/
+/-- `closed` is never reached by testimony alone (or record alone): a
+    `closed` node carries both species, pinned to its OWN fields — its own
+    `(id, payload)` establishment (so the counted vouch's tag matches THIS
+    node's payload, which is what `basis` membership needs) and an actual
+    corroboration targeting it. `classify`'s cascade only ever calls
+    `established` with the node's own fields, so no unrelated witness can
+    stand in. Stated on the `derived` constructor: `ground` nodes never
+    classify `closed` at all (`ground_forced_import`). -/
 theorem declaration_alone_never_closes (gate : Payload → Bool) (tagOf : Payload → Tag)
-    (closureOk : Payload → Bool) (P : Policy Signer) (σ : Snapshot Signer Tag)
-    (m : Node Payload) (hclosed : classify gate tagOf closureOk P σ m = .closed) :
-    (∃ id payload, established gate tagOf P σ id payload = true) ∧
-      corroborated P σ m = true := by
-  cases m with
-  | ground i isSeed => simp [classify] at hclosed
-  | derived i payload inputs =>
-      simp only [classify] at hclosed
-      by_cases hest : established gate tagOf P σ i payload = true
-      · simp only [hest, Bool.not_true, if_neg (by simp : ¬ ((false : Bool) = true))] at hclosed
-        by_cases hcascade :
-            (closureOk payload && corroborated P σ (Node.derived i payload inputs) &&
-              inputs.attach.all fun p => p.1.seed? ||
-                decide (classify gate tagOf closureOk P σ p.1 = .closed)) = true
-        · simp only [hcascade, if_pos] at hclosed
-          simp only [Bool.and_eq_true_iff] at hcascade
-          exact ⟨⟨i, payload, hest⟩, hcascade.1.2⟩
-        · simp [hcascade] at hclosed
-      · simp only [Bool.not_eq_true] at hest
-        simp [hest] at hclosed
-
-/-- Pinning strengthening of `declaration_alone_never_closes`: a `closed`
-    `derived` node's establishment witness is its OWN `(id, payload)` fields,
-    never an unrelated existential — `classify`'s cascade only ever calls
-    `established` with the node's own fields. This is what `basis` membership
-    needs (the vouch's tag must match THIS node's own payload, not an opaque
-    existential one). -/
-theorem node_established_own_tag (gate : Payload → Bool) (tagOf : Payload → Tag)
     (closureOk : Payload → Bool) (P : Policy Signer) (σ : Snapshot Signer Tag)
     (i : Nat) (payload : Payload) (inputs : List (Node Payload))
     (hclosed : classify gate tagOf closureOk P σ (Node.derived i payload inputs) = .closed) :
-    established gate tagOf P σ i payload = true := by
+    established gate tagOf P σ i payload = true ∧
+      corroborated P σ (Node.derived i payload inputs) = true := by
   simp only [classify] at hclosed
   by_cases hest : established gate tagOf P σ i payload = true
-  · exact hest
+  · simp only [hest, Bool.not_true, if_neg (by simp : ¬ ((false : Bool) = true))] at hclosed
+    refine ⟨hest, ?_⟩
+    by_cases hcascade :
+        (closureOk payload && corroborated P σ (Node.derived i payload inputs) &&
+          inputs.attach.all fun p => p.1.seed? ||
+            decide (classify gate tagOf closureOk P σ p.1 = .closed)) = true
+    · simp only [Bool.and_eq_true_iff] at hcascade
+      exact hcascade.1.2
+    · simp [hcascade] at hclosed
   · simp only [Bool.not_eq_true] at hest
     simp [hest] at hclosed
 

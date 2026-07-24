@@ -95,8 +95,11 @@ theorem closed_carries_corroboration_in_basis (gate : Payload → Bool) (tagOf :
     (a m : Node Payload) (hmem : m ∈ depclosure a)
     (hclosed : classify gate tagOf closureOk P σ m = .closed) :
     ∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t, e = .corroboration s t := by
-  have hcorr : corroborated P σ m = true :=
-    (declaration_alone_never_closes gate tagOf closureOk P σ m hclosed).2
+  have hcorr : corroborated P σ m = true := by
+    cases m with
+    | ground i isSeed => simp [classify] at hclosed
+    | derived i payload inputs =>
+        exact (declaration_alone_never_closes gate tagOf closureOk P σ i payload inputs hclosed).2
   simp only [corroborated, List.any_eq_true] at hcorr
   obtain ⟨e, heσ, hematch⟩ := hcorr
   cases e with
@@ -119,7 +122,8 @@ theorem closed_carries_vouch_in_basis (gate : Payload → Bool) (tagOf : Payload
   cases m with
   | ground i isSeed => simp [classify] at hclosed
   | derived i payload inputs =>
-      have hest := node_established_own_tag gate tagOf closureOk P σ i payload inputs hclosed
+      have hest :=
+        (declaration_alone_never_closes gate tagOf closureOk P σ i payload inputs hclosed).1
       have hunfold := hest
       simp only [established] at hunfold
       obtain ⟨_, hv⟩ := Bool.and_eq_true_iff.mp hunfold
@@ -181,7 +185,8 @@ theorem no_vouchers_no_total (gate : Payload → Bool) (tagOf : Payload → Tag)
       rw [himport] at hclosed
       exact absurd hclosed (by decide)
   | derived i payload inputs =>
-      have hest := node_established_own_tag gate tagOf closureOk P σ i payload inputs hclosed
+      have hest :=
+        (declaration_alone_never_closes gate tagOf closureOk P σ i payload inputs hclosed).1
       simp only [established, Bool.and_eq_true_iff] at hest
       obtain ⟨_, hv⟩ := hest
       simp only [List.any_eq_true] at hv
