@@ -48,7 +48,7 @@ Payload → Record` satisfying:
   to a scheme-side FACT ABOUT THE RECORD, not to a bare Boolean sitting next
   to an unrelated one.
 
-`demoRealization` below (parametric in one `Entry`, since the axiom carries
+`countRealization` below (parametric in one `Entry`, since the axiom carries
 no inhabitedness) proves R1+R2 jointly satisfiable — the structure itself is
 non-vacuous before anything is built on it.
 
@@ -68,11 +68,19 @@ claiming L1 itself was the joint witness would repeat round 1's mistake in a
 different sentence. The joint content lives in `discharges_forces_binding`
 and `discharges_seed_iff_certifies_empty`, not in L1.
 
-Neither `Instance.Identity` nor `Instance.SuretyLite` discharges (R1)/(R2)
-here: their real records (the eml chain, the atom DAG) live outside this
-repository's TCB (cited, never vendored, per `AGENTS.md`). Both thread `ρ` as
-an explicit, unconstructed hypothesis — the same discipline `hfiber` already
-uses.
+## Round 3 — both instances CONSTRUCT their realization
+
+An unconstructed `ρ` only shows the ceiling holds IF a realization exists;
+it never shows one does. `Instance.Identity.identityRealization` and
+`Instance.SuretyLite.suretyRealization` both build `countRealization`
+concretely — `identity_ceiling`/`surety_ceiling` no longer take `ρ` as an
+argument at all, only the one `Entry` `countRealization` needs. Neither
+instance's LOCAL model (`KeyEvent`/`chain`, `LitePayload`) imports the eml
+bridge or the axios atom DAG — both stay self-contained, vendoring nothing.
+`Instance.Identity.identity_recCount_chain` additionally checks the
+construction against the domain's own closure characterization
+(`depclosure_chain`-shaped induction on `chain`), not just cites the
+general bound.
 -/
 
 namespace Ceiling
@@ -104,62 +112,126 @@ structure RecordRealization (Payload : Type) where
 
 section RecordRealizationNonvacuity
 
-/-- The demo realization's range: every ground node not flagged a seed, and
-    every derived node, gets the one given entry; every seed gets `[]`. The
-    only total function on `Node Unit` that could possibly satisfy (R2)
-    without more information than "one entry, if any exist" — and it does,
-    unconditionally (`demoRecordOf_faithful`/`demoRecordOf_seedBoundary`
-    below), for every closure shape, not just one example. -/
-def demoRecordOf (e : Entry) : Node Unit → Record
-  | .ground _ true => []
-  | .ground _ false => [e]
-  | .derived _ _ _ => [e]
+/-! ## `countRealization` — the general construction, and the finding that forces it
 
-theorem demoRecordOf_mem (e : Entry) (m : Node Unit) :
-    demoRecordOf e m = [] ∨ demoRecordOf e m = [e] := by
+**Finding, stated before the construction because the construction is a
+direct consequence of it.** For ANY `Payload`, a `recordOf` whose value on a
+`.derived` node genuinely varies with that node's OWN payload content (an
+injective — or even just non-constant — `encode : Payload → Entry` folded
+into a per-node entry) CANNOT satisfy (R1) once `Node Payload` admits a
+`.derived` node with two or more non-seed inputs — which the type always
+does, for any `Payload`, regardless of what any particular domain's own
+builder functions happen to construct. Proof: let `n` have non-seed
+siblings `c₁ ≠ c₂` among its inputs (e.g. two `.derived` leaves over
+distinct payloads). (R1) forces `recordOf c₁ ⊑ recordOf n` and
+`recordOf c₂ ⊑ recordOf n`; two prefixes of the SAME list are always
+mutually comparable, so `recordOf c₁ ⊑ recordOf c₂ ∨ recordOf c₂ ⊑
+recordOf c₁` is forced too. But `recordOf` is an ordinary structural
+recursion on the NODE VALUE alone — `recordOf c₁` cannot depend on `c₂`
+(its sibling) or on `n` (its parent), so this comparability must already
+hold between `c₁` and `c₂` evaluated as STANDALONE values, with no shared
+context to arrange it. Nothing about two independently-encoded, unrelated
+payloads' entries guarantees that. The only escape is for `recordOf`'s
+non-seed range to be intrinsically totally ordered regardless of content —
+exactly what a LENGTH (count) does, and exactly what `encode` collapsing to
+one entry does. `Instance.Identity`/`Instance.SuretyLite` never build such
+siblings in practice (`chain` and every witness use single-input
+`.derived` nodes only), but `RecordRealization`'s own (R1)/(R2) quantify
+over the FULL `Node Payload` type, which the type does not restrict, so a
+realization discharging them must handle the case regardless. This is the
+"obstruction, named": `encode : Payload → Entry`, informative per payload,
+is not constructible into a total `RecordRealization`; `countRealization`
+below is the construction that actually exists, using one entry, not a
+per-payload encoding. -/
+
+/-- The post-order size: seeds contribute `0`; every other node contributes
+    `1` plus its inputs' sizes (summed — a DAG-shared input is counted once
+    per path to it, which only strengthens the monotonicity `faithful`
+    below needs, never weakens it). -/
+def recCount : Node Payload → Nat
+  | .ground _ true => 0
+  | .ground _ false => 1
+  | .derived _ _ inputs => 1 + (inputs.attach.map (fun p => recCount p.1)).sum
+termination_by m => sizeOf m
+decreasing_by
+  simp_wf
+  have := List.sizeOf_lt_of_mem p.2
+  omega
+
+theorem recCount_eq_zero_iff_seed (m : Node Payload) : recCount m = 0 ↔ m.seed? = true := by
   cases m with
-  | ground _ s => cases s <;> simp [demoRecordOf]
-  | derived _ _ _ => simp [demoRecordOf]
+  | ground i s => cases s <;> simp [recCount, Node.seed?]
+  | derived i p inputs => simp [recCount, Node.seed?]
 
-/-- (R1) for `demoRecordOf`: the only two values it ever takes, `[]` and
-    `[e]`, are related `⊑` in every direction that can actually arise — a
-    `.ground` node's `depclosure` is only ever itself, so the sole
-    nontrivial case is a `.derived` node's own record (always `[e]`)
-    against one of its inputs (`[]` or `[e]`, both `⊑ [e]`). -/
-theorem demoRecordOf_faithful (e : Entry) :
-    ∀ m n : Node Unit, m ∈ depclosure n → demoRecordOf e m ⊑ demoRecordOf e n := by
-  intro m n hmem
-  cases n with
-  | ground i s =>
+/-- A single term of a `List Nat` sum is bounded by the sum — this
+    Mathlib-free package proves the one fact `recCount_mono` needs directly
+    rather than importing a general-purpose ordered-sum library. -/
+theorem le_sum_of_mem {l : List Nat} {x : Nat} (hx : x ∈ l) : x ≤ l.sum := by
+  induction l with
+  | nil => cases hx
+  | cons y ys ih =>
+      simp only [List.mem_cons] at hx
+      simp only [List.sum_cons]
+      rcases hx with rfl | hx
+      · omega
+      · have := ih hx; omega
+
+/-- **(R1)'s content, proved by the SAME well-founded recursion `recCount`
+    itself uses**: a node's size never exceeds any ancestor's — the
+    `List.replicate`-based `⊑` this licenses (`countRecordOf_faithful`
+    below) is where it cashes out. -/
+theorem recCount_mono (m : Node Payload) :
+    ∀ n : Node Payload, m ∈ depclosure n → recCount m ≤ recCount n
+  | .ground i s, hmem => by
       simp only [depclosure, List.mem_cons, List.not_mem_nil, or_false] at hmem
       subst hmem
-      exact ext_refl _
-  | derived i payload inputs =>
-      have hn : demoRecordOf e (Node.derived i payload inputs) = [e] := by simp [demoRecordOf]
-      rw [hn]
-      rcases demoRecordOf_mem e m with hm | hm
-      · rw [hm]; exact ⟨[e], by simp⟩
-      · rw [hm]; exact ext_refl _
+      exact Nat.le_refl _
+  | .derived i payload inputs, hmem => by
+      simp only [depclosure, List.mem_cons] at hmem
+      rcases hmem with rfl | hmem
+      · exact Nat.le_refl _
+      · simp only [List.mem_flatMap] at hmem
+        obtain ⟨q, hq, hmq⟩ := hmem
+        have h1 : recCount m ≤ recCount q.1 := recCount_mono m q.1 hmq
+        have h2 : recCount q.1 ≤ (inputs.attach.map (fun p => recCount p.1)).sum :=
+          le_sum_of_mem (List.mem_map_of_mem hq)
+        simp only [recCount]
+        omega
+termination_by n => sizeOf n
+decreasing_by
+  simp_wf
+  have := List.sizeOf_lt_of_mem q.2
+  omega
 
-/-- (R2) for `demoRecordOf`: seed exactly when flagged `true`, by
-    definition; the derived case's `[e] ≠ []` closes the other direction. -/
-theorem demoRecordOf_seedBoundary (e : Entry) :
-    ∀ m : Node Unit, m.seed? = true ↔ demoRecordOf e m = [] := by
-  intro m
-  cases m with
-  | ground i s => cases s <;> simp [demoRecordOf, Node.seed?]
-  | derived i p inputs => simp [demoRecordOf, Node.seed?]
+/-- The realization itself: `recCount` entries of one given `e`. Parametric
+    in a single `Entry` — `Core.Model.Entry` carries no inhabitedness
+    axiom, so this (like every entry-parametric witness in the corpus,
+    e.g. `Witness.Cells.inclusionClaim`) takes one as a hypothesis rather
+    than manufacturing it. -/
+def countRecordOf (e : Entry) (m : Node Payload) : Record := List.replicate (recCount m) e
+
+theorem countRecordOf_seedBoundary (e : Entry) (m : Node Payload) :
+    m.seed? = true ↔ countRecordOf e m = [] := by
+  rw [← recCount_eq_zero_iff_seed, countRecordOf, List.replicate_eq_nil_iff]
+
+theorem countRecordOf_faithful (e : Entry) :
+    ∀ m n : Node Payload, m ∈ depclosure n → countRecordOf e m ⊑ countRecordOf e n := by
+  intro m n hmem
+  obtain ⟨k, hk⟩ := Nat.le.dest (recCount_mono m n hmem)
+  refine ⟨List.replicate k e, ?_⟩
+  show countRecordOf e n = countRecordOf e m ++ List.replicate k e
+  simp only [countRecordOf, ← hk]
+  induction recCount m with
+  | zero => simp
+  | succ j ih => rw [Nat.succ_add, List.replicate_succ, List.replicate_succ, ih, List.cons_append]
 
 /-- **Non-vacuity of `RecordRealization` itself**: R1 and R2 are jointly
-    satisfiable, not merely individually statable. Parametric in one
-    `Entry` — `Core.Model.Entry` carries no inhabitedness axiom, so this
-    (like every entry-parametric witness in the corpus, e.g.
-    `Witness.Cells.inclusionClaim`) takes one as a hypothesis rather than
-    manufacturing it. -/
-def demoRealization (e : Entry) : RecordRealization Unit where
-  recordOf := demoRecordOf e
-  faithful := demoRecordOf_faithful e
-  seedBoundary := demoRecordOf_seedBoundary e
+    satisfiable, not merely individually statable, and — per the finding
+    above — this is the actual shape any total witness must take. -/
+def countRealization (e : Entry) : RecordRealization Payload where
+  recordOf := countRecordOf e
+  faithful := countRecordOf_faithful e
+  seedBoundary := countRecordOf_seedBoundary e
 
 end RecordRealizationNonvacuity
 
@@ -424,9 +496,10 @@ hypothesis in this package can make it align" is now specified precisely:
 `ρ.faithful` is literally "`depclosure`-membership transports to `⊑`."
 `growth_alignment` below is the `Monotone` consequence of R1, stated
 directly in `depclosure`'s own vocabulary rather than a bare `⊑` hypothesis.
-Whether any GIVEN domain's realization exists is instance work
-(`Instance.Identity`/`Instance.SuretyLite` thread `ρ` unconstructed, same
-discipline as `hfiber`) — not further mathematics owed by the neutral core. -/
+Both instances now supply a concrete `ρ` (`countRealization`, via
+`Instance.Identity.identityRealization`/`Instance.SuretyLite.
+suretyRealization`), so `growth_alignment` already applies to them directly
+— nothing further owed by the neutral core. -/
 
 /-- **Growth alignment.** Given a realization `ρ` and `φ_bind` `Monotone`:
     `φ_bind` holding at `m`'s record transports to any `n` with `m` in its
@@ -505,19 +578,19 @@ theorem wNode_total : Total wGate wTagOf wClosureOk wPolicy wSnap wNode := by
     rather than re-extracted, so this file adds no new consumption site for
     `Context.nontrivial` (`Core.lean`'s three-site accounting stays
     accurate) — over a genuine `Total` closure (`wNode_total`) and a genuine
-    `RecordRealization` (`demoRealization e`, parametric in one `Entry`),
+    `RecordRealization` (`countRealization e`, parametric in one `Entry`),
     with every conjunct of the restated `ceiling` firing on real data. -/
 theorem ceiling_nonvacuous (e : Entry) :
     ∃ (φ_bind : Claim), ¬ Determined φ_bind ∧
       (¬ ∃ S : Scheme idCommitment φ_bind, SnapshotSound S) ∧
       (∀ S : Scheme idCommitment φ_bind, ∀ m ∈ depclosure wNode, m.seed? = true →
-        ¬ Discharges idCommitment φ_bind (demoRealization e) S m ∧
+        ¬ Discharges idCommitment φ_bind (countRealization e) S m ∧
           m ∈ trustSurface wGate wTagOf wClosureOk wPolicy wSnap wNode) ∧
       trustSurface wGate wTagOf wClosureOk wPolicy wSnap wNode =
         (depclosure wNode).filter (fun m => m.seed?) := by
   obtain ⟨φ_bind, hnd⟩ := exists_undetermined_claim
   exact ⟨φ_bind, hnd, binding_admits_no_scheme φ_bind hnd idCommitment,
-    seeds_undischargeable_and_residual idCommitment φ_bind hnd (demoRealization e) wGate wTagOf
+    seeds_undischargeable_and_residual idCommitment φ_bind hnd (countRealization e) wGate wTagOf
       wClosureOk wPolicy wSnap wNode,
     (ceiling_minimality wGate wTagOf wClosureOk wPolicy wSnap wNode).mp wNode_total⟩
 

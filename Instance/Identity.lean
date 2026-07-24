@@ -188,29 +188,57 @@ theorem principal_trust_bounded (P : Policy Signer) (σ : Snapshot Signer Princi
   rw [hchainNodes, hseed]
   rfl
 
+/-- **`identityRealization`** — the identity domain's `RecordRealization`,
+    CONSTRUCTED, not assumed: `Ceiling.countRealization`, the general
+    solution to R1+R2 (`Ceiling.Junction`'s finding: a per-`KeyEvent`
+    `encode` cannot satisfy R1 once `Node (KeyEvent PrincipalId)` admits a
+    `.derived` node with two non-seed inputs, which the type permits
+    regardless of what `chain` itself ever builds). Takes one `Entry` —
+    `Core.Model.Entry` carries no inhabitedness axiom. -/
+def identityRealization (e0 : Entry) : Ceiling.RecordRealization (KeyEvent PrincipalId) :=
+  Ceiling.countRealization e0
+
+omit [DecidableEq PrincipalId] in
+/-- **The chain-specific check.** `recCount` on a `chain` is exactly the
+    event count — verified against `depclosure_chain`'s own
+    characterization of the closure (`chainNodes evs`, all non-seed,
+    `chainNodes_not_seed`, plus the one genesis seed) rather than trusted
+    from `Ceiling.recCount_mono`'s generic bound alone. R2's forward
+    direction is immediate at `genesisSeed` (`Node.ground 0 true`); both
+    directions are already discharged, unconditionally, by
+    `Ceiling.countRecordOf_seedBoundary` — nothing instance-specific is
+    owed there. -/
+theorem identity_recCount_chain (evs : List (Nat × KeyEvent PrincipalId)) :
+    Ceiling.recCount (chain evs) = evs.length := by
+  induction evs with
+  | nil => simp [chain, genesisSeed, Ceiling.recCount]
+  | cons hd tl ih =>
+      obtain ⟨i, ev⟩ := hd
+      show Ceiling.recCount (Node.derived i ev [chain tl]) = tl.length + 1
+      simp only [Ceiling.recCount, List.attach_cons, List.map_cons, List.sum_cons,
+        List.attach_nil, List.map_nil, List.sum_nil, ih]
+      omega
+
 /-- **`identity_ceiling`** — the paper's "identity is at the ceiling"
     corollary: one application of `Ceiling.ceiling` at this domain, under
-    the domain's own `hfiber`. `ρ : Ceiling.RecordRealization (KeyEvent
-    PrincipalId)` is threaded as an explicit, UNCONSTRUCTED hypothesis — the
-    identity domain's real record is the eml chain via the landed bridge
-    (`.ledger/trichotomy/STATEMENT-rc-v0.7.md` §1.6), which lives outside
-    this repository's TCB (cited, never vendored, per `AGENTS.md`), so R1/R2
-    are asserted here exactly like `hfiber`, never discharged. The second
-    conjunct is L2 (`Ceiling.seeds_undischargeable_and_residual`): for every
-    scheme `S : Scheme Γ (bindingClaim BindsTo)`, the genesis seed is both
-    undischargeable by `S` and resident in the trust surface regardless. -/
+    the domain's own `hfiber`, over the CONSTRUCTED `identityRealization`.
+    The second conjunct is L2 (`Ceiling.seeds_undischargeable_and_residual`):
+    for every scheme `S : Scheme Γ (bindingClaim BindsTo)`, the genesis seed
+    is both undischargeable by `S` and resident in the trust surface
+    regardless. -/
 theorem identity_ceiling {Comm : Type} (Γ : Commitment Comm)
     (BindsTo : Record → Context → Prop) (hfiber : ¬ Determined (bindingClaim BindsTo))
-    (ρ : Ceiling.RecordRealization (KeyEvent PrincipalId))
+    (e0 : Entry)
     (P : Policy Signer) (σ : Snapshot Signer PrincipalId) (a : Node (KeyEvent PrincipalId)) :
     (¬ ∃ S : Scheme Γ (bindingClaim BindsTo), SnapshotSound S) ∧
     (∀ S : Scheme Γ (bindingClaim BindsTo), ∀ m ∈ depclosure a, m.seed? = true →
-      ¬ Ceiling.Discharges Γ (bindingClaim BindsTo) ρ S m ∧ m ∈ trustSurfaceI P σ a) ∧
+      ¬ Ceiling.Discharges Γ (bindingClaim BindsTo) (identityRealization e0) S m ∧
+        m ∈ trustSurfaceI P σ a) ∧
     (TotalI P σ a → trustSurfaceI P σ a = (depclosure a).filter (fun m => m.seed?)) ∧
     (TotalI P σ a → ∀ m ∈ depclosure a, m.seed? = false →
       (∃ e ∈ basisI P σ a, ∃ s t, e = .corroboration s t) ∧
       (∃ e ∈ basisI P σ a, ∃ s t tag, e = .vouch s t tag)) :=
-  Ceiling.ceiling Γ (bindingClaim BindsTo) hfiber ρ gate tagOf closureOk P σ a
+  Ceiling.ceiling Γ (bindingClaim BindsTo) hfiber (identityRealization e0) gate tagOf closureOk P σ a
 
 /-! ## The four non-vacuity witnesses (concrete `Unit` types) -/
 
