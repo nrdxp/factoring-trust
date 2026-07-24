@@ -1,16 +1,9 @@
-# Introduction
+# Introduction {#sec-introduction}
 
 **Trust is the complement of verifiability — and above a floor, that
 complement factors: verification fails for exactly three reasons, each
 failure names whom you must trust and what the cure costs, and the
 "exactly" is a machine-checked biconditional, not a taxonomy.**
-
-Every section of this paper serves that one sentence. The motivation
-below shows the complement is unfactored in the field it appears in.
-@sec-theorem factors it. @sec-instances shows the factors bind above the
-floor, on real systems, and price differently depending on which one
-failed. @sec-related-work shows every factor was already known, and that
-the factoring was not.
 
 ## The asymmetry that motivates the question
 
@@ -31,11 +24,11 @@ explicit about it — "we only model the parts of the protocol that we
 need to trust for the purpose of verifiability; all the remaining parts
 of the system will be controlled by the adversarial environment"
 [@kremer-ryan-smyth-2010] — and the inference from *not verifiable* to
-*therefore trusted* is their own, not an artifact we are imposing on
-them. The pattern recurs at the level of individual papers: Dougherty,
+*therefore trusted* is their own, not one imposed on them from outside.
+The pattern recurs at the level of individual papers: Dougherty,
 Guttman, and Ramsdell build their entire technical contribution around
-computing *minimal* executions, and never once turn that minimality
-machinery on the trust assumptions their own analysis holds fixed
+computing *minimal* executions, and never turn that minimality machinery
+on the trust assumptions their own analysis holds fixed
 [@dougherty-guttman-ramsdell-2018]. The field formalizes *establish* and
 enumerates *assume* — consistently, across subfields that do not cite
 one another.
@@ -52,7 +45,7 @@ a leap "enabled by suspension — across the gorge of the unknowable,"
 where suspension "brackets out uncertainty and ignorance" as one
 undifferentiated act [@mollering-2001].
 
-But left unanswered: *why*? If the residue is structureless, "minimize
+Left unanswered: *why*? If the residue is structureless, "minimize
 trust" is a slogan — a direction with no metric. If the residue has
 causes, each cause carries its own impossibility grade, its own minimal
 repair, and its own price, and "minimize trust" becomes an optimization
@@ -76,21 +69,23 @@ reasons:
 Each axis is inherited, and credited as such. Archival diplomatics
 hypothesized the opposite of the determination axis and reported it
 refuted, across twenty-two case studies [@interpares-2002]; that finding
-has already crossed into computer science once
-[@factor-et-al-2009]. Synthetic topology owns the algebra of the other
-two axes: certifiable, upward-closed properties form the
-*observables frame* — semi-decidable and stable-under-extension as one
-bundled notion — decades before this paper [@smyth-1983; @abramsky-1987;
-@vickers-1989; @escardo-2004]. CALM owns the coordination-freedom
-reading of monotonicity, as a biconditional over increasingly general
-specifications [@ameloot-neven-vandenbussche-2013; @hellerstein-2026].
+has already crossed into computer science once [@factor-et-al-2009].
+Synthetic topology owns the algebra of the other two, taken together:
+semi-decidable, upward-closed properties are the *observables* of that
+tradition — certifiability and stability-under-extension bundled into
+one notion, decades before this paper [@smyth-1983; @abramsky-1987;
+@vickers-1989], in the effective, computably-enumerable-join form this
+paper actually instantiates [@escardo-2004]. CALM owns the
+coordination-freedom reading of monotonicity, itself a biconditional,
+refereed for relational transducers and since generalized
+[@ameloot-neven-vandenbussche-2013; @hellerstein-2026].
 
 The composition is ours. No source we reached factors the residue *by
 cause*, pairs these axes as a joint characterization of *trust*, or
-states the biconditional form. And "exactly three" is not asserted as an
-empirical count: it is the $\Leftarrow$ direction of a machine-checked
-if-and-only-if — satisfy all three conditions, and the evidence scheme
-is *constructed*, not merely presumed to exist.
+states the biconditional form. And "exactly three" is not an empirical
+count: it is the $\Leftarrow$ direction of a machine-checked
+if-and-only-if — satisfy all three conditions and the evidence scheme is
+*constructed*, not merely presumed to exist.
 
 ## The payoff
 
@@ -98,47 +93,66 @@ The failed axis identifies the trust anchor. A determination failure
 names the witness of history — the signer, the attestor — who must be
 trusted because the record alone cannot settle the question. A
 certifiability failure names the judgment that substitutes for the
-impossible check — a voucher. A monotonicity failure names the holder of
+impossible check: a voucher. A monotonicity failure names the holder of
 liveness on the present — a witness quorum, a gossip network. The
-framework thereby *derives*, from first principles, exactly the anchor
-inventory practice already converged on: certificate authorities,
-vouches, transparency-log witnesses. @sec-instances works one case in
-full — a split-view (equivocation) attack against an append-only log —
-and shows the framework predicting the deployed defense in detail, not
-merely naming a category after the fact.
+framework thereby *derives*, from the shape of the failure alone,
+exactly the anchor inventory practice already converged on: certificate
+authorities, vouches, transparency-log witnesses. @sec-instances works
+one case in full — a split-view (equivocation) attack against an
+append-only log — and shows the framework predicting the deployed
+defense in detail, rather than naming a category after the fact.
 
 Trust, on this account, is not eliminated. It is located, typed, priced,
 and bounded. A system whose trusted remainder equals its named genesis
 base sits *at* the verification ceiling — provably, not by inspection.
 
-This general form is stated as it is now — over any well-founded
-justification structure, not just append-only records — because of
-where the question first came from: it was originally asked of a single
-domain, source-build integrity, under the name **surety ceiling** — how
-small can a build's trusted remainder provably be? Recognizing that the
-same gate, completeness, and minimality argument holds with the record
-structure itself abstracted away is what turns a build-specific result
-into the general companion theorem of @sec-instances; that section
-names the build domain's own specialization by its original name, and
-this paper's follow-up work stays there.
+## Contributions
 
-## Roadmap
+Every result below is machine-checked in Lean 4 and named at the point
+it is stated; the development accompanies this paper as anonymized
+supplementary material. There is no separate mechanization section
+because there is nothing to segregate.
 
-@sec-model gives the model: records, contexts, claims, and the offline
-verifier, whose type *is* the offline property it checks. @sec-theorem
-states the one theorem, `TT-snap`/`TT-end`, once, across a tower of
-verifier strata; two prior named results (`EON`, `EALM`) fall out as
-corollaries. @sec-factorization gives the factorization display that
-makes the three-axis count legible, and identifies its two factors with
-a forty-year-old algebra from synthetic topology. @sec-floor states the
-floor beneath which the trichotomy does not apply. @sec-cell-table
-tabulates all eight combinations of the three axes, two of which are
-empty *by theorem*. @sec-cures presents repair as movement along four
-coordinates, with a one-line explanation for why no accounting of
-"total trust spent" can ever balance. @sec-instances works the framework
-on two independent domains, demonstrating that the factoring — not one
-instance of it — is the contribution. @sec-scope-objections states what
-this result does not claim. @sec-related-work closes the case for
-novelty, cluster by cluster, ending on a single table: every ingredient
-of this result already has a home in the literature; the composition has
-none we could find.
+**C1. The trichotomy, as a biconditional, in both directions**
+(@sec-theorem). $\TTsnap$ and $\TTend$ characterize snapshot- and
+enduring-sound evidence at the oracle and computable strata
+(`trichotomy_ALL_iff`, `trichotomy_snap_COMP_iff`, `comp_COMP_iff`); the
+polynomial stratum is an open conjecture and is stated as one. Both
+legs are proved, which is what makes "exactly three" a fact about the
+conditions rather than about the cases we thought to check.
+
+**C2. The determination axis and its gate** (@sec-model, @sec-theorem).
+Determination is formalized as a condition on a claim, and its failure
+is proved fatal: a claim not determined by the record admits no scheme,
+at any stratum, of any soundness flavor (`determination_gate`). The axis
+is non-vacuous unconditionally — undetermined claims are proved to
+exist, not assumed (`exists_undetermined_claim`).
+
+**C3. The factorization display** (@sec-factorization). At the
+computable stratum and enduring flavor, the claims admitting a scheme
+are exactly the effective observables frame pulled back along the
+projection that forgets context (`factorization_COMP`). Separately, and
+as this paper's own delta inside that inherited algebra, the
+snapshot/enduring split *factors* the tradition's bundled "observable"
+into certifiability and monotonicity as two independent axes.
+
+**C4. The verification ceiling** (@sec-instances). A companion theorem,
+not a corollary: it shares the trichotomy's gate, and carries its own
+fail-closed accounting and minimality machinery over any well-founded
+justification structure (`Ceiling.ceiling`). It is instantiated twice
+over one neutral core — a hash-chain identity system
+(`principal_trust_bounded`) and a light source-integrity system
+(`surety_ceiling`) — chosen to exercise complementary failure cells, so
+that generality is exhibited rather than asserted.
+
+**C5. The cell table** (@sec-cell-table). Eight nominal combinations of
+the three axes; two of them empty *by theorem* rather than for want of a
+witness (`undetermined_cell_empty`); six inhabited, one verifiable and
+five distinct flavors of trust, each deriving its own anchor and its own
+minimal cure.
+
+The remaining sections carry the scaffolding these five stand on:
+@sec-model fixes the vocabulary, @sec-floor states the two residuals the
+trichotomy sits above, @sec-cures prices repair as movement along four
+coordinates, @sec-scope-objections states what is not claimed, and
+@sec-related-work gives every ingredient its home in the literature.
