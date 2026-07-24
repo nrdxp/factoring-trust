@@ -158,7 +158,11 @@ jointly witness is *axis coverage* — T1 with T3, and T1 with T2 — which
 is the claim @sec-cell-table's table makes and the only one made here.
 
 Neither instance imports a computability library — the ceiling's content
-is accounting and impossibility, and neither needs one.
+is accounting and impossibility, and neither needs one. Across every
+declaration in the ceiling's own development, the axioms used are Lean's
+`propext` and `Quot.sound`, together with the model's declared opacities
+wherever a statement reaches into the scheme world; choice is not among
+them.
 
 **Both instances are non-vacuous, and the mechanization says how.** Each
 carries four concrete witnesses over finite types — an artifact that
