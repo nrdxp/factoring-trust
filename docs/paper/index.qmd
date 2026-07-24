@@ -39,7 +39,7 @@ date: 2026-07-24
 ## Working draft
 
 This paper is under active development and is **not** the frozen artifact.
-The `rc1` tag freezes the Lean mechanization only; this prose has not been
+The Lean mechanization accompanying it is frozen; this prose has not been
 reviewed or venue-gated and may change without notice.
 :::
 
