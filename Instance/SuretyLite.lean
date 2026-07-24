@@ -89,24 +89,31 @@ never proved here, never a fresh axiom. -/
 abbrev genesisSeed : Node (LitePayload ClassName) := Node.ground 0 true
 
 /-- **`surety_ceiling`** — the surety ceiling: one application of
-    `Ceiling.ceiling` at this domain, under the domain's own `hfiber`. Cell
-    coverage: the verifiable case (via `Total`/`trustSurface`) + T1
-    (genuineness = ¬D, this theorem's gate) + T2 (the forced generator's
-    degeneracy = ¬C, cited from `Witness.Generator`, never restated here).
-    The second conjunct is L2 (`Ceiling.seeds_undischargeable_and_residual`):
-    for every scheme `S : Scheme Γ (bindingClaim Genuine)`, the toolchain
-    genesis seed is both undischargeable by `S` and resident regardless. -/
+    `Ceiling.ceiling` at this domain, under the domain's own `hfiber`.
+    `ρ : Ceiling.RecordRealization (LitePayload ClassName)` is threaded as an
+    explicit, UNCONSTRUCTED hypothesis — the surety domain's real record is
+    the atom DAG's committed inputs and build plan (§1.6's instance), which
+    lives outside this repository's TCB (cited, never vendored, per
+    `AGENTS.md`), so R1/R2 are asserted here exactly like `hfiber`, never
+    discharged. Cell coverage: the verifiable case (via `Total`/
+    `trustSurface`) + T1 (genuineness = ¬D, this theorem's gate) + T2 (the
+    forced generator's degeneracy = ¬C, cited from `Witness.Generator`,
+    never restated here). The second conjunct is L2 (`Ceiling.
+    seeds_undischargeable_and_residual`): for every scheme `S : Scheme Γ
+    (bindingClaim Genuine)`, the toolchain genesis seed is both
+    undischargeable by `S` and resident regardless. -/
 theorem surety_ceiling {Comm : Type} (Γ : Commitment Comm)
     (Genuine : Record → Context → Prop) (hfiber : ¬ Determined (bindingClaim Genuine))
+    (ρ : Ceiling.RecordRealization (LitePayload ClassName))
     (P : Policy Signer) (σ : Snapshot Signer ClassName) (a : Node (LitePayload ClassName)) :
     (¬ ∃ S : Scheme Γ (bindingClaim Genuine), SnapshotSound S) ∧
     (∀ S : Scheme Γ (bindingClaim Genuine), ∀ m ∈ depclosure a, m.seed? = true →
-      ¬ Ceiling.Discharges Γ (bindingClaim Genuine) S m ∧ m ∈ trustSurfaceI P σ a) ∧
+      ¬ Ceiling.Discharges Γ (bindingClaim Genuine) ρ S m ∧ m ∈ trustSurfaceI P σ a) ∧
     (TotalI P σ a → trustSurfaceI P σ a = (depclosure a).filter (fun m => m.seed?)) ∧
     (TotalI P σ a → ∀ m ∈ depclosure a, m.seed? = false →
       (∃ e ∈ basisI P σ a, ∃ s t, e = .corroboration s t) ∧
       (∃ e ∈ basisI P σ a, ∃ s t tag, e = .vouch s t tag)) :=
-  Ceiling.ceiling Γ (bindingClaim Genuine) hfiber gate tagOf closureOk P σ a
+  Ceiling.ceiling Γ (bindingClaim Genuine) hfiber ρ gate tagOf closureOk P σ a
 
 /-! ## The four non-vacuity witnesses (concrete `Unit` types) -/
 

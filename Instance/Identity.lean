@@ -190,21 +190,27 @@ theorem principal_trust_bounded (P : Policy Signer) (σ : Snapshot Signer Princi
 
 /-- **`identity_ceiling`** — the paper's "identity is at the ceiling"
     corollary: one application of `Ceiling.ceiling` at this domain, under
-    the domain's own `hfiber`. The second conjunct is L2
-    (`Ceiling.seeds_undischargeable_and_residual`): for every scheme
-    `S : Scheme Γ (bindingClaim BindsTo)`, the genesis seed is both
+    the domain's own `hfiber`. `ρ : Ceiling.RecordRealization (KeyEvent
+    PrincipalId)` is threaded as an explicit, UNCONSTRUCTED hypothesis — the
+    identity domain's real record is the eml chain via the landed bridge
+    (`.ledger/trichotomy/STATEMENT-rc-v0.7.md` §1.6), which lives outside
+    this repository's TCB (cited, never vendored, per `AGENTS.md`), so R1/R2
+    are asserted here exactly like `hfiber`, never discharged. The second
+    conjunct is L2 (`Ceiling.seeds_undischargeable_and_residual`): for every
+    scheme `S : Scheme Γ (bindingClaim BindsTo)`, the genesis seed is both
     undischargeable by `S` and resident in the trust surface regardless. -/
 theorem identity_ceiling {Comm : Type} (Γ : Commitment Comm)
     (BindsTo : Record → Context → Prop) (hfiber : ¬ Determined (bindingClaim BindsTo))
+    (ρ : Ceiling.RecordRealization (KeyEvent PrincipalId))
     (P : Policy Signer) (σ : Snapshot Signer PrincipalId) (a : Node (KeyEvent PrincipalId)) :
     (¬ ∃ S : Scheme Γ (bindingClaim BindsTo), SnapshotSound S) ∧
     (∀ S : Scheme Γ (bindingClaim BindsTo), ∀ m ∈ depclosure a, m.seed? = true →
-      ¬ Ceiling.Discharges Γ (bindingClaim BindsTo) S m ∧ m ∈ trustSurfaceI P σ a) ∧
+      ¬ Ceiling.Discharges Γ (bindingClaim BindsTo) ρ S m ∧ m ∈ trustSurfaceI P σ a) ∧
     (TotalI P σ a → trustSurfaceI P σ a = (depclosure a).filter (fun m => m.seed?)) ∧
     (TotalI P σ a → ∀ m ∈ depclosure a, m.seed? = false →
       (∃ e ∈ basisI P σ a, ∃ s t, e = .corroboration s t) ∧
       (∃ e ∈ basisI P σ a, ∃ s t tag, e = .vouch s t tag)) :=
-  Ceiling.ceiling Γ (bindingClaim BindsTo) hfiber gate tagOf closureOk P σ a
+  Ceiling.ceiling Γ (bindingClaim BindsTo) hfiber ρ gate tagOf closureOk P σ a
 
 /-! ## The four non-vacuity witnesses (concrete `Unit` types) -/
 
