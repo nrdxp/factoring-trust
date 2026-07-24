@@ -8,8 +8,9 @@ import Transport
 The generality witness: a cryptographic identity system whose record is a
 hash chain of key events and whose genesis is a single binding commitment.
 Instantiates `Ceiling`'s neutral verification ceiling at this domain and
-exercises the T1 (verifiable) and T3 (split-view / freshness) cells; its
-companion `Instance.SuretyLite` exercises T1 and T2.
+exercises the verifiable case, T1 (determination-failure, via the gate) and
+T3 (monotonicity, split-view / freshness); its companion
+`Instance.SuretyLite` exercises the verifiable case, T1, and T2.
 
 No Mathlib, no `Effective` — a TCB line the paper states: neither of the
 generality witnesses needs a computability library.

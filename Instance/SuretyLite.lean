@@ -4,8 +4,9 @@ import Ceiling
 # Instance.SuretyLite — the surety ceiling, a deliberately light second witness
 
 The complementary generality witness to `Instance.Identity`: an abstract,
-vouch-shaped source-establishment predicate, exercising T1 (verifiable)
-alongside T2 (certifiability-failure), the complement of identity's T1+T3.
+vouch-shaped source-establishment predicate, exercising the verifiable case
+and T1 (determination-failure, via the gate) alongside T2
+(certifiability-failure), the complement of identity's T1+T3.
 
 `SuretyLite`'s "proper name," wherever the general verification ceiling is
 instantiated to the build domain, is the **surety ceiling** — this instance
