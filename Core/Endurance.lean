@@ -55,7 +55,7 @@ theorem endurance_construction {Comm : Type} (Γ : Commitment Comm) (φ : Claim)
     nor `hnp` is needed for this direction — they are carried only so the signature
     matches `endurance_iff_monotone`'s other leg. -/
 theorem endurance_forces_monotone {Comm : Type} {Γ : Commitment Comm} {φ : Claim}
-    (hd : Determined φ) (hnp : NPMembership (determinedProj φ hd)) {S : Scheme Γ φ}
+    (hd : Determined φ) (_hnp : NPMembership (determinedProj φ hd)) {S : Scheme Γ φ}
     (hsound : EnduringSound S) : Monotone φ := by
   intro w w' ξ hφ hww'
   obtain ⟨c, hc⟩ := S.completeness w ξ hφ
