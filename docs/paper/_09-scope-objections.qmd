@@ -1,10 +1,9 @@
 # Scope and Objections {#sec-scope-objections}
 
-Three scope concessions and two challenges to the result's adequacy,
-under the labels these objections were first posed with. The missing one
-— O2, whether the framework *derives* practice's trust anchors or merely
-relabels them — is answered as a result rather than defended as an
-objection (@sec-introduction, @sec-cell-table).
+Three scope concessions and two challenges to the result's adequacy. The
+missing one — O2, whether the framework *derives* practice's trust
+anchors or merely relabels them — is answered as a result rather than
+defended as an objection (@sec-introduction, @sec-cell-table).
 
 **Locus, not degree (O1).** This paper formalizes *where* verification
 fails and *why*, in three exhaustive cases. It does not formalize how
