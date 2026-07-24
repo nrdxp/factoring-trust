@@ -18,7 +18,10 @@ Repairing a verification failure is movement along the four true
 coordinates:
 
 - **Transport** moves $R$ — re-expressing a claim over a richer or
-  different alphabet.
+  different alphabet. This one is mechanized rather than argued: the
+  axes and the theorem restate over an arbitrary entry alphabet, and the
+  transported statements specialize back to the original model
+  (`transport_applies_to_eonEalm`).
 - **Upgrade** moves $Q$ — strengthening the verifier or the commitment
   (for instance, adding a component whose computability was previously
   missing).

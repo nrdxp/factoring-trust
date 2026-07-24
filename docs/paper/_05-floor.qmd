@@ -13,14 +13,17 @@ a claim about a record and so is not a candidate for the trichotomy to
 classify. Its admission test is marginal necessity: a hardness
 assumption belongs to the floor exactly when removing it removes the
 commitment's binding property entirely, with no substitute available
-inside the model.
+inside the model. The mechanization keeps this boundary visible — the
+commitment's binding and verification conditions are hypotheses of the
+`Commitment` structure, supplied by the instantiator, never derived.
 
 **The fidelity residual** (on $V$'s side). A verifier is, physically, a
 running program, and no record-side argument can establish that the
-program executing right now is the one that was specified — this is
-Thompson's construction, made a constructive counterexample rather than
-a rhetorical point [@thompson-1984]: a compiler (or verifier) can be
-made to insert behavior that no inspection of its source recovers. Its
+program executing right now is the one that was specified. Thompson's
+construction is exactly this residual, and it was constructive from the
+start rather than rhetorical [@thompson-1984]: a compiler — or a
+verifier — can be made to insert behavior that no inspection of its
+source recovers. Its
 admission test is a diagonalization argument: for any purely
 record-side verification of "this execution is faithful," a
 faithfulness-violating execution can be constructed that the
