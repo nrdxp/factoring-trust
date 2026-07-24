@@ -1,0 +1,84 @@
+# The Trichotomy Theorem {#sec-theorem}
+
+One theorem, stated once, across the tower of strata from @sec-model.
+Two previously separate results — `EON` and `EALM` — are corollaries of
+it, not independent theorems requiring their own proofs.
+
+Fix an entry alphabet $R$, a commitment $\Gamma$ whose components sit at
+stratum $Q$, and a claim $\Claim$ over $R$. The statements below hold
+above the verification floor (@sec-floor).
+
+::: {.theorem}
+**`TT-snap`$(Q)$.** $\Claim$ admits a snapshot-sound scheme with a
+$Q$-verifier **iff** $\Det(\Claim)$ holds and $\phihat$ is $Q$-certifiable.
+:::
+
+::: {.theorem}
+**`TT-end`$(Q)$.** $\Claim$ admits an enduring-sound scheme with a
+$Q$-verifier **iff** $\Det(\Claim)$ holds, $\phihat$ is $Q$-certifiable,
+and $\Mono(\Claim)$ holds.
+:::
+
+`TT-end` is `TT-snap` plus monotonicity — the only new demand an
+enduring guarantee places on a claim already checkable at a snapshot.
+Both directions of both biconditionals are proved, not merely the
+direction that is intuitive: the $\Leftarrow$ leg *constructs* an
+evidence scheme from the three conditions, which is what licenses
+calling the count of conditions exhaustive (@sec-factorization) rather
+than a taxonomy asserted from the outside.
+
+## Per-stratum status
+
+The tower is graded honestly. Some cells are proved at every stratum
+this paper claims; two are open holes still being closed by the
+mechanization this paper's Lean artifact is drawn from; the polynomial
+stratum is conjectural throughout.
+
+| flavor $\times$ stratum | verifier condition | status |
+|---|---|---|
+| snapshot $\times$ oracle | none | proved |
+| enduring $\times$ oracle | none | proved (unfibered packaging pending — TODO) |
+| snapshot $\times$ computable | commitment components computable | TODO — pending mechanization |
+| enduring $\times$ computable | + verification-certificate predicate computable | proved |
+| snapshot/enduring $\times$ polynomial | polynomial time/size | open (conjectured) |
+
+The two `TODO` cells are small, mechanical gaps against an already-proved
+neighbor, not open mathematical questions: the oracle-stratum enduring
+result currently exists only as an assembly of four separate lemmas
+rather than one packaged theorem, and the computable-stratum snapshot
+result is an unmechanized port of a shape already proved one stratum up.
+Both are expected to close before this paper's next revision; neither
+bears on the truth of the theorem as stated, only on whether a reader
+can point at a single Lean declaration for it. The polynomial stratum is
+different in kind: it is stated as a conjecture because the corresponding
+theorems have not been proved at all, and the paper says so rather than
+implying three proved strata where one is open.
+
+## Corollaries
+
+**The determination gate.** Contrapositive of `TT-snap`$(Q)$'s first
+conjunct: a claim that is not record-determined admits no scheme, at any
+stratum, of any soundness flavor. This is the trichotomy's most basic
+consequence and the reason two cells of the cell table (@sec-cell-table)
+are empty by theorem rather than by omission.
+
+**`EALM`.** `TT-end`$(\oracle)$, presented fibered — the determination
+and certifiability conjuncts supplied as hypotheses rather than stated
+independently. No new content beyond the one theorem above; only a
+different packaging, oriented toward a reader who already has a
+determined, certifiable claim in hand and wants to know exactly what
+monotonicity buys.
+
+**`EON`.** The contrapositive of `TT-end`$(Q)$'s forward direction, at a
+claim known to be non-monotone: no enduring scheme exists at any
+stratum. Where `EALM` answers "what do I need, additionally, for
+endurance," `EON` answers "what do I lose, permanently, once endurance
+is known to fail."
+
+A companion theorem — the **verification ceiling** — generalizes the
+gate above from append-only records specifically to any well-founded
+justification structure. It is introduced in @sec-instances, where it is
+instantiated twice, and its relationship to the theorem above is stated
+precisely there: it shares the gate, but its completeness and minimality
+content is its own machinery, over a disjoint vocabulary, and is not a
+corollary of `TT-snap`/`TT-end` in the sense the paragraphs above are.

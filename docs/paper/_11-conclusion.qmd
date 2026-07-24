@@ -1,0 +1,25 @@
+# Conclusion
+
+Trust, in the setting this paper formalizes, is not a residual category
+for whatever verification happens not to reach. Above a floor of two
+named physical residuals, it factors into exactly three causes —
+determination, certifiability, monotonicity — each proved, not
+postulated, to be exhaustive; each naming a specific anchor a verifier
+must rely on; each priced by a distinct, named repair. Two axes of the
+three live inside an algebra synthetic topology has studied for four
+decades; the third is tested, independently, by archival science's own
+empirical methods. None of the three subfields this paper draws its
+axes from composes them, and none states the biconditional this paper's
+Lean artifact proves.
+
+The result is stated once, at the strata where it is proved, honestly
+marked where it is not yet proved, and demonstrated on two independent
+domains rather than one — because a claim of generality that rests on a
+single instance is a special case wearing a general theorem's clothes,
+and this paper does not want to be that. What remains open — the
+polynomial stratum, the source-integrity instantiation's frontier
+tightness results, the entailment calculus this paper deliberately keeps
+parked — is stated as open, not smoothed over, in keeping with the
+posture the whole paper tries to hold: minimize trust is not a slogan
+here. It is a theorem's exact accounting of where verification ends and
+who is asked to stand in for it.

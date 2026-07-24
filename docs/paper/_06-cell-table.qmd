@@ -1,0 +1,39 @@
+# The Cell Table {#sec-cell-table}
+
+Three binary axes — determination, certifiability, monotonicity — give
+eight nominal combinations. Two of them are not merely unobserved; they
+are **empty by theorem**: the determination gate (@sec-theorem) forces
+any claim that fails determination to also fail every scheme regardless
+of the other two axes, so a cell that would otherwise ask "not
+determined, yet certifiable" cannot be inhabited by construction. The
+table's empty cells are a corollary, not a gap in the search for
+witnesses.
+
+That leaves six inhabited cells: exactly one combination that passes all
+three axes — the verifiable case the rest of this paper is implicitly
+contrasted against — and five distinct ways to fail, each a distinct
+flavor of trust with its own named witness claim and its own minimal
+repair.
+
+<!-- TODO: the table below carries the corrected shape (8 nominal / 2
+     empty-by-theorem / 6 inhabited) ruled by the architect pass against
+     the model's fibered geometry, replacing an earlier "8 cells, 7
+     flavors" draft that contradicted it. The witness column and the
+     two still-missing mixed-cell witnesses are pending the corpus's C4
+     item; do not treat the placeholder witness names below as final. -->
+
+| Determined | Certifiable | Monotone | Status | Witness (illustrative) |
+|---|---|---|---|---|
+| yes | yes | yes | verifiable | inclusion in a canonical record |
+| no | — | — | **empty by theorem** | (determination gate) |
+| no | — | — | **empty by theorem** | (determination gate) |
+| yes | yes | no | trust flavor | current-head / revocation claims |
+| yes | no | yes | trust flavor | degeneracy of a forced generator (example-grade; full treatment is the follow-up build-domain paper) |
+| yes | no | no | trust flavor | TODO — mixed witness pending |
+| no | yes | — | trust flavor | genuineness / authorship claims |
+| no | no | — | trust flavor | TODO — mixed witness pending |
+
+Each of the five trust-flavor rows names a distinct minimal repair in
+@sec-cures, not a single generic "trust more" — this table doubles as
+the evidence for the claim in @sec-scope-objections that the floor does
+not silently swallow every failure into one undifferentiated bucket.

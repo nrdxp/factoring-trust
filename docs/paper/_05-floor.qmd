@@ -1,0 +1,46 @@
+# The Floor {#sec-floor}
+
+The trichotomy of @sec-theorem states what fails *above* a floor. The
+floor itself is not a fourth axis or a residual category for whatever
+does not fit the other three; it is exactly two residuals, one per
+component of the realized commitment pair $(C, V)$ — the physical
+half of the model that no amount of record structure can reach.
+
+**The binding residual** (on $C$'s side). Every commitment ultimately
+rests on a physical hardness assumption — a hash function's collision
+resistance, a signature scheme's forgery resistance — that is not itself
+a claim about a record and so is not a candidate for the trichotomy to
+classify. Its admission test is marginal necessity: a hardness
+assumption belongs to the floor exactly when removing it removes the
+commitment's binding property entirely, with no substitute available
+inside the model.
+
+**The fidelity residual** (on $V$'s side). A verifier is, physically, a
+running program, and no record-side argument can establish that the
+program executing right now is the one that was specified — this is
+Thompson's construction, made a constructive counterexample rather than
+a rhetorical point [@thompson-1984]: a compiler (or verifier) can be
+made to insert behavior that no inspection of its source recovers. Its
+admission test is a diagonalization argument: for any purely
+record-side verification of "this execution is faithful," a
+faithfulness-violating execution can be constructed that the
+verification cannot distinguish from a faithful one.
+
+## Why exactly two, and why this is a boundary and not a grab-bag
+
+The floor's count is not asserted by enumeration; it follows from what a
+scheme *is*. A scheme realizes exactly two operative components — a
+commitment and a verifier — and each contributes exactly one residual,
+because each is where the model's abstractions bottom out in something
+physical. A third residual would require a scheme to have a third
+realized component in its signature; none does. This is the same
+discipline the trichotomy itself uses (@sec-theorem, @sec-factorization):
+the count is a consequence of the structure being counted, not a list
+compiled from experience.
+
+Both residuals are, honestly, unmechanized: they concern physical
+realization, not the record-and-context model @sec-model formalizes, and
+this paper states that plainly rather than let a reader discover it.
+What is mechanized is everything *above* the floor — the claim that,
+once a binding commitment and a faithful verifier are granted, exactly
+three further reasons can defeat verification, and no others.

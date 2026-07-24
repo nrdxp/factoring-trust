@@ -1,0 +1,84 @@
+---
+title: 'Factoring Trust: A Machine-Checked Characterization of Where Verification Must End'
+author:
+  - name: Timothy DeHerrera
+    affiliations:
+      - name: Cyphrpunk LLC
+    email: timothy@cyphrpunk.com
+abstract: |
+  Every deployed verification system ships a trusted remainder — a
+  certificate authority, a genesis seed, a witness quorum — and the
+  literature that studies each such system formalizes what can be
+  *established* while leaving the remainder assumed, listed, and never
+  analyzed. We give that remainder a shape. We show that trust is
+  exactly the complement of verifiability and that, above a floor of two
+  named residuals, the complement *factors*: verification of a claim
+  over a growing, append-only record fails for exactly one of three
+  reasons — the claim is not determined by the record, the record does
+  not certify it at the verifier's computational power, or the claim
+  does not survive the record's growth — and each failure names whom the
+  verifier must trust and what repairing it costs. The "exactly" is not
+  a taxonomy but a machine-checked biconditional, proved in Lean 4 across
+  a tower of verifier strata (oracle, computable; the polynomial stratum
+  remains an open conjecture). A companion theorem — the verification
+  ceiling — generalizes the same trichotomy from append-only records to
+  any well-founded justification structure, and we instantiate it twice,
+  once as a cryptographic identity system and once as a follow-up
+  source-integrity system, to demonstrate that the factoring, and not
+  merely one instance of it, is the contribution. Every ingredient of
+  this factoring is independently attested in the literature — the
+  observables-frame algebra of synthetic topology, CALM's
+  monotonicity-coordination biconditional, archival diplomatics'
+  empirically tested determination hypothesis — but no source we reached
+  composes them, or names their common complement as trust.
+date: 2026-07-24
+---
+
+<!-- Math macros — shared across HTML (KaTeX) and PDF (pdflatex).
+     Bare \newcommand lines are parsed by Pandoc itself, so they
+     reach KaTeX for math rendering AND expand in prose for HTML. -->
+
+\newcommand{\Record}{\mathit{Record}}
+\newcommand{\Context}{\mathit{Context}}
+\newcommand{\World}{\mathit{World}}
+\newcommand{\Claim}{\varphi}
+\newcommand{\Det}{\mathrm{Determined}}
+\newcommand{\Mono}{\mathrm{Monotone}}
+\newcommand{\UpC}{\mathrm{UpClosed}}
+\newcommand{\phihat}{\hat{\varphi}}
+\newcommand{\pstar}{\pi^{*}}
+\newcommand{\Comm}{\mathit{Comm}}
+\newcommand{\Scheme}{\mathrm{Scheme}}
+\newcommand{\TTsnap}{\textsc{TT-snap}}
+\newcommand{\TTend}{\textsc{TT-end}}
+\newcommand{\EON}{\textsc{EON}}
+\newcommand{\EALM}{\textsc{EALM}}
+\newcommand{\oracle}{\textsf{oracle}}
+\newcommand{\computable}{\textsf{computable}}
+\newcommand{\polynomial}{\textsf{polynomial}}
+
+<!-- Section files are included via the Quarto include shorthand.
+     Each section is authored as a standalone partial (_-prefixed)
+     so Quarto does not render it independently. -->
+
+{{< include _01-introduction.qmd >}}
+
+{{< include _02-model.qmd >}}
+
+{{< include _03-theorem.qmd >}}
+
+{{< include _04-factorization.qmd >}}
+
+{{< include _05-floor.qmd >}}
+
+{{< include _06-cell-table.qmd >}}
+
+{{< include _07-cures.qmd >}}
+
+{{< include _08-instances.qmd >}}
+
+{{< include _09-scope-objections.qmd >}}
+
+{{< include _10-related-work.qmd >}}
+
+{{< include _11-conclusion.qmd >}}

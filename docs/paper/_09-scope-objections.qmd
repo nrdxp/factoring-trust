@@ -1,0 +1,106 @@
+# Scope and Objections {#sec-scope-objections}
+
+**Locus, not degree (O1).** This paper formalizes *where* verification
+fails and *why*, in three exhaustive cases. It does not formalize how
+much trust a failure costs in any graded sense — a single admitted
+signer and a globally corrupt certificate authority are the same
+determination-failure cell, distinguished only by how badly the
+admitted trust can be abused, which is a question this model does not
+ask.
+
+**Reliance-structure, not trust-proper (O3).** What is formalized is the
+structural precondition for trust — an unverifiable gap that something
+must fill — not trust as a psychological or social attitude in the sense
+the philosophy-of-trust literature studies it (@sec-related-work). This
+paper is conceded ground, not a hidden weakness: it formalizes the
+*reliance* a rational agent is forced into once verification is
+exhausted, which is necessary for, but does not by itself constitute,
+trust in the fuller sense that literature uses the word.
+
+**Necessary versus elective trust (O4).** The trichotomy characterizes
+trust that is *forced* — there is no scheme, at any stratum, for the
+claim in question. It says nothing about *elective* trust, where a
+verifier could in principle check a claim but chooses reliance instead
+for cost or convenience reasons. Both are real; only the forced kind is
+this paper's object.
+
+## Model adequacy (W1)
+
+The sharpest exposure of a result this abstract is whether its
+definitions are actually the right ones — convergent validity, argued
+on three independent prongs, rather than asserted from the definitions
+alone.
+
+First, each definition has an independently-adequate home outside this
+paper: monotonicity's upward-closed outcomes are exactly Complete CALM's
+monotone specifications [@hellerstein-2026]; certifiability's
+semi-decidable class is exactly the affirmable-properties tradition of
+synthetic topology [@escardo-2004]; determination, given a mechanism, is
+exactly the finding archival diplomatics reports from case-study
+evidence [@interpares-2002].
+
+Second, the instances bite on real systems: the light surety-ceiling
+witness, the identity domain, and — most concretely — the split-view
+reduction of @sec-instances, which predicts a transparency log's actual
+deployed defenses rather than merely classifying the attack after the
+fact.
+
+Third, and most directly: the framework *derives* a result rather than
+merely accommodating one. The claim in @sec-instances that a failed axis
+names a specific trust anchor — signer, voucher, witness quorum — is
+itself an adequacy check, because it recovers, from first principles,
+exactly the anchor inventory that deployed practice converged on by
+other means.
+
+## What was searched, and what was not (honest scope statement)
+
+The related-work sweep behind @sec-related-work reached arXiv, open
+bibliographic indices, author-hosted PDFs, institutional repositories,
+and the Internet Archive. Several major venues remained hostile across
+repeated attempts — paywalled philosophy-of-trust archives, several
+publisher search interfaces, and citation-graph APIs that rate-limited
+every attempt. Two consequences follow, stated plainly rather than left
+for a reviewer to discover: post-2022 philosophy-of-trust literature is
+effectively unsampled, and several of the negative findings below rest
+on an exhaustive check of *one document each*, which closes that
+document, not the literature it sits in.
+
+Absence of a hit under these conditions is not claimed as proof of
+absence — it is the expected observation for a genuine unification
+claim. If this composition had already been published, it would likely
+be known in the subfields it draws from, several of which are
+well-studied and actively cited. What @sec-related-work offers instead
+of a clean-room "we searched and found nothing" is the closest prior art
+found at each of five clusters, with the specific line that distinguishes
+this paper's claim from each — the shape a well-read related-work
+section takes, not the shape a defensive one takes.
+
+## Future work
+
+**A diagnostic lens for alignment, not a formalization (C3).** The three
+axes give a diagnostic vocabulary for why a machine-learned model's
+alignment resists verification, and it is worth naming precisely because
+it hits all three at once rather than one: a model's behavior is not
+*determined* by anything a verifier can commit to in advance (behavior
+on unseen inputs is not a function of any finite training record); it is
+not *certifiable* even in principle, by Rice's theorem applied to
+semantic behavioral properties; and any alignment claim stated as a
+universal over an open input space is not *monotone* — one adversarial
+input can falsify it after arbitrarily much confirming evidence. This is
+offered as a one-paragraph diagnostic mention, deliberately not pursued
+further here: turning it into a formal result first requires pinning
+down what "aligned" means as a claim in this paper's sense, which is
+future work in its own right and would sidetrack the introduction if
+attempted now.
+
+**The full surety ceiling (the axios follow-up).** @sec-instances
+includes a deliberately light, zero-frontier-machinery witness of the
+verification ceiling's build-domain specialization, the **surety
+ceiling**. The full treatment — corroboration quorums, format/parse
+gates, and the forced-generator tightness results resting on Rice and
+Rice–Shapiro that the light witness omits by design — is empirical,
+conditional in places, and prose-grade rather than machine-checked
+throughout; it is the subject of a separate, follow-up paper on
+source-build integrity (the axios project), cited from this paper but
+not included in it, so that this paper's own epistemic grade stays
+uniformly machine-checked.
