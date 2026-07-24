@@ -2,128 +2,175 @@
 
 The trichotomy of @sec-theorem is stated over append-only records
 specifically. This section introduces its companion theorem, states it
-over a more general structure, and then works the framework on real
-cases — a generality demonstration, not a survey of examples chosen
-after the fact.
+over a more general structure, and works the framework on real cases —
+a generality demonstration, not a survey of examples chosen after the
+fact.
 
 ## The verification ceiling: a companion, not a corollary
 
-Generalize from a single append-only record to a well-founded
-justification structure: a directed acyclic graph of artifacts, each
-either a leaf or carrying a derived record that names its own inputs,
-together with a fail-closed classification of every artifact into
-exactly one of a small number of trust buckets, relative to an admitted
-policy $P$ and evidence clock $\sigma$.
+Generalize from a single append-only record to a **well-founded
+justification structure**: a directed acyclic graph of artifacts, each
+either a leaf or carrying a derived record naming its own inputs
+(`Node`), together with a fail-closed classification of every artifact
+into one of four buckets — `closed`, `attestGap`, `establishGap`,
+`import` (`classify`) — relative to an admitted policy $P$ and an
+evidence snapshot $\sigma$. Acyclicity is by construction rather than by
+assumption: a node's inputs are syntactic subterms of the node, so no
+artifact can name itself, transitively or otherwise, and the structure
+cannot express a circular justification to have to exclude.
+
+Two derived quantities carry the accounting. The **trust surface**
+$T(a)$ is $a$'s dependency closure minus its `closed` members — every
+node landing in one of the three residue buckets (`trustSurface`). The
+**assumption basis** $B(a)$ is the policy-admitted evidence those
+non-residue classifications actually rest on (`basis`). `Total` names
+the state in which every non-seed member of the closure is `closed`
+(`total_iff_every_nonseed_closed`).
 
 ::: {.theorem}
-**The verification ceiling.** For such a structure:
+**The verification ceiling** (`Ceiling.ceiling`). For such a structure,
+under an explicit underdetermination hypothesis on the domain's binding
+claim:
 
-(i) **Gate** (inherited from the trichotomy): an artifact's genuineness
-    or binding claim, under an explicit underdetermination hypothesis,
-    admits no evidence scheme over any commitment.
+(i) **Gate.** The binding or genuineness claim admits no snapshot-sound
+    evidence scheme over any commitment (`binding_admits_no_scheme`).
 
-(ii) **Completeness**: every artifact in the structure's closure is
-    booked into exactly one bucket, and every piece of admitted evidence
-    a positive verdict depends on is enumerated in that artifact's
-    basis — nothing is silently trusted.
+(ii) **Completeness.** Every seed in the closure is irreducibly part of
+    the trust surface (`seeds_always_residual`), and under `Total` every
+    non-seed member carries both evidence species — a corroboration and
+    a vouch — in the assumption basis
+    (`total_carries_both_species`). Nothing is silently trusted.
 
-(iii) **Minimality**: the trust surface of an artifact contains the seed
-    set required by *every* scheme for it — because (i) makes the
-    genesis claim permanently underivable — and equality between the
-    trust surface and the seed set is therefore the *ceiling*: a system
-    achieving it cannot be improved upon.
+(iii) **Minimality.** The trust surface therefore contains the seed set
+    required by *every* scheme, because (i) makes the genesis claim
+    permanently underivable. Equality between trust surface and seed set
+    is the *ceiling*: a system achieving it cannot be improved on.
 :::
 
-This is a companion theorem, not a corollary of `TT-snap`/`TT-end`. The
-trichotomy's vocabulary — records, contexts, claims, commitments,
-schemes — and the ceiling's vocabulary — artifacts, buckets, policies,
-snapshots, a total classification function — share no object either is
-directly definable in terms of. The only bridge between them is the
-gate: an artifact's genuineness claim, once cast as a record claim,
-*is* an instance of the trichotomy's own determination gate. Everything
-else in the ceiling — its completeness and minimality machinery — is the
-companion theorem's own content, proved independently.
+**What this theorem is, exactly.** It is a bundle of three mechanized
+facts plus one interpretive reading, not a single deep result, and the
+distinction matters to anyone auditing the artifact. Parts (i) and (ii)
+are proved. Part (iii)'s force comes from reading them together, and the
+reading crosses a seam the mechanization does not close: the accounting
+world (artifacts, buckets, policies) and the scheme world (records,
+contexts, claims, commitments) share no object either is defined in
+terms of. The only bridge is the gate — a domain's genuineness claim,
+once cast as a record claim, *is* an instance of the trichotomy's own
+determination gate. Building a formal junction between the two worlds is
+real modeling work with no display value at this stage, and it is left
+open rather than quietly assumed.
 
-## Two instantiations, because one instance is a special case and two is a theory
+That is also why this is a **companion** and not a corollary. It shares
+the gate; everything else in it — the classification, the two evidence
+species, the accounting, the minimality argument — is its own machinery,
+proved independently over vocabulary $\TTsnap$/$\TTend$ never mentions.
 
-The ceiling is instantiated twice in this paper, over genuinely disjoint
-domains, because one instance demonstrating generality is a special case
-wearing a general theorem's clothes, while two — chosen to stress
-*complementary* cells of the trichotomy rather than the same one twice —
-is the beginning of a theory. Each instance names the specific pair of
-cells it exercises, so the complementarity is checkable, not asserted.
+The underdetermination hypothesis is likewise a **modeling hypothesis,
+never a theorem and never an axiom**: it is the domain's own fiber
+witness, that one committed record can arise under two ambient contexts
+with different binding verdicts. It is carried explicitly as an argument
+on every theorem that needs it. Proving it would mean fixing a concrete
+claim and a concrete pair of contexts, which is precisely what each
+instance is responsible for asserting for itself.
+
+## Two instantiations, because one instance is a special case
+
+The ceiling is instantiated twice, over genuinely disjoint domains,
+because one instance demonstrating generality is a special case wearing
+a general theorem's clothes, while two — chosen to stress
+*complementary* failure cells rather than the same one twice — is the
+beginning of a theory. Each instance names the cells it exercises, so
+the complementarity is checkable rather than asserted. The cell labels
+are those of @tbl-cells.
 
 **Identity.** A cryptographic identity system whose record is a hash
-chain and whose genesis is a single binding commitment. This instance's
-impossibility content is fully machine-checkable with no conditional
-frontier — there is no forced-generator or Rice-theoretic tightness
-result standing between the model and the theorem, unlike the
-light-surety instance below. It is the paper's cleanest demonstration
-that the completeness and minimality machinery is not build-specific,
-and it delivers the split-view worked example below as its exercise of
-the monotonicity-failure cell alongside the verifiable cell (T1+T3, in
-the cell table's numbering).
+chain of key events and whose genesis is a single binding commitment
+(`identity_ceiling`). It exercises **T1** — its genesis binding claim
+fails determination under the domain's fiber hypothesis, since
+byte-identical chains can arise under honest custody or under
+impersonation — and **T3**, through the split-view example below. Its
+sharpest statement is not the ceiling instantiation but a stronger,
+domain-specific one: under `Total`, the trust surface of a chain is
+*exactly* the genesis binding and nothing else
+(`principal_trust_bounded`), which follows from splitting the chain's
+dependency closure into its derived nodes and its single seed
+(`depclosure_chain`). This instance has no conditional frontier — no
+forced-generator or Rice-theoretic tightness result stands between the
+model and the theorem — which makes it the cleanest evidence that the
+completeness and minimality machinery is not build-specific.
 
-**The surety ceiling — a deliberately light second witness.** The
-verification ceiling's *first* home, historically, was a source-build
-integrity question — is a downloaded artifact's build provenance
-established, or merely asserted? — and this build-domain
-specialization keeps the name **surety ceiling** throughout this paper
-and its follow-up, wherever the general "verification ceiling" is
-instantiated to the build domain specifically. A light instance of it
-is included here, deliberately: an abstract vouch-shaped establishment
-predicate over source classes, with zero frontier machinery — no
-format/parse gates, no corroboration quorum, no forced-generator or
-Rice/Rice–Shapiro tightness result. It exercises the verifiable cell
-alongside the certifiability-failure cell (T1+T2), the complement of
-identity's T1+T3, so that between the two instances every
-above-floor failure cell this paper's cell table names has a witness
-in *some* instance. **The full empirical surety-of-source treatment —
-gates, corroboration conditions, and the forced-generator tightness
-results the light instance deliberately omits — is a follow-up paper,
-cited here, not included:** including it in the flagship would mix
-conditional, prose-grade frontier content into a paper whose entire
-epistemic grade is otherwise machine-checked, which is precisely the
-uniformity this split is designed to protect.
+**A light source-integrity instance.** Its build-domain name, wherever
+the general ceiling is instantiated to source integrity, is the **surety
+ceiling** (`surety_ceiling`). It exercises **T1** — genuineness of a
+source artifact fails determination under the same shape of fiber
+hypothesis — and **T2**, since the certifiability failure it inherits is
+committed-generator degeneracy, which rests on cited mathematics rather
+than mechanized proof (@sec-cell-table). Between the two instances,
+then, T1, T2, and T3 all have a witness in some instance.
+
+This second instance is deliberately light: an abstract, vouch-shaped
+establishment predicate over source classes, with zero frontier
+machinery — no format or parse gates, no corroboration quorum, no
+forced-generator tightness result. **The full empirical treatment is a
+follow-up paper, cited and not included.** Folding it in would mix
+conditional, prose-grade frontier content into a paper whose epistemic
+grade is otherwise uniformly machine-checked, and that uniformity is
+what the split protects.
+
+Neither instance imports a computability library — the ceiling's content
+is accounting and impossibility, and neither needs one.
+
+**Both instances are non-vacuous, and the mechanization says how.** Each
+carries four concrete witnesses over finite types — an artifact that
+classifies `closed`; a base-bounded `Total`; a `Total` defeated by an
+`establishGap` when the evidence snapshot is emptied
+(`unclosed_member_defeats_total`); and a policy admitting no vouchers,
+which forbids every non-seed `Total` (`no_vouchers_no_total`). The last
+is the sharpest of the four: it shows the accounting genuinely depends
+on admitted testimony rather than deriving everything from the gate.
 
 ## The extended worked example: split-view, resolved without a fourth axis
 
 A verifier facing two different views of what is claimed to be the same
 append-only log — a *split-view*, or equivocation, attack — looks at
-first glance like it needs a fourth axis: neither determination,
-certifiability, nor monotonicity as defined in @sec-model obviously
-names "my two sources disagree." It does not. The attack decomposes,
-without remainder, into two things the trichotomy already owns:
+first glance like it needs a fourth axis. Neither determination,
+certifiability, nor monotonicity obviously names "my two sources
+disagree." It does not. The attack decomposes without remainder into two
+claims the trichotomy already owns.
 
-1. **Per-verifier**: "my anchor commits a prefix of the canonical
-   record." For a fixed anchor, this claim is determined, monotone, and
-   certifiable *over the canonical record* — the verifier's actual
-   difficulty is that its only access to the canonical record is the
-   anchor itself. The trust spent here is the admitted anchor, an
-   entailment move (@sec-cures) against $P$, not a new axis.
-2. **Cross-verifier**: "the two views I've been shown are consistent
-   with each other." Posed over the joint record of shown views, this
-   claim is determined and certifiable — a Merkle consistency proof is
-   literally its certificate — and **non-monotone**: two views
-   consistent today can diverge tomorrow. This is exactly the trichotomy's
-   monotonicity-failure case, `EON` applies directly, and its cure table
-   (@sec-cures) predicts the deployed defenses verbatim: entailment via a
-   witness quorum or gossip protocol (cosigned checkpoints), restriction
-   to "consistent as of time $t$," or an accepted expiry window.
+**Per-verifier**: "my anchor commits a prefix of the canonical record."
+For a fixed anchor this claim is determined, monotone, and certifiable
+*over the canonical record*; the verifier's actual difficulty is that
+its only access to the canonical record is the anchor itself. The trust
+spent is the admitted anchor — an entailment move against $P$
+(@sec-cures), not a new axis.
 
-A sharper fact falls out for free: divergence, once it exists, is
-*permanent* under further extension of both views — two records that
-disagree at some position remain disagreeing at that position forever.
-So *equivocation* is itself monotone and affirmable — its evidence, once
-obtained, endures — while *honesty* is refutative: never provable
-forever, only ever falsifiable at the next check. That asymmetry is why
-gossip protocols work at all, and why "this log is honest" can only ever
-be held as an expiring, snapshot-grade confidence rather than an
-enduring one. The framework does not just classify the attack; it
-explains the shape of the field's actual defense against it.
+**Cross-verifier**: "the two views I have been shown are consistent with
+each other," where consistency means one view extends the other
+(`viewsConsistent`). Posed over the joint record of shown views, this
+claim is determined and certifiable — a consistency proof is literally
+its certificate — and **non-monotone**: two views consistent today can
+diverge tomorrow, and the mechanization exhibits exactly that flip
+(`consistency_flips`, over a two-element alphabet, which such a
+divergence provably requires). This is the monotonicity-failure case,
+$\EON$ applies directly, and @sec-cures predicts the deployed defenses
+verbatim: entailment via a witness quorum or gossip protocol, cosigned
+checkpoints, restriction to "consistent as of time $t$," or an accepted
+expiry window.
+
+A sharper fact falls out for free. Divergence, once it exists, is
+*permanent* under further extension of both views: two records that
+disagree at a position keep disagreeing there forever
+(`divergence_permanent`). So *equivocation* is monotone and affirmable —
+its evidence, once obtained, endures — while *honesty* is refutative,
+never provable forever, only falsifiable at the next check. That
+asymmetry is why gossip protocols work at all, and why "this log is
+honest" can only be held as expiring, snapshot-grade confidence rather
+than an enduring one. The framework does not merely classify the attack;
+it explains the shape of the field's actual defense against it.
 
 A fourth axis would have to make verification fail for a claim that is
-determined, certifiable, *and* monotone; neither component of the
+determined, certifiable, *and* monotone. Neither component of the
 split-view decomposition does that. This is the strongest available
-validation of the three-axis taxonomy against a real, adversarial case,
-not merely a worked textbook example.
+validation of the three-axis count against a real adversarial case,
+rather than against a textbook one.
