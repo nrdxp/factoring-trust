@@ -119,10 +119,16 @@ Woo prove a trusted state *reachable*, unconditionally, from an
 untrusted starting point — a positive construction that makes "how small
 can the trusted remainder be?" well-posed without answering it
 [@gligor-woo-2019]; this paper's verification ceiling (@sec-instances)
-is that answer. The lineage descending from Thompson — diverse
-double-compiling, reproducible and bootstrappable builds — *reduces or
-diversifies* the trusted base without ever proving a residual base
-*minimal* [@thompson-1984]. Durán and Formanek give the closest genuine
+is that answer. The lineage descending from Thompson's attack
+[@thompson-1984] *reduces or diversifies* the trusted base without ever
+proving a residual base *minimal*. Diverse double-compiling is its
+sharpest instance — rebuild with an independent compiler and compare —
+and Wheeler is explicit that the technique "by itself does not
+guarantee" that the compiler is not malicious [@wheeler-2005]: what
+stays trusted afterwards is a second compiler, its environment, and the
+determinism of both. A smaller base, and nowhere an argued-minimal one.
+Reproducible and bootstrappable builds push the same reduction along the
+same axis. Durán and Formanek give the closest genuine
 decomposition of a verification barrier this sweep found, into two
 agent-relative conditions, accessibility and surveyability — but with no
 computability-theoretic content, and a framing that treats epistemic
