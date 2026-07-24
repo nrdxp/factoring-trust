@@ -87,6 +87,21 @@ theorem total_iff_every_nonseed_closed (gate : Payload → Bool) (tagOf : Payloa
     · exact hnotseed
     · exact absurd (h m hmem (by simpa using hnotseed)) (by simpa using hnc)
 
+/-- One unclosed non-seed member anywhere in the closure defeats `Total` —
+    the safety display (the reference's `laundered_never_total`,
+    neutralized): a node whose verification did not close cannot be hidden
+    by any policy or snapshot; it sits in the trust surface and `Total`
+    fails. The contrapositive of `total_iff_every_nonseed_closed`'s forward
+    direction, named because it is the sentence instances quote against
+    their defeated-`Total` witnesses. -/
+theorem unclosed_member_defeats_total (gate : Payload → Bool) (tagOf : Payload → Tag)
+    (closureOk : Payload → Bool) (P : Policy Signer) (σ : Snapshot Signer Tag)
+    (a m : Node Payload) (hmem : m ∈ depclosure a) (hnotSeed : m.seed? = false)
+    (hnc : classify gate tagOf closureOk P σ m ≠ .closed) :
+    ¬ Total gate tagOf closureOk P σ a :=
+  fun hTotal =>
+    hnc ((total_iff_every_nonseed_closed gate tagOf closureOk P σ a).mp hTotal m hmem hnotSeed)
+
 /-- Every `closed` member of `a`'s closure carries a policy-admitted
     corroboration enumerated in `basis a` — the derived-species half of the
     two-species story (surety's reference proved only the vouch half). -/
