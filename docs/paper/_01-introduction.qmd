@@ -39,12 +39,9 @@ one another.
 Folklore has long said what the remainder *is*. "Trust enters where more
 exact knowledge is not available" [@frankel-1977]. "Trust begins where
 prediction ends" [@lewis-weigert-1985]. These are the ancestors of this
-paper's thesis-half, and later work inherits the same unfactored
-formulation: to trust is to lower "the barrier of monitoring,
-challenging, checking, and questioning" [@nguyen-unquestioning]; trust is
-a leap "enabled by suspension — across the gorge of the unknowable,"
-where suspension "brackets out uncertainty and ignorance" as one
-undifferentiated act [@mollering-2001].
+paper's thesis-half, and the sociological and epistemological work
+descending from them inherits the same unfactored formulation
+(@sec-related-work).
 
 Left unanswered: *why*? If the residue is structureless, "minimize
 trust" is a slogan — a direction with no metric. If the residue has
@@ -103,9 +100,10 @@ one case in full — a split-view (equivocation) attack against an
 append-only log — and shows the framework predicting the deployed
 defense in detail, rather than naming a category after the fact.
 
-Trust, on this account, is not eliminated. It is located, typed, priced,
-and bounded. A system whose trusted remainder equals its named genesis
-base sits *at* the verification ceiling — provably, not by inspection.
+Trust, on this account, is not eliminated but located, typed, priced,
+and bounded: a system whose trusted remainder equals its named genesis
+base sits *at* the verification ceiling, provably rather than by
+inspection.
 
 ## Contributions
 
@@ -153,7 +151,6 @@ five distinct flavors of trust, each deriving its own anchor and its own
 minimal cure.
 
 The remaining sections carry the scaffolding these five stand on:
-@sec-model fixes the vocabulary, @sec-floor states the two residuals the
-trichotomy sits above, @sec-cures prices repair as movement along four
-coordinates, @sec-scope-objections states what is not claimed, and
-@sec-related-work gives every ingredient its home in the literature.
+@sec-model fixes the vocabulary, @sec-floor states the two residuals,
+@sec-cures prices repair, @sec-scope-objections states what is not
+claimed, and @sec-related-work gives each ingredient its home.

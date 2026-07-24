@@ -17,14 +17,13 @@ $\psi$ is upward-closed under $\sqsubseteq$, and $\Claim = \lambda\, w\;
 :::
 
 The display is $\TTend(\computable)$ repackaged, and its proof says so:
-it rewrites along the biconditional and then discharges two record-side
-facts that convert the axes into conditions on $\psi$ —
+it rewrites along the biconditional, then discharges two record-side
+facts converting the axes into conditions on $\psi$ —
 `determined_eq_proj`, that a determined claim *is* its own record-only
 projection, and `monotone_iff_projUpClosed`, that for a determined claim
-monotonicity *is* upward-closure of that projection. No new mathematics
-is claimed here beyond the theorem being repackaged. What the display
-adds is legibility, and three things have to be said about it before
-that legibility can be trusted.
+monotonicity *is* upward-closure of that projection. What the display
+adds is legibility, not new mathematics, and three things must be said
+before that legibility can be trusted.
 
 ## Three readings, none of them free
 

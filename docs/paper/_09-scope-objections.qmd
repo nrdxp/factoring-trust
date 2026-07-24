@@ -58,12 +58,11 @@ which is not a check definitions can be tuned to pass.
 Two suspicions attach to any three-way split. The first is that it is a
 taxonomy wearing a theorem's clothes: categories somebody chose, with
 exhaustiveness asserted once the choosing is done. Here the count runs
-the other way. The $\Leftarrow$ leg of $\TTsnap$/$\TTend$ takes the three
-conditions and *constructs* a scheme out of them, so exhaustiveness
-follows from what a scheme is rather than from how the cases were drawn.
-A taxonomy whose exhaustiveness is proved is a fair description of this
-result — the proof is exactly what separates it from one merely
-proposed.
+the other way — the $\Leftarrow$ leg of $\TTsnap$/$\TTend$ *constructs* a
+scheme out of the three conditions, so exhaustiveness follows from what
+a scheme is rather than from how the cases were drawn. A taxonomy whose
+exhaustiveness is proved is a fair description of this result, and the
+proof is what separates it from one merely proposed.
 
 The second suspicion is harder: that the three causes collapse under
 pressure, since following any of them far enough lands you in the same
@@ -85,16 +84,14 @@ for what the record cannot settle.
 
 **T2, certifiability.** "The generator committed at the current head is
 degenerate" — that a build emits from a finite table rather than
-computing its output. The claim is fixed by the committed bytes and
+computing its output. The claim is fixed by the committed bytes,
 independent of how the generator is written
-(`Witness.Generator.degenerate`, `degenerate_extensional`), and it is
-monotone, since a committed generator stays committed. It is not
-semi-decidable: a purely semantic property of an unbounded-domain
-denotation, which Rice–Shapiro places outside $\Sigma_1$. That last step
-is cited mathematics, not mechanized here — this paper builds no
-computation model and does not imply one. **Cure:** admit a voucher — a
-party's judgment that the generator is genuine, standing in for a check
-no procedure can perform — or restrict to a decidable subclass.
+(`Witness.Generator.degenerate`, `degenerate_extensional`), and monotone,
+since a committed generator stays committed. It is not semi-decidable: a
+semantic property of an unbounded-domain denotation, which Rice–Shapiro
+places outside $\Sigma_1$ — cited mathematics, not mechanized here.
+**Cure:** admit a voucher, a party's judgment standing in for a check no
+procedure can perform, or restrict to a decidable subclass.
 
 **T3, monotonicity.** "Entry $e$ is absent from the record,"
 equivalently "$w$ is the current head." Determined, certifiable, and
@@ -110,9 +107,9 @@ liveness holder a stale but genuine view. The remaining inhabited cells
 compose these failures, and their cures compose too.
 
 None of the three is "trust your CPU." That assumption is real and this
-paper names it — it is one of the two residuals of @sec-floor, which the
+paper names it — it is one of @sec-floor's two residuals, which the
 trichotomy sits strictly above by construction. The objection conflates
-the floor with the factoring: the floor is where hardware and toolchain
+the floor with the factoring. The floor is where hardware and toolchain
 trust lives, it is bounded at two items, and above it the three causes
 remain distinct.
 
@@ -122,9 +119,8 @@ The sweep behind @sec-related-work reached arXiv, open bibliographic
 indices, author-hosted PDFs, institutional repositories, and the
 Internet Archive; paywalled philosophy-of-trust archives, publisher
 search interfaces, and rate-limiting citation-graph APIs stayed out of
-reach. Two consequences, stated here rather than left for a reviewer to
-find: post-2022 philosophy-of-trust literature is
-effectively unsampled, and several negative findings rest on an
+reach. Post-2022 philosophy-of-trust literature is therefore effectively
+unsampled, and several negative findings rest on an
 exhaustive check of *one document each*, which closes that document and
 not the literature around it. The composition claim is therefore
 access-bounded throughout — composed nowhere this sweep could reach,
