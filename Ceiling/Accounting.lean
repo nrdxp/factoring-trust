@@ -143,24 +143,24 @@ theorem closed_carries_vouch_in_basis (gate : Payload → Bool) (tagOf : Payload
           exact ⟨by simp [hi], htagv, hest⟩
       | corroboration s t => simp at hematch
 
-/-- Packaged corollary: a `Total`, non-seed `a` carries both evidence species
-    for itself in `basis a` — `a ∈ depclosure a` always
-    (`self_mem_depclosure`), and a non-seed `Total a` forces `a` itself to
-    classify `closed` (`total_iff_every_nonseed_closed`), from which both
-    halves above apply directly to `a`. -/
+/-- Packaged enumeration: under `Total a`, EVERY non-seed member of `a`'s
+    closure carries both evidence species in `basis a` — `Total` forces each
+    non-seed member `closed` (`total_iff_every_nonseed_closed`), from which
+    both per-member halves above apply. This is the "nothing is silently
+    trusted at the ceiling" display: the enumeration ranges over the whole
+    closure, not just the root, and it needs `Total` nontrivially (an
+    unclosed member has no counted evidence to enumerate). The root-only
+    reading follows at `m := a` via `self_mem_depclosure`. -/
 theorem total_carries_both_species (gate : Payload → Bool) (tagOf : Payload → Tag)
     (closureOk : Payload → Bool) (P : Policy Signer) (σ : Snapshot Signer Tag)
     (a : Node Payload) (hTotal : Total gate tagOf closureOk P σ a)
-    (hnotSeed : a.seed? = false) :
+    (m : Node Payload) (hmem : m ∈ depclosure a) (hnotSeed : m.seed? = false) :
     (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t, e = .corroboration s t) ∧
       (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t tag, e = .vouch s t tag) := by
-  have hclosed : classify gate tagOf closureOk P σ a = .closed :=
-    (total_iff_every_nonseed_closed gate tagOf closureOk P σ a).mp hTotal a
-      (self_mem_depclosure a) hnotSeed
-  exact ⟨closed_carries_corroboration_in_basis gate tagOf closureOk P σ a a
-          (self_mem_depclosure a) hclosed,
-        closed_carries_vouch_in_basis gate tagOf closureOk P σ a a
-          (self_mem_depclosure a) hclosed⟩
+  have hclosed : classify gate tagOf closureOk P σ m = .closed :=
+    (total_iff_every_nonseed_closed gate tagOf closureOk P σ a).mp hTotal m hmem hnotSeed
+  exact ⟨closed_carries_corroboration_in_basis gate tagOf closureOk P σ a m hmem hclosed,
+        closed_carries_vouch_in_basis gate tagOf closureOk P σ a m hmem hclosed⟩
 
 -- ===========================================================================
 -- Non-vacuity (the generic satisfiability-sense pattern)

@@ -46,23 +46,25 @@ variable {Payload Tag Signer : Type} [DecidableEq Tag]
 /-- **`ceiling`** — the packaged minimality display, under a domain's
     `hfiber`: no evidence scheme substitutes for the admission (the gate);
     every seed in `a`'s closure is irreducibly part of its trust surface
-    (`seeds_always_residual`); and a `Total`, non-seed `a` carries both
-    evidence species for itself in its assumption basis
-    (`total_carries_both_species`). Read together: the trust residue named
-    by the seeds cannot be smaller than that base, and testimony/record
-    admission is never optional where the closure is `Total`. -/
+    (`seeds_always_residual`); and under `Total a`, EVERY non-seed member of
+    the closure carries both evidence species in the assumption basis
+    (`total_carries_both_species`). Read together: the trust residue cannot
+    be smaller than the named seed base, and at the ceiling nothing is
+    silently trusted — every grain of admitted evidence the verdict rests
+    on, for every member, is enumerated. -/
 theorem ceiling {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
     (hfiber : ¬ Determined φ_bind)
     (gate : Payload → Bool) (tagOf : Payload → Tag) (closureOk : Payload → Bool)
-    (P : Policy Signer) (σ : Snapshot Signer Tag)
-    (a : Node Payload) (hnotSeed : a.seed? = false) :
+    (P : Policy Signer) (σ : Snapshot Signer Tag) (a : Node Payload) :
     (¬ ∃ S : Scheme Γ φ_bind, SnapshotSound S) ∧
     (∀ m ∈ depclosure a, m.seed? = true → m ∈ trustSurface gate tagOf closureOk P σ a) ∧
     (Total gate tagOf closureOk P σ a →
-      (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t, e = .corroboration s t) ∧
-      (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t tag, e = .vouch s t tag)) :=
+      ∀ m ∈ depclosure a, m.seed? = false →
+        (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t, e = .corroboration s t) ∧
+        (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t tag, e = .vouch s t tag)) :=
   ⟨binding_admits_no_scheme φ_bind hfiber Γ,
    fun m hmem hseed => seeds_always_residual gate tagOf closureOk P σ a m hmem hseed,
-   fun hTotal => total_carries_both_species gate tagOf closureOk P σ a hTotal hnotSeed⟩
+   fun hTotal m hmem hnotSeed =>
+     total_carries_both_species gate tagOf closureOk P σ a hTotal m hmem hnotSeed⟩
 
 end Ceiling
