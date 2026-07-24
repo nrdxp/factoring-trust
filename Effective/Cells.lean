@@ -1,5 +1,4 @@
 import Effective.Trichotomy
-import Witness.Cells
 
 /-!
 # Effective.Cells — certifiability annotations for the cell table's fibered rows
