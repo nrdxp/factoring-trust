@@ -89,14 +89,25 @@ never proved here, never a fresh axiom. -/
 abbrev genesisSeed : Node (LitePayload ClassName) := Node.ground 0 true
 
 /-- **`suretyRealization`** — the surety-lite domain's `RecordRealization`,
-    CONSTRUCTED, not assumed: `Ceiling.countRealization`, the general
-    solution to R1+R2 (`Ceiling.Junction`'s finding: a per-`LitePayload`
-    `encode` cannot satisfy R1 once `Node (LitePayload ClassName)` admits a
-    `.derived` node with two non-seed inputs, which the type permits
-    regardless of what this file's own witnesses ever build). Takes one
-    `Entry` — `Core.Model.Entry` carries no inhabitedness axiom. -/
-def suretyRealization (e0 : Entry) : Ceiling.RecordRealization (LitePayload ClassName) :=
-  Ceiling.countRealization e0
+    CONSTRUCTED, not assumed: `Ceiling.countRealization`, scoped to
+    whichever `a` the caller supplies. **Still content-neutral, unlike
+    `Instance.Identity.identityRealization` — named honestly, not
+    upgraded.** `Ceiling.logRealization` needs (H1)/(H2) discharged from
+    the domain's OWN closure-building structure; `Instance.Identity` has
+    one (`chain`, newest-first, single-input by construction) to discharge
+    them from. `LitePayload` does not: this file has no build-sequence
+    abstraction at all (`LitePayload` is a bare payload — three fields, no
+    generator function — its own `a` is built ad hoc at each call site, per
+    its "deliberately light" scope and the HARD GUARD above forbidding
+    exactly the kind of vocabulary a `chain`-equivalent would need). Without
+    a domain structure to discharge id-monotonicity from, `logRealization`
+    would need it asserted directly on `a` — a hypothesis this file cannot
+    derive from anything, i.e. exactly the unconstructed-`ρ` shape round 3
+    already rejected. `countRealization` stays the honest choice here:
+    unconditional, and it does not overclaim what `LitePayload` supports. -/
+def suretyRealization (e0 : Entry) (a : Node (LitePayload ClassName)) :
+    Ceiling.RecordRealization (LitePayload ClassName) a :=
+  Ceiling.countRealization e0 a
 
 /-- **`surety_ceiling`** — the surety ceiling: one application of
     `Ceiling.ceiling` at this domain, under the domain's own `hfiber`, over
@@ -109,17 +120,17 @@ def suretyRealization (e0 : Entry) : Ceiling.RecordRealization (LitePayload Clas
     both undischargeable by `S` and resident regardless. -/
 theorem surety_ceiling {Comm : Type} (Γ : Commitment Comm)
     (Genuine : Record → Context → Prop) (hfiber : ¬ Determined (bindingClaim Genuine))
-    (e0 : Entry)
-    (P : Policy Signer) (σ : Snapshot Signer ClassName) (a : Node (LitePayload ClassName)) :
+    (e0 : Entry) (a : Node (LitePayload ClassName))
+    (P : Policy Signer) (σ : Snapshot Signer ClassName) :
     (¬ ∃ S : Scheme Γ (bindingClaim Genuine), SnapshotSound S) ∧
     (∀ S : Scheme Γ (bindingClaim Genuine), ∀ m ∈ depclosure a, m.seed? = true →
-      ¬ Ceiling.Discharges Γ (bindingClaim Genuine) (suretyRealization e0) S m ∧
+      ¬ Ceiling.Discharges Γ (bindingClaim Genuine) (suretyRealization e0 a) S m ∧
         m ∈ trustSurfaceI P σ a) ∧
     (TotalI P σ a → trustSurfaceI P σ a = (depclosure a).filter (fun m => m.seed?)) ∧
     (TotalI P σ a → ∀ m ∈ depclosure a, m.seed? = false →
       (∃ e ∈ basisI P σ a, ∃ s t, e = .corroboration s t) ∧
       (∃ e ∈ basisI P σ a, ∃ s t tag, e = .vouch s t tag)) :=
-  Ceiling.ceiling Γ (bindingClaim Genuine) hfiber (suretyRealization e0) gate tagOf closureOk P σ a
+  Ceiling.ceiling Γ (bindingClaim Genuine) hfiber a (suretyRealization e0 a) gate tagOf closureOk P σ
 
 /-! ## The four non-vacuity witnesses (concrete `Unit` types) -/
 

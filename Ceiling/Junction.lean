@@ -93,22 +93,37 @@ variable {Payload : Type}
 -- RecordRealization — the missing embedding
 -- ===========================================================================
 
-/-- **A record realization**: the domain-supplied map from the accounting
-    world into the scheme world, subject to (R1) dependency-order
-    faithfulness and (R2) the seed boundary. Bundled as a structure —
+/-- **A record realization for `a`**: the domain-supplied map from the
+    accounting world into the scheme world, subject to (R1) dependency-order
+    faithfulness and (R2) the seed boundary — both scoped to `a`'s own
+    closure, not the whole `Node Payload` type. **Why scoped (round 4):**
+    the ceiling itself is always a statement about one specific `a`
+    (`Ceiling.ceiling` takes it as a parameter); `recordOf` is never
+    consulted outside `depclosure a`. The unscoped version demanded a
+    property the theorem never uses — `∀ m : Node Payload, m.seed? = true ↔
+    m.id = 0` is REFUTABLE by `Node.ground 5 true`, a value no domain's
+    builder ever constructs but the open `Node` type still contains, and no
+    refinement of a builder's own signature changes what `Node.ground`/
+    `Node.derived` — the type's OWN constructors — allow. Scoping to
+    `depclosure a` weakens nothing the ceiling depends on and makes the
+    obligation exactly the theorem a real builder's structure can prove
+    (`Instance.Identity.identity_id_mono`). Bundled as a structure —
     function plus the properties it must satisfy — mirroring
     `EonEalm.Commitment`'s own shape; never constructed in the neutral core,
-    always supplied (or, short of that, taken as an explicit hypothesis) by
-    the instance whose record it is. -/
-structure RecordRealization (Payload : Type) where
-  /-- The embedding itself. -/
+    always supplied by the instance whose record it is. -/
+structure RecordRealization (Payload : Type) (a : Node Payload) where
+  /-- The embedding itself — a total function; only its BEHAVIOR on
+      `depclosure a` is constrained below. -/
   recordOf : Node Payload → Record
-  /-- (R1) Dependency-order faithfulness: growing the accounting closure
-      grows the record. -/
-  faithful : ∀ m n : Node Payload, m ∈ depclosure n → recordOf m ⊑ recordOf n
-  /-- (R2) The seed boundary: a seed is exactly a node whose record commits
-      no prior entries. -/
-  seedBoundary : ∀ m : Node Payload, m.seed? = true ↔ recordOf m = []
+  /-- (R1) Dependency-order faithfulness, scoped to `a`'s closure: for every
+      `n` in it, everything `n` depends on (within that same closure)
+      records a genuine prefix of `n`'s own record. `m ∈ depclosure a` is
+      not separately required — it follows from `n ∈ depclosure a` and
+      `m ∈ depclosure n`, and no theorem here needs it stated twice. -/
+  faithful : ∀ n ∈ depclosure a, ∀ m ∈ depclosure n, recordOf m ⊑ recordOf n
+  /-- (R2) The seed boundary, scoped to `a`'s closure: a seed within it is
+      exactly a node whose record commits no prior entries. -/
+  seedBoundary : ∀ m ∈ depclosure a, m.seed? = true ↔ recordOf m = []
 
 section RecordRealizationNonvacuity
 
@@ -136,12 +151,13 @@ non-seed range to be intrinsically totally ordered regardless of content —
 exactly what a LENGTH (count) does, and exactly what `encode` collapsing to
 one entry does. `Instance.Identity`/`Instance.SuretyLite` never build such
 siblings in practice (`chain` and every witness use single-input
-`.derived` nodes only), but `RecordRealization`'s own (R1)/(R2) quantify
-over the FULL `Node Payload` type, which the type does not restrict, so a
-realization discharging them must handle the case regardless. This is the
-"obstruction, named": `encode : Payload → Entry`, informative per payload,
-is not constructible into a total `RecordRealization`; `countRealization`
-below is the construction that actually exists, using one entry, not a
+`.derived` nodes only), so scoping `RecordRealization` to `depclosure a`
+(round 4, below) does not rescue content-informative `encode` either — a
+domain whose OWN closure genuinely branches would still hit this, scoped
+or not; the neutral core cannot assume otherwise. This is the "obstruction,
+named": `encode : Payload → Entry`, informative per payload, is not
+constructible into a total `RecordRealization`; `countRealization` below
+is the construction that actually exists, using one entry, not a
 per-payload encoding. -/
 
 /-- The post-order size: seeds contribute `0`; every other node contributes
@@ -226,12 +242,14 @@ theorem countRecordOf_faithful (e : Entry) :
   | succ j ih => rw [Nat.succ_add, List.replicate_succ, List.replicate_succ, ih, List.cons_append]
 
 /-- **Non-vacuity of `RecordRealization` itself**: R1 and R2 are jointly
-    satisfiable, not merely individually statable, and — per the finding
-    above — this is the actual shape any total witness must take. -/
-def countRealization (e : Entry) : RecordRealization Payload where
+    satisfiable, not merely individually statable, unconditionally — no
+    hypothesis on `a` needed at all, since `countRecordOf_faithful`/
+    `countRecordOf_seedBoundary` already hold for the FULL `Node Payload`
+    type, a fortiori for any `depclosure a` restriction of it. -/
+def countRealization (e : Entry) (a : Node Payload) : RecordRealization Payload a where
   recordOf := countRecordOf e
-  faithful := countRecordOf_faithful e
-  seedBoundary := countRecordOf_seedBoundary e
+  faithful := fun n _ m hmem => countRecordOf_faithful e m n hmem
+  seedBoundary := fun m _ => countRecordOf_seedBoundary e m
 
 end RecordRealizationNonvacuity
 
@@ -268,29 +286,28 @@ GIVEN two named hypotheses. This is genuinely content-VARYING (unlike
 `globalLog` does).
 
 **What Reading B costs, stated precisely, not smuggled — matching (R1)/
-(R2) exactly:**
-- **(H1) id-monotonicity**: `m ∈ depclosure n → m.id ≤ n.id`.
-- **(H2) the seed boundary transported to `id`**: `m.seed? = true ↔
-  m.id = 0`.
+(R2) exactly, and NOW SCOPED to `depclosure a` (round 4) rather than the
+whole type:**
+- **(H1) id-monotonicity, on `a`'s closure**: `∀ n ∈ depclosure a,
+  ∀ m ∈ depclosure n, m.id ≤ n.id`.
+- **(H2) the seed boundary transported to `id`, on `a`'s closure**:
+  `∀ m ∈ depclosure a, m.seed? = true ↔ m.id = 0`.
+
+Scoping matters here specifically because the UNSCOPED forms are
+REFUTABLE, not merely undischarged (`Node.ground 5 true` refutes unscoped
+H2; `Node.derived 3 () [Node.ground 99 true]` refutes unscoped H1 — both
+values `chain`/`LitePayload` never build but the open `Node` type still
+contains). Scoped to `depclosure a`, both become theorems about a REAL
+closure's own structure — `Instance.Identity.identity_id_mono`/
+`identity_id_seedBoundary` discharge them for `a := chain evs`.
 
 **What Reading B does NOT deliver, honestly**: `globalLog : Nat → Entry`
 is indexed by POSITION, not by PAYLOAD — it is not literally `encode :
 Payload → Entry` applied to `m`'s own content. Two DIFFERENT non-seed
 nodes sharing an `id` (`Node`'s type does not forbid this) would collide
 regardless of payload. Recovering genuine payload-faithfulness needs a
-THIRD hypothesis (id-injectivity keyed to payload identity, i.e. an
-inverse `id → Payload` lookup) that neither `Instance.Identity`'s `chain`
-nor `Instance.SuretyLite`'s witnesses currently expose — `chain` takes
-its ids as arbitrary caller-supplied `Nat`s with no monotonicity or
-uniqueness obligation in its type today.
-
-This is offered, not applied: (H1)/(H2) are NOT discharged for either
-instance below (neither `chain`'s nor `LitePayload`'s current type proves
-them), so `logRealization` is not what `identityRealization`/
-`suretyRealization` use — `countRealization` is, since it needs nothing
-beyond what the types already guarantee. Adopting `logRealization`
-instead is a domain-model decision (adding a monotonicity/id-discipline
-obligation to `chain`'s own signature), not a proof-engineering one. -/
+THIRD hypothesis (id-injectivity keyed to payload identity) that neither
+instance discharges below — flagged, not silently dropped. -/
 
 def logRecordOf (globalLog : Nat → Entry) (m : Node Payload) : Record :=
   (List.range m.id).map globalLog
@@ -298,34 +315,34 @@ def logRecordOf (globalLog : Nat → Entry) (m : Node Payload) : Record :=
 theorem range_eq_nil_iff (a : Nat) : List.range a = [] ↔ a = 0 := by
   cases a <;> simp [List.range_succ]
 
-theorem logRecordOf_faithful (globalLog : Nat → Entry)
-    (hMono : ∀ m n : Node Payload, m ∈ depclosure n → m.id ≤ n.id) (m n : Node Payload)
-    (hmem : m ∈ depclosure n) :
+theorem logRecordOf_faithful (globalLog : Nat → Entry) (a : Node Payload)
+    (hMono : ∀ n ∈ depclosure a, ∀ m ∈ depclosure n, m.id ≤ n.id)
+    (n : Node Payload) (hn : n ∈ depclosure a) (m : Node Payload) (hmem : m ∈ depclosure n) :
     logRecordOf globalLog m ⊑ logRecordOf globalLog n := by
-  obtain ⟨k, hk⟩ := Nat.le.dest (hMono m n hmem)
+  obtain ⟨k, hk⟩ := Nat.le.dest (hMono n hn m hmem)
   refine ⟨(List.range k).map (fun x => globalLog (m.id + x)), ?_⟩
   show logRecordOf globalLog n = logRecordOf globalLog m ++ (List.range k).map (fun x => globalLog (m.id + x))
   unfold logRecordOf
   rw [← hk, List.range_add, List.map_append, List.map_map]
   rfl
 
-theorem logRecordOf_seedBoundary (globalLog : Nat → Entry)
-    (hSeedZero : ∀ m : Node Payload, m.seed? = true ↔ m.id = 0) (m : Node Payload) :
+theorem logRecordOf_seedBoundary (globalLog : Nat → Entry) (a : Node Payload)
+    (hSeedZero : ∀ m ∈ depclosure a, m.seed? = true ↔ m.id = 0)
+    (m : Node Payload) (hm : m ∈ depclosure a) :
     m.seed? = true ↔ logRecordOf globalLog m = [] := by
-  rw [hSeedZero, ← range_eq_nil_iff]
+  rw [hSeedZero m hm, ← range_eq_nil_iff]
   unfold logRecordOf
   exact List.map_eq_nil_iff.symm
 
-/-- The conditional, content-varying construction — GIVEN (H1)/(H2), a
-    genuine `RecordRealization`, distinct from `countRealization`'s
-    content-neutral one. Not instantiated on either instance below (see
-    the section doc for exactly why). -/
-def logRealization (globalLog : Nat → Entry)
-    (hMono : ∀ m n : Node Payload, m ∈ depclosure n → m.id ≤ n.id)
-    (hSeedZero : ∀ m : Node Payload, m.seed? = true ↔ m.id = 0) : RecordRealization Payload where
+/-- The conditional, content-varying construction — GIVEN (H1)/(H2) scoped
+    to `a`'s own closure, a genuine `RecordRealization Payload a`, distinct
+    from `countRealization`'s content-neutral one. -/
+def logRealization (globalLog : Nat → Entry) (a : Node Payload)
+    (hMono : ∀ n ∈ depclosure a, ∀ m ∈ depclosure n, m.id ≤ n.id)
+    (hSeedZero : ∀ m ∈ depclosure a, m.seed? = true ↔ m.id = 0) : RecordRealization Payload a where
   recordOf := logRecordOf globalLog
-  faithful := logRecordOf_faithful globalLog hMono
-  seedBoundary := logRecordOf_seedBoundary globalLog hSeedZero
+  faithful := fun n hn m hmem => logRecordOf_faithful globalLog a hMono n hn m hmem
+  seedBoundary := logRecordOf_seedBoundary globalLog a hSeedZero
 
 end LogRealization
 
@@ -337,9 +354,11 @@ end LogRealization
     without admission — `S` is snapshot-sound for the domain's binding
     claim, AND `S`'s verifier accepts a certificate for `m`'s OWN record
     under the realization `ρ`. Both conjuncts are consumed together in
-    `discharges_forces_binding` below — the test round 1 failed. -/
-def Discharges {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
-    (ρ : RecordRealization Payload) (S : Scheme Γ φ_bind) (m : Node Payload) : Prop :=
+    `discharges_forces_binding` below — the test round 1 failed. `ρ.recordOf`
+    is a total function, so `Discharges` itself needs no membership proof —
+    only `ρ`'s TYPE names the `a` its properties are scoped to. -/
+def Discharges {Comm : Type} {a : Node Payload} (Γ : Commitment Comm) (φ_bind : Claim)
+    (ρ : RecordRealization Payload a) (S : Scheme Γ φ_bind) (m : Node Payload) : Prop :=
   SnapshotSound S ∧ ∃ c, S.V (Γ.C (ρ.recordOf m)) c
 
 /-- **The joint-consumption witness.** `hsound` (from the FIRST conjunct) is
@@ -349,24 +368,25 @@ def Discharges {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
     genuinely needs both halves of `Discharges` — the first half alone is a
     function with nothing to apply it to, the second alone is an
     unauthenticated acceptance with no guarantee it means anything. -/
-theorem discharges_forces_binding {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
-    (ρ : RecordRealization Payload) (S : Scheme Γ φ_bind) (m : Node Payload)
+theorem discharges_forces_binding {Comm : Type} {a : Node Payload} (Γ : Commitment Comm)
+    (φ_bind : Claim) (ρ : RecordRealization Payload a) (S : Scheme Γ φ_bind) (m : Node Payload)
     (h : Discharges Γ φ_bind ρ S m) : ∀ ξ, φ_bind (ρ.recordOf m) ξ := by
   obtain ⟨hsound, c, hc⟩ := h
   exact hsound (ρ.recordOf m) c hc
 
-/-- **The seed-specific content R2 buys.** For a seed, `Discharges` reduces
-    to "S certifies at the EMPTY record" — a fact genuinely different from
-    discharging any other node (which would certify at that node's own,
-    generally nonempty, record). Uses R2 (`ρ.seedBoundary`) to rewrite
-    `ρ.recordOf m` to `[]` under the seed hypothesis — the accounting-side
-    flag and the realization's own law combining to produce a scheme-world
-    fact, not decoration. -/
-theorem discharges_seed_iff_certifies_empty {Comm : Type} (Γ : Commitment Comm)
-    (φ_bind : Claim) (ρ : RecordRealization Payload) (S : Scheme Γ φ_bind) (m : Node Payload)
-    (hseed : m.seed? = true) :
+/-- **The seed-specific content R2 buys.** For a seed IN `a`'s closure,
+    `Discharges` reduces to "S certifies at the EMPTY record" — a fact
+    genuinely different from discharging any other node (which would
+    certify at that node's own, generally nonempty, record). Uses R2
+    (`ρ.seedBoundary`, needing `hm : m ∈ depclosure a` now that it is
+    scoped) to rewrite `ρ.recordOf m` to `[]` under the seed hypothesis —
+    the accounting-side flag and the realization's own law combining to
+    produce a scheme-world fact, not decoration. -/
+theorem discharges_seed_iff_certifies_empty {Comm : Type} {a : Node Payload} (Γ : Commitment Comm)
+    (φ_bind : Claim) (ρ : RecordRealization Payload a) (S : Scheme Γ φ_bind) (m : Node Payload)
+    (hm : m ∈ depclosure a) (hseed : m.seed? = true) :
     Discharges Γ φ_bind ρ S m ↔ SnapshotSound S ∧ ∃ c, S.V (Γ.C []) c := by
-  have hrec : ρ.recordOf m = [] := (ρ.seedBoundary m).mp hseed
+  have hrec : ρ.recordOf m = [] := (ρ.seedBoundary m hm).mp hseed
   rw [Discharges, hrec]
 
 -- ===========================================================================
@@ -380,8 +400,8 @@ theorem discharges_seed_iff_certifies_empty {Comm : Type} (Γ : Commitment Comm)
     it would have certified. This is exactly the half of `Discharges` that
     does NOT need `ρ` — the half that does is
     `discharges_forces_binding`/`discharges_seed_iff_certifies_empty`. -/
-theorem no_seed_discharged {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
-    (hfiber : ¬ Determined φ_bind) (ρ : RecordRealization Payload)
+theorem no_seed_discharged {Comm : Type} {a : Node Payload} (Γ : Commitment Comm)
+    (φ_bind : Claim) (hfiber : ¬ Determined φ_bind) (ρ : RecordRealization Payload a)
     (S : Scheme Γ φ_bind) (m : Node Payload) :
     ¬ Discharges Γ φ_bind ρ S m :=
   fun h => binding_admits_no_scheme φ_bind hfiber Γ ⟨S, h.1⟩
@@ -415,8 +435,8 @@ theorem trivialClaim_scheme_exists {Comm : Type} (Γ : Commitment Comm) :
     design's falsification signpost — were `Discharges` identically `False`
     (or the two conjuncts unreachable together), neither L1 nor this witness
     would say anything. -/
-theorem discharges_nonvacuous {Comm : Type} (Γ : Commitment Comm)
-    (ρ : RecordRealization Payload) (m : Node Payload) :
+theorem discharges_nonvacuous {Comm : Type} {a : Node Payload} (Γ : Commitment Comm)
+    (ρ : RecordRealization Payload a) (m : Node Payload) :
     ∃ S : Scheme Γ trivialClaim, Discharges Γ trivialClaim ρ S m := by
   obtain ⟨S, hS⟩ := trivialClaim_scheme_exists Γ
   obtain ⟨c, hc⟩ := S.completeness (ρ.recordOf m) default trivial
@@ -442,9 +462,10 @@ variable {Tag Signer : Type} [DecidableEq Tag]
     `discharges_forces_binding`, not here; what IS new here is `φ_bind` and
     `a` co-occurring in one theorem's conclusion for the first time. -/
 theorem seeds_undischargeable_and_residual {Comm : Type} (Γ : Commitment Comm)
-    (φ_bind : Claim) (hfiber : ¬ Determined φ_bind) (ρ : RecordRealization Payload)
+    (φ_bind : Claim) (hfiber : ¬ Determined φ_bind) (a : Node Payload)
+    (ρ : RecordRealization Payload a)
     (gate : Payload → Bool) (tagOf : Payload → Tag) (closureOk : Payload → Bool)
-    (P : Policy Signer) (σ : Snapshot Signer Tag) (a : Node Payload) :
+    (P : Policy Signer) (σ : Snapshot Signer Tag) :
     ∀ S : Scheme Γ φ_bind, ∀ m ∈ depclosure a, m.seed? = true →
       ¬ Discharges Γ φ_bind ρ S m ∧ m ∈ trustSurface gate tagOf closureOk P σ a :=
   fun S m hmem hseed =>
@@ -584,26 +605,23 @@ theorem total_mono_snapshot (gate : Payload → Bool) (tagOf : Payload → Tag)
 above.** "Record extension `⊑`" is an order on `EonEalm.Record`;
 `SnapshotExt` above is an order on `Ceiling.Snapshot Signer Tag` — the two
 stay genuinely disjoint (this section's `SnapshotExt` facts are unconditional
-and never need a realization at all). What was previously reported as "no
-hypothesis in this package can make it align" is now specified precisely:
-`RecordRealization`'s own (R1) IS the growth-alignment hypothesis —
-`ρ.faithful` is literally "`depclosure`-membership transports to `⊑`."
-`growth_alignment` below is the `Monotone` consequence of R1, stated
-directly in `depclosure`'s own vocabulary rather than a bare `⊑` hypothesis.
-Both instances now supply a concrete `ρ` (`countRealization`, via
-`Instance.Identity.identityRealization`/`Instance.SuretyLite.
-suretyRealization`), so `growth_alignment` already applies to them directly
-— nothing further owed by the neutral core. -/
+and never need a realization at all). `RecordRealization`'s own (R1) IS the
+growth-alignment hypothesis, scoped to `a`'s closure — `ρ.faithful` is
+literally "`depclosure`-membership within `a`'s own closure transports to
+`⊑`." `growth_alignment` below is the `Monotone` consequence of R1, stated
+directly in `depclosure`'s own vocabulary rather than a bare `⊑` hypothesis. -/
 
-/-- **Growth alignment.** Given a realization `ρ` and `φ_bind` `Monotone`:
-    `φ_bind` holding at `m`'s record transports to any `n` with `m` in its
-    dependency closure — accounting-world growth (`depclosure` membership)
-    forces scheme-world growth (`⊑`) via (R1), and `Monotone` does the rest. -/
-theorem growth_alignment {Payload : Type} (φ_bind : Claim) (hmono : Monotone φ_bind)
-    (ρ : RecordRealization Payload) (m n : Node Payload) (hmem : m ∈ depclosure n)
+/-- **Growth alignment.** Given a realization `ρ` for `a` and `φ_bind`
+    `Monotone`: `φ_bind` holding at `m`'s record transports to any `n` in
+    `a`'s closure with `m` in its dependency closure — accounting-world
+    growth (`depclosure` membership) forces scheme-world growth (`⊑`) via
+    (R1), and `Monotone` does the rest. -/
+theorem growth_alignment {Payload : Type} {a : Node Payload} (φ_bind : Claim)
+    (hmono : Monotone φ_bind) (ρ : RecordRealization Payload a)
+    (n : Node Payload) (hn : n ∈ depclosure a) (m : Node Payload) (hmem : m ∈ depclosure n)
     (ξ : Context) (h : φ_bind (ρ.recordOf m) ξ) :
     φ_bind (ρ.recordOf n) ξ :=
-  hmono (ρ.recordOf m) (ρ.recordOf n) ξ h (ρ.faithful m n hmem)
+  hmono (ρ.recordOf m) (ρ.recordOf n) ξ h (ρ.faithful n hn m hmem)
 
 -- ===========================================================================
 -- `ceiling`, restated — φ_bind and a genuinely linked
@@ -616,9 +634,9 @@ theorem growth_alignment {Payload : Type} (φ_bind : Claim) (hmono : Monotone φ
     for `Discharges` to be well-typed — supplied by the caller (an instance)
     or, absent one, taken as an explicit hypothesis exactly like `hfiber`. -/
 theorem ceiling {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
-    (hfiber : ¬ Determined φ_bind) (ρ : RecordRealization Payload)
+    (hfiber : ¬ Determined φ_bind) (a : Node Payload) (ρ : RecordRealization Payload a)
     (gate : Payload → Bool) (tagOf : Payload → Tag) (closureOk : Payload → Bool)
-    (P : Policy Signer) (σ : Snapshot Signer Tag) (a : Node Payload) :
+    (P : Policy Signer) (σ : Snapshot Signer Tag) :
     (¬ ∃ S : Scheme Γ φ_bind, SnapshotSound S) ∧
     (∀ S : Scheme Γ φ_bind, ∀ m ∈ depclosure a, m.seed? = true →
       ¬ Discharges Γ φ_bind ρ S m ∧ m ∈ trustSurface gate tagOf closureOk P σ a) ∧
@@ -629,7 +647,7 @@ theorem ceiling {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
         (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t, e = .corroboration s t) ∧
         (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t tag, e = .vouch s t tag)) :=
   ⟨binding_admits_no_scheme φ_bind hfiber Γ,
-   seeds_undischargeable_and_residual Γ φ_bind hfiber ρ gate tagOf closureOk P σ a,
+   seeds_undischargeable_and_residual Γ φ_bind hfiber a ρ gate tagOf closureOk P σ,
    fun hTotal => (ceiling_minimality gate tagOf closureOk P σ a).mp hTotal,
    fun hTotal m hmem hnotSeed =>
      total_carries_both_species gate tagOf closureOk P σ a hTotal m hmem hnotSeed⟩
@@ -678,14 +696,14 @@ theorem ceiling_nonvacuous (e : Entry) :
     ∃ (φ_bind : Claim), ¬ Determined φ_bind ∧
       (¬ ∃ S : Scheme idCommitment φ_bind, SnapshotSound S) ∧
       (∀ S : Scheme idCommitment φ_bind, ∀ m ∈ depclosure wNode, m.seed? = true →
-        ¬ Discharges idCommitment φ_bind (countRealization e) S m ∧
+        ¬ Discharges idCommitment φ_bind (countRealization e wNode) S m ∧
           m ∈ trustSurface wGate wTagOf wClosureOk wPolicy wSnap wNode) ∧
       trustSurface wGate wTagOf wClosureOk wPolicy wSnap wNode =
         (depclosure wNode).filter (fun m => m.seed?) := by
   obtain ⟨φ_bind, hnd⟩ := exists_undetermined_claim
   exact ⟨φ_bind, hnd, binding_admits_no_scheme φ_bind hnd idCommitment,
-    seeds_undischargeable_and_residual idCommitment φ_bind hnd (countRealization e) wGate wTagOf
-      wClosureOk wPolicy wSnap wNode,
+    seeds_undischargeable_and_residual idCommitment φ_bind hnd wNode (countRealization e wNode)
+      wGate wTagOf wClosureOk wPolicy wSnap,
     (ceiling_minimality wGate wTagOf wClosureOk wPolicy wSnap wNode).mp wNode_total⟩
 
 end Nonvacuity
