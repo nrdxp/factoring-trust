@@ -1,0 +1,16 @@
+# Factoring Trust
+
+**A Machine-Checked Characterization of Where Verification Must End**
+
+Trust is the complement of verifiability — and above a floor, that complement
+*factors*. Verification fails for exactly three reasons: the fact is not
+determined by the record, it is not certifiable from the record at the
+verifier's power, or it does not stay true as the record grows. Each failure
+names whom you must trust and what the cure costs, and the "exactly" is a
+machine-checked biconditional, not a taxonomy.
+
+This repository is the canonical, self-contained home of that result: the Lean
+artifact and the paper, built to be reviewed as one small whole.
+
+> Status: **under construction.** The mechanization is being assembled into its
+> minimal published form. See `AGENTS.md` for the project boundary.
