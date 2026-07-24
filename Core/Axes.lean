@@ -34,4 +34,19 @@ theorem determinedProj_monotone {φ : Claim} (hd : Determined φ) (hm : Monotone
   (determinedProj_iff hd w' default).mpr
     (hm w w' default ((determinedProj_iff hd w default).mp h) hext)
 
+/-- `Determined` is a genuine restriction, not vacuous: some claim fails it.
+    Witness: `φ := fun _ ξ => ξ = ξ₁` for a `Context.nontrivial` pair
+    `ξ₁ ≠ ξ₂` — determination at `(ξ₁, ξ₂)` would force `ξ₂ = ξ₁`, contradicting
+    the pair. This is the theorem that consumes `Context.nontrivial`. -/
+theorem exists_undetermined_claim : ∃ φ : Claim, ¬ Determined φ := by
+  obtain ⟨ξ₁, ξ₂, hne⟩ := Context.nontrivial
+  refine ⟨fun _ ξ => ξ = ξ₁, fun hdet => hne ?_⟩
+  exact ((hdet [] ξ₁ ξ₂).mp rfl).symm
+
+/-- The collapse direction, making `Context.nontrivial`'s role legible: a
+    subsingleton `Context` would trivialize `Determined` for every claim. -/
+theorem subsingleton_context_trivializes (hsub : ∀ ξ ξ' : Context, ξ = ξ') :
+    ∀ φ : Claim, Determined φ :=
+  fun _ _ ξ ξ' => by rw [hsub ξ ξ']
+
 end EonEalm
