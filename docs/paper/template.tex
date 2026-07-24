@@ -77,11 +77,19 @@ $endfor$
 % Authors — IEEEtran conference block form: \IEEEauthorblockN/A per author,
 % \and between authors. Unlike usenix.sty's tabular \author, these are
 % ordinary macros, so multi-line source (but no blank line) is safe.
+%
+% CSF is double-blind: the `anon` Quarto profile (see _quarto-anon.yml)
+% sets the `anonymous` metadata flag, which this block reads to swap the
+% real author/affiliation block for a placeholder. Render with
+% `--profile anon` to produce the submission PDF; omit it for the
+% normal (attributed) build.
 \author{%
-$for(by-author)$\IEEEauthorblockN{$by-author.name.literal$}
+$if(anonymous)$\IEEEauthorblockN{Anonymous Submission}
+\IEEEauthorblockA{Submitted for double-blind review}
+$else$$for(by-author)$\IEEEauthorblockN{$by-author.name.literal$}
 \IEEEauthorblockA{$for(by-author.affiliations)$$by-author.affiliations.name$$endfor$$if(by-author.email)$ \\ \texttt{$by-author.email$}$endif$}$sep$
 \and
-$endfor$}
+$endfor$$endif$}
 
 \maketitle
 

@@ -1,3 +1,6 @@
+# Default (attributed) build: quarto render docs/paper
+# CSF double-blind submission build: quarto render docs/paper --profile anon
+# (see _quarto-anon.yml — swaps the author block for "Anonymous Submission")
 project:
   type: manuscript
   output-dir: _output

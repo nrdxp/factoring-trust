@@ -1,0 +1,11 @@
+# Quarto profile for the CSF double-blind submission build.
+# Render with: quarto render docs/paper --profile anon
+# (equivalently: QUARTO_PROFILE=anon quarto render docs/paper)
+#
+# Sets the `anonymous` metadata flag that template.tex's \author block
+# reads to substitute "Anonymous Submission" for the real author and
+# affiliation. Only the PDF (the artifact actually submitted to CSF)
+# reads this flag; the HTML format uses Pandoc's own default author
+# rendering and is unaffected — appropriate, since HTML is not part of
+# the submission.
+anonymous: true
