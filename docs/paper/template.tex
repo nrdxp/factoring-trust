@@ -1,10 +1,26 @@
-% Quarto/Pandoc custom template for USENIX Security 2026.
-% Uses the official usenix.sty package with the standard article class.
+% Quarto/Pandoc custom template for IEEE conference format.
+% Target venue: IEEE CSF (Computer Security Foundations Symposium), which
+% publishes in the standard IEEE Conference Proceedings two-column format.
+% Uses the official IEEEtran document class (conference mode) — no
+% maintained Quarto IEEE extension exists (checked quarto-journals/* and a
+% GitHub-wide search 2026-07-24: ACM, ACS, AGU, Elsevier, PLOS, JSS, JASA,
+% and Biophysical Journal are covered; IEEE is not), so this is hand-
+% configured directly, the same way usenix.sty was hand-wired before it.
+%
+% CFP-TUNING: CSF's exact template requirements for this cycle (page limit,
+% anonymous-for-review mode, any CSF-specific IEEEtran variant) are not yet
+% known. This is the stock IEEEtran conference base; every place that will
+% need CFP-specific tuning is marked CFP-TUNING below.
 
-\documentclass[letterpaper,twocolumn,10pt]{article}
-\usepackage{usenix}
+\documentclass[conference,letterpaper,10pt]{IEEEtran}
+
+% CFP-TUNING: needed only if a \thanks-based author footnote (funding ack,
+% corresponding-author mark, etc.) is added — \thanks conflicts with
+% IEEEtran's own footnote commands without this override.
+% \IEEEoverridecommandlockouts
 
 % ─── Packages ─────────────────────────────────────────────────────────────────
+% IEEEtran, unlike usenix.sty, auto-loads none of these — declare explicitly.
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{tikz}
@@ -19,6 +35,19 @@
 \usepackage{pgfplots}      % data-driven plots
 \pgfplotsset{compat=1.18}
 \usepackage{subcaption}    % subfigures
+
+% Quarto's cite-method: natbib (see _quarto.yml) needs natbib plus an
+% IEEE-numeric, natbib-compatible bibliography style. IEEEtranN.bst is that
+% companion style, shipped alongside IEEEtran.cls in the same TeX Live
+% package (texlive-publishers on Debian/Ubuntu; texlive-full elsewhere).
+\usepackage[numbers,sort&compress]{natbib}
+
+% refs and links — IEEEtran provides neither.
+\usepackage{xcolor}
+% CFP-TUNING: colorlinks are useful for on-screen review; many IEEE
+% camera-readies require black, non-colored links instead — swap to
+% \usepackage[hidelinks]{hyperref} once CSF's camera-ready rules are known.
+\usepackage[colorlinks,linkcolor={green!80!black},citecolor={red!70!black},urlcolor={blue!70!black}]{hyperref}
 
 % Pandoc tight_list support
 \providecommand{\tightlist}{%
@@ -43,18 +72,22 @@ $endfor$
 \begin{document}
 %-------------------------------------------------------------------------------
 
-% Suppress date (USENIX style)
-\date{}
+\title{$title$}
 
-% Title — USENIX: 14pt bold, handled by usenix.sty \maketitle
-\title{\Large \bf $title$}
-
-% Authors — must not contain \par (blank lines); usenix.sty uses tabular
+% Authors — IEEEtran conference block form: \IEEEauthorblockN/A per author,
+% \and between authors. Unlike usenix.sty's tabular \author, these are
+% ordinary macros, so multi-line source (but no blank line) is safe.
 \author{%
-$for(by-author)${\rm $by-author.name.literal$}\\$for(by-author.affiliations)$$by-author.affiliations.name$$endfor$$if(by-author.email)$\\\texttt{$by-author.email$}$endif$$sep$\and$endfor$%
-}
+$for(by-author)$\IEEEauthorblockN{$by-author.name.literal$}
+\IEEEauthorblockA{$for(by-author.affiliations)$$by-author.affiliations.name$$endfor$$if(by-author.email)$ \\ \texttt{$by-author.email$}$endif$}$sep$
+\and
+$endfor$}
 
 \maketitle
+
+% CFP-TUNING: index.qmd's frontmatter defines no keywords, so no
+% \begin{IEEEkeywords}...\end{IEEEkeywords} block is emitted here. Add one
+% (and a matching frontmatter field) if CSF requires an IEEE keyword list.
 
 %-------------------------------------------------------------------------------
 \begin{abstract}
@@ -70,8 +103,7 @@ $body$
 %-------------------------------------------------------------------------------
 % Bibliography
 %-------------------------------------------------------------------------------
-\cleardoublepage
-\bibliographystyle{plain}
+\bibliographystyle{IEEEtranN}
 $if(bibliography)$
 \bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
 $endif$
