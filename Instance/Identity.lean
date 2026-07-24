@@ -190,12 +190,17 @@ theorem principal_trust_bounded (P : Policy Signer) (σ : Snapshot Signer Princi
 
 /-- **`identity_ceiling`** — the paper's "identity is at the ceiling"
     corollary: one application of `Ceiling.ceiling` at this domain, under
-    the domain's own `hfiber`. -/
+    the domain's own `hfiber`. The second conjunct is L2
+    (`Ceiling.seeds_undischargeable_and_residual`): for every scheme
+    `S : Scheme Γ (bindingClaim BindsTo)`, the genesis seed is both
+    undischargeable by `S` and resident in the trust surface regardless. -/
 theorem identity_ceiling {Comm : Type} (Γ : Commitment Comm)
     (BindsTo : Record → Context → Prop) (hfiber : ¬ Determined (bindingClaim BindsTo))
     (P : Policy Signer) (σ : Snapshot Signer PrincipalId) (a : Node (KeyEvent PrincipalId)) :
     (¬ ∃ S : Scheme Γ (bindingClaim BindsTo), SnapshotSound S) ∧
-    (∀ m ∈ depclosure a, m.seed? = true → m ∈ trustSurfaceI P σ a) ∧
+    (∀ S : Scheme Γ (bindingClaim BindsTo), ∀ m ∈ depclosure a, m.seed? = true →
+      ¬ Ceiling.Discharges Γ (bindingClaim BindsTo) S m ∧ m ∈ trustSurfaceI P σ a) ∧
+    (TotalI P σ a → trustSurfaceI P σ a = (depclosure a).filter (fun m => m.seed?)) ∧
     (TotalI P σ a → ∀ m ∈ depclosure a, m.seed? = false →
       (∃ e ∈ basisI P σ a, ∃ s t, e = .corroboration s t) ∧
       (∃ e ∈ basisI P σ a, ∃ s t tag, e = .vouch s t tag)) :=

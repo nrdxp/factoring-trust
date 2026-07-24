@@ -89,15 +89,20 @@ never proved here, never a fresh axiom. -/
 abbrev genesisSeed : Node (LitePayload ClassName) := Node.ground 0 true
 
 /-- **`surety_ceiling`** — the surety ceiling: one application of
-    `Ceiling.ceiling` at this domain, under the domain's own `hfiber`.
-    Cell coverage: T1 (verifiable, via `Total`/`trustSurface`) + T2
-    (genuineness = ¬D, this theorem's gate; the forced generator's
-    degeneracy = ¬C, cited from `Witness.Generator`, never restated here). -/
+    `Ceiling.ceiling` at this domain, under the domain's own `hfiber`. Cell
+    coverage: the verifiable case (via `Total`/`trustSurface`) + T1
+    (genuineness = ¬D, this theorem's gate) + T2 (the forced generator's
+    degeneracy = ¬C, cited from `Witness.Generator`, never restated here).
+    The second conjunct is L2 (`Ceiling.seeds_undischargeable_and_residual`):
+    for every scheme `S : Scheme Γ (bindingClaim Genuine)`, the toolchain
+    genesis seed is both undischargeable by `S` and resident regardless. -/
 theorem surety_ceiling {Comm : Type} (Γ : Commitment Comm)
     (Genuine : Record → Context → Prop) (hfiber : ¬ Determined (bindingClaim Genuine))
     (P : Policy Signer) (σ : Snapshot Signer ClassName) (a : Node (LitePayload ClassName)) :
     (¬ ∃ S : Scheme Γ (bindingClaim Genuine), SnapshotSound S) ∧
-    (∀ m ∈ depclosure a, m.seed? = true → m ∈ trustSurfaceI P σ a) ∧
+    (∀ S : Scheme Γ (bindingClaim Genuine), ∀ m ∈ depclosure a, m.seed? = true →
+      ¬ Ceiling.Discharges Γ (bindingClaim Genuine) S m ∧ m ∈ trustSurfaceI P σ a) ∧
+    (TotalI P σ a → trustSurfaceI P σ a = (depclosure a).filter (fun m => m.seed?)) ∧
     (TotalI P σ a → ∀ m ∈ depclosure a, m.seed? = false →
       (∃ e ∈ basisI P σ a, ∃ s t, e = .corroboration s t) ∧
       (∃ e ∈ basisI P σ a, ∃ s t tag, e = .vouch s t tag)) :=
