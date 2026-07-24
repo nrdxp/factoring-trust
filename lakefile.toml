@@ -1,15 +1,16 @@
 name = "FactoringTrust"
 version = "0.1.0"
 keywords = ["math", "formal-verification"]
-defaultTargets = ["Core", "Effective", "Transport", "Witness"]
+defaultTargets = ["Core", "Effective", "Transport", "Witness", "Ceiling"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
 relaxedAutoImplicit = false
 
 # Only `Effective` imports Mathlib (the computable stratum's `ComputablePred`/
-# `Primcodable` vocabulary); `Core`, `Transport`, and `Witness` stay Mathlib-free
-# by not importing it, per the project boundary's per-package TCB discipline.
+# `Primcodable` vocabulary); `Core`, `Transport`, `Witness`, and `Ceiling` stay
+# Mathlib-free by not importing it, per the project boundary's per-package TCB
+# discipline.
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
@@ -26,3 +27,6 @@ name = "Transport"
 
 [[lean_lib]]
 name = "Witness"
+
+[[lean_lib]]
+name = "Ceiling"
