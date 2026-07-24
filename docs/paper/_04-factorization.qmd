@@ -1,0 +1,91 @@
+# The Factorization Display {#sec-factorization}
+
+The theorem of @sec-theorem answers *whether* a scheme exists. This
+section gives the display that answers *what the claims admitting an
+enduring, computable scheme actually are* — and, in doing so, identifies
+two of the paper's three axes with an algebra that predates this paper
+by four decades.
+
+::: {.theorem}
+At the computable stratum, enduring flavor: $\Claim$ admits an
+enduring, offline, computable evidence scheme **iff**
+$$\Claim \in \pstar\big(\Sigma_1 \cap \UpC(\sqsubseteq)\big),$$
+i.e. there exists $\psi$ such that $\psi$ is computably semi-decidable,
+$\psi$ is upward-closed under $\sqsubseteq$, and $\Claim = \lambda\, w\;
+\xi.\ \psi\ w$.
+:::
+
+<!-- TODO: this display is a direct corollary of TT-end(computable)
+     via the determination/monotonicity re-expressions of §2, but the
+     packaged Lean corollary stating it literally does not yet exist in
+     the corpus — today it is a true rearrangement of an existing proof,
+     not yet a declaration a reader can point at. Land it before this
+     paper's exact-theorem-statement gate closes. -->
+
+## Three readings, none of them free
+
+**(i) The stratum matters.** The identification above is a fact about
+the *computable* stratum specifically. At the oracle stratum,
+$\pstar(\exists \cdot \mathrm{ALL} \cap \UpC(\sqsubseteq))$ is simply
+every upward-closed predicate on records — the Alexandrov topology on
+$(\Record, \sqsubseteq)$, with no effectivity content at all. At the
+polynomial stratum, $\mathrm{NP} \cap \UpC(\sqsubseteq)$ is not even
+closed under the operations that make a frame a frame. The sentence "the
+two record-side conditions carve out precisely the effectively-open
+sets" is true at exactly one stratum; it is not a general fact about the
+three axes restated in topological language.
+
+**(ii) The soundness flavor matters, and the split is the paper's own
+contribution within an inherited algebra.** The display above covers
+*enduring* evidence only. A claim's snapshot-record-side class is
+$\Sigma_1$ *simpliciter* — semi-decidable at a fixed stage, with no
+upward-closure demanded. This is not a gap in the display; it is the
+sharpest sentence available: **snapshot evidence is affirmability of the
+finite stage; enduring evidence is observability of the limit.** The
+classical tradition's single bundled notion — "observable property,"
+meaning simultaneously semi-decidable *and* stable — factors, in this
+setting, across the snapshot/enduring distinction, into certifiability
+and monotonicity as two independent axes. No source in @sec-related-work
+splits the classical bundle this way; Vickers' polarity distinction
+splits observable properties along a different axis entirely
+(affirmative vs. refutative), not along this one.
+
+**(iii) The algebra is inherited, and credited.** A semi-decidable,
+upward-closed set of finite records is exactly a computably-enumerable
+union of prefix-cylinders — the *effectively open* sets of the
+positive-information topology on records ordered by extension. This is
+Escardó's synthetic-topology dictionary, applied: semi-decidable
+properties correspond to open sets, and "observable" (Abramsky) or
+"affirmable" (Vickers) are the names this tradition already gave them
+[@escardo-2004; @abramsky-1987; @vickers-1989], with priority to Smyth's
+original topological treatment of predicate transformers
+[@smyth-1983]. The class in this setting has finite meets and
+*computably-enumerable* joins — the effective form of a frame, not
+arbitrary joins — and the honest phrase throughout this paper is "the
+effective form of the observables frame," not "a frame" unqualified.
+
+Read together: **this paper's construction, at the computable stratum
+and the enduring flavor, is the classical frame of observables, pulled
+back along the projection that forgets context** — causal history,
+clocks, key custody, everything a verifier does not see. Two of this
+paper's three axes live inside a well-studied algebra; the paper's own
+contribution is the third axis (@sec-related-work), the pullback that
+connects the two, and the snapshot/enduring factoring of the classical
+bundle that no swept source performs.
+
+## Why "exactly three," and not some other count
+
+The factorization display above can be read as having three moving
+parts — an existential over a certificate class, a predicate, and an
+upward-closure condition — and it is tempting to conclude that "exactly
+three axes" follows from counting them. It does not: the expression
+above can equally be parsed into a different number of parts (the
+existential bundles a certificate and a class; the floor of
+@sec-floor is an invisible fifth part not mentioned in the display at
+all). The factorization display's role is to make an already-proved
+count *legible*, not to *derive* it. Exhaustiveness rests entirely on
+the $\Leftarrow$ direction of `TT-snap`/`TT-end` (@sec-theorem): those
+three conditions, together, are shown to *construct* a scheme, and
+nothing weaker than all three is shown to suffice. That is the sense in
+which "exactly three" is a theorem and not an editorial choice about how
+to draw a diagram.

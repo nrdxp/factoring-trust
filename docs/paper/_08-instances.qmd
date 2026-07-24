@@ -1,0 +1,112 @@
+# Worked Instances {#sec-instances}
+
+The trichotomy of @sec-theorem is stated over append-only records
+specifically. This section introduces its companion theorem, states it
+over a more general structure, and then works the framework on real
+cases — a generality demonstration, not a survey of examples chosen
+after the fact.
+
+## The verification ceiling: a companion, not a corollary
+
+Generalize from a single append-only record to a well-founded
+justification structure: a directed acyclic graph of artifacts, each
+either a leaf or carrying a derived record that names its own inputs,
+together with a fail-closed classification of every artifact into
+exactly one of a small number of trust buckets, relative to an admitted
+policy $P$ and evidence clock $\sigma$.
+
+::: {.theorem}
+**The verification ceiling.** For such a structure:
+
+(i) **Gate** (inherited from the trichotomy): an artifact's genuineness
+    or binding claim, under an explicit underdetermination hypothesis,
+    admits no evidence scheme over any commitment.
+
+(ii) **Completeness**: every artifact in the structure's closure is
+    booked into exactly one bucket, and every piece of admitted evidence
+    a positive verdict depends on is enumerated in that artifact's
+    basis — nothing is silently trusted.
+
+(iii) **Minimality**: the trust surface of an artifact contains the seed
+    set required by *every* scheme for it — because (i) makes the
+    genesis claim permanently underivable — and equality between the
+    trust surface and the seed set is therefore the *ceiling*: a system
+    achieving it cannot be improved upon.
+:::
+
+This is a companion theorem, not a corollary of `TT-snap`/`TT-end`. The
+trichotomy's vocabulary — records, contexts, claims, commitments,
+schemes — and the ceiling's vocabulary — artifacts, buckets, policies,
+snapshots, a total classification function — share no object either is
+directly definable in terms of. The only bridge between them is the
+gate: an artifact's genuineness claim, once cast as a record claim,
+*is* an instance of the trichotomy's own determination gate. Everything
+else in the ceiling — its completeness and minimality machinery — is the
+companion theorem's own content, proved independently.
+
+## Two instantiations, because one instance is a special case and two is a theory
+
+The ceiling is instantiated twice in this paper's scope, over genuinely
+disjoint domains, to demonstrate that the *generality* of the companion
+theorem is itself a claim being defended, not merely asserted:
+
+**Identity.** A cryptographic identity system whose record is a hash
+chain and whose genesis is a single binding commitment. This instance's
+impossibility content is fully machine-checkable with no conditional
+frontier — there is no forced-generator or Rice-theoretic tightness
+result standing between the model and the theorem, unlike the build
+domain below. It is the paper's cleanest demonstration that the
+completeness and minimality machinery is not build-specific.
+
+**Source-build integrity** *(follow-up paper, cited, not included)*. A
+source-build provenance system whose genesis is a corroboration quorum
+over source classes. This instance carries build-domain-specific
+frontier machinery — format/parse gates, corroboration conditions,
+tightness results resting on Rice and Rice–Shapiro applied to a forced
+generator — that is conditional and prose-grade rather than fully
+machine-checked, and is kept out of this paper's flagship scope
+precisely to keep the flagship's own epistemic grade uniform. It is
+cited here only to demonstrate that the companion theorem has already
+been carried to a second, independent domain.
+
+## The extended worked example: split-view, resolved without a fourth axis
+
+A verifier facing two different views of what is claimed to be the same
+append-only log — a *split-view*, or equivocation, attack — looks at
+first glance like it needs a fourth axis: neither determination,
+certifiability, nor monotonicity as defined in @sec-model obviously
+names "my two sources disagree." It does not. The attack decomposes,
+without remainder, into two things the trichotomy already owns:
+
+1. **Per-verifier**: "my anchor commits a prefix of the canonical
+   record." For a fixed anchor, this claim is determined, monotone, and
+   certifiable *over the canonical record* — the verifier's actual
+   difficulty is that its only access to the canonical record is the
+   anchor itself. The trust spent here is the admitted anchor, an
+   entailment move (@sec-cures) against $P$, not a new axis.
+2. **Cross-verifier**: "the two views I've been shown are consistent
+   with each other." Posed over the joint record of shown views, this
+   claim is determined and certifiable — a Merkle consistency proof is
+   literally its certificate — and **non-monotone**: two views
+   consistent today can diverge tomorrow. This is exactly the trichotomy's
+   monotonicity-failure case, `EON` applies directly, and its cure table
+   (@sec-cures) predicts the deployed defenses verbatim: entailment via a
+   witness quorum or gossip protocol (cosigned checkpoints), restriction
+   to "consistent as of time $t$," or an accepted expiry window.
+
+A sharper fact falls out for free: divergence, once it exists, is
+*permanent* under further extension of both views — two records that
+disagree at some position remain disagreeing at that position forever.
+So *equivocation* is itself monotone and affirmable — its evidence, once
+obtained, endures — while *honesty* is refutative: never provable
+forever, only ever falsifiable at the next check. That asymmetry is why
+gossip protocols work at all, and why "this log is honest" can only ever
+be held as an expiring, snapshot-grade confidence rather than an
+enduring one. The framework does not just classify the attack; it
+explains the shape of the field's actual defense against it.
+
+A fourth axis would have to make verification fail for a claim that is
+determined, certifiable, *and* monotone; neither component of the
+split-view decomposition does that. This is the strongest available
+validation of the three-axis taxonomy against a real, adversarial case,
+not merely a worked textbook example.

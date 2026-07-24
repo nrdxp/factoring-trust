@@ -1,0 +1,133 @@
+# Introduction
+
+**Trust is the complement of verifiability — and above a floor, that
+complement factors: verification fails for exactly three reasons, each
+failure names whom you must trust and what the cure costs, and the
+"exactly" is a machine-checked biconditional, not a taxonomy.**
+
+Every section of this paper serves that one sentence. The motivation
+below shows the complement is unfactored in the field it appears in.
+@sec-theorem factors it. @sec-instances shows the factors bind above the
+floor, on real systems, and price differently depending on which one
+failed. @sec-related-work shows every factor was already known, and that
+the factoring was not.
+
+## The asymmetry that motivates the question
+
+Every deployed verification system ships a trusted remainder: a
+certificate authority, a genesis seed, a witness set, a key ceremony.
+The field has deep machinery for what *can* be established. Gligor and
+Woo prove that a software root of trust is reachable, unconditionally,
+from an untrusted starting state [@gligor-woo-2019]. Protocol analysis
+proves security goals — authentication, confidentiality — from minimal
+executions, expressed as geometric sentences over a protocol's runs
+[@dougherty-guttman-ramsdell-2018]. Formal e-voting verifiability
+isolates exactly the fragment of a protocol that can be checked, leaving
+the rest to an explicit trust assumption [@kremer-ryan-smyth-2010].
+
+Three different subfields, and in each the remainder is handled the same
+way: assumed, listed, never analyzed. Kremer, Ryan, and Smyth are
+explicit about it — "we only model the parts of the protocol that we
+need to trust for the purpose of verifiability; all the remaining parts
+of the system will be controlled by the adversarial environment"
+[@kremer-ryan-smyth-2010] — and the inference from *not verifiable* to
+*therefore trusted* is their own, not an artifact we are imposing on
+them. The pattern recurs at the level of individual papers: Dougherty,
+Guttman, and Ramsdell build their entire technical contribution around
+computing *minimal* executions, and never once turn that minimality
+machinery on the trust assumptions their own analysis holds fixed
+[@dougherty-guttman-ramsdell-2018]. The field formalizes *establish* and
+enumerates *assume* — consistently, across subfields that do not cite
+one another.
+
+## The question folklore has always asked, never answered
+
+Folklore has long said what the remainder *is*. "Trust enters where more
+exact knowledge is not available" [@frankel-1977]. "Trust begins where
+prediction ends" [@lewis-weigert-1985]. These are the ancestors of this
+paper's thesis-half, and later work inherits the same unfactored
+formulation: to trust is to lower "the barrier of monitoring,
+challenging, checking, and questioning" [@nguyen-unquestioning]; trust is
+a leap "enabled by suspension — across the gorge of the unknowable,"
+where suspension "brackets out uncertainty and ignorance" as one
+undifferentiated act [@mollering-2001].
+
+But left unanswered: *why*? If the residue is structureless, "minimize
+trust" is a slogan — a direction with no metric. If the residue has
+causes, each cause carries its own impossibility grade, its own minimal
+repair, and its own price, and "minimize trust" becomes an optimization
+problem with a computable objective.
+
+## The contribution, with its honest pedigree
+
+Above a floor of two named residuals (@sec-floor), verification of a
+claim over a growing, append-only record fails for exactly one of three
+reasons:
+
+- **Determination.** The fact is not a function of the committed record
+  — the record underdetermines the history that produced it.
+- **Certifiability.** The fact is in the record, but not certifiable
+  from it at the verifier's computational power — semi-decidable
+  ($\Sigma_1$) at the computable stratum, in $\mathrm{NP}$ at the
+  polynomial one.
+- **Monotonicity.** The fact does not stay true as the record grows —
+  the evidence cannot endure past the moment it was produced.
+
+Each axis is inherited, and credited as such. Archival diplomatics
+hypothesized the opposite of the determination axis and reported it
+refuted, across twenty-two case studies [@interpares-2002]; that finding
+has already crossed into computer science once
+[@factor-et-al-2009]. Synthetic topology owns the algebra of the other
+two axes: certifiable, upward-closed properties form the
+*observables frame* — semi-decidable and stable-under-extension as one
+bundled notion — decades before this paper [@smyth-1983; @abramsky-1987;
+@vickers-1989; @escardo-2004]. CALM owns the coordination-freedom
+reading of monotonicity, as a biconditional over increasingly general
+specifications [@ameloot-neven-vandenbussche-2013; @hellerstein-2026].
+
+The composition is ours. No source we reached factors the residue *by
+cause*, pairs these axes as a joint characterization of *trust*, or
+states the biconditional form. And "exactly three" is not asserted as an
+empirical count: it is the $\Leftarrow$ direction of a machine-checked
+if-and-only-if — satisfy all three conditions, and the evidence scheme
+is *constructed*, not merely presumed to exist.
+
+## The payoff
+
+The failed axis identifies the trust anchor. A determination failure
+names the witness of history — the signer, the attestor — who must be
+trusted because the record alone cannot settle the question. A
+certifiability failure names the judgment that substitutes for the
+impossible check — a voucher. A monotonicity failure names the holder of
+liveness on the present — a witness quorum, a gossip network. The
+framework thereby *derives*, from first principles, exactly the anchor
+inventory practice already converged on: certificate authorities,
+vouches, transparency-log witnesses. @sec-instances works one case in
+full — a split-view (equivocation) attack against an append-only log —
+and shows the framework predicting the deployed defense in detail, not
+merely naming a category after the fact.
+
+Trust, on this account, is not eliminated. It is located, typed, priced,
+and bounded. A system whose trusted remainder equals its named genesis
+base sits *at* the verification ceiling — provably, not by inspection.
+
+## Roadmap
+
+@sec-model gives the model: records, contexts, claims, and the offline
+verifier, whose type *is* the offline property it checks. @sec-theorem
+states the one theorem, `TT-snap`/`TT-end`, once, across a tower of
+verifier strata; two prior named results (`EON`, `EALM`) fall out as
+corollaries. @sec-factorization gives the factorization display that
+makes the three-axis count legible, and identifies its two factors with
+a forty-year-old algebra from synthetic topology. @sec-floor states the
+floor beneath which the trichotomy does not apply. @sec-cell-table
+tabulates all eight combinations of the three axes, two of which are
+empty *by theorem*. @sec-cures presents repair as movement along four
+coordinates, with a one-line explanation for why no accounting of
+"total trust spent" can ever balance. @sec-instances works the framework
+on two independent domains, demonstrating that the factoring — not one
+instance of it — is the contribution. @sec-scope-objections states what
+this result does not claim. @sec-related-work closes the case for
+novelty, cluster by cluster, ending on a single table: every ingredient
+of this result already has a home in the literature; the composition has
+none we could find.

@@ -1,0 +1,108 @@
+# The Model {#sec-model}
+
+The model is kept deliberately small: two definitions per axis, each
+with its credited home stated inline, and nothing else. Every object
+below is mechanized in Lean 4; identifiers are given so a reader can
+locate the corresponding declaration, but nothing in this section
+depends on Lean syntax to be read.
+
+## Records, contexts, and claims
+
+A **record** is a finite, append-only sequence of entries,
+$\Record := \mathrm{List}\ \mathit{Entry}$, ordered by the prefix
+relation $\sqsubseteq$: $w \sqsubseteq w'$ iff $w$ is a prefix of $w'$.
+Records grow only by appending — nothing already committed is ever
+edited or removed. A **context** $\Context$ is an abstract, inhabited,
+non-trivial type standing for everything a verifier does *not* see:
+causal history, wall-clock time, key custody, the existence of other
+records. A **world** pairs the two, $\World := \Record \times \Context$.
+
+A **claim** is a predicate over a world,
+$\Claim : \Record \to \Context \to \mathrm{Prop}$ — "the entry at
+position $k$ was authored by principal $A$," "record $w$ is the
+canonical log's current head." The claim, not the record alone, is what
+a verifier is asked to check.
+
+## The offline verifier
+
+A **commitment** $\Gamma$ packages a record's committed representation:
+a component type $C$ (e.g. a digest), a binding relation, and a
+verification-certificate type $VC$ with soundness and completeness
+conditions relative to $C$. A **scheme** for $\Claim$ under $\Gamma$ is a
+certificate type together with a verifier
+$V : \mathit{Comm} \to \mathit{Proof} \to \mathrm{Prop}$ that decides,
+from the commitment and a certificate alone — never from the record or
+the context directly — whether $\Claim$ holds. This is the paper's one
+modeling commitment: **the verifier's type is the offline property**.
+Asking whether $\Claim$ admits a scheme is exactly asking whether
+$\Claim$ can be checked from a committed digest and a certificate, with
+no further access to history.
+
+Two verifiers of the same commitment can disagree about how much they
+trust what they see; the model distinguishes exactly two soundness
+flavors, both defined over the same scheme machinery:
+
+- **Snapshot-sound**: the certificate is valid for the record as it
+  stood at the moment the certificate was produced. Nothing is claimed
+  about what happens as the record grows.
+- **Enduring-sound**: the certificate remains valid for every extension
+  of the record. A certificate produced today keeps verifying against
+  tomorrow's, larger record.
+
+The distinction is not cosmetic. @sec-theorem's factorization display
+turns on exactly this split: it is what lets a single classical notion —
+"observable property," bundling semi-decidability with stability — pull
+apart into two independent axes in this setting (@sec-factorization).
+
+## Verifier strata
+
+A scheme's certificate and verifier are graded by the computational
+power required to run them. This paper uses three strata, in
+decreasing generality:
+
+- $\oracle$ — no computability constraint; the verifier may decide
+  anything.
+- $\computable$ — the verifier's components are computable, over a
+  `Primcodable` alphabet.
+- $\polynomial$ — the verifier runs in polynomial time and the
+  certificate has polynomial size.
+
+A fourth, intermediate stratum — requiring only classical decidability
+of the commitment's equality test — turns out to add no content:
+classical decidability is universal by
+$\texttt{Classical.propDecidable}$, so its verdicts coincide exactly
+with the oracle stratum's. It survives in the mechanization as
+constructive scaffolding that de-risked the computable stratum, credited
+honestly rather than presented as a fourth distinct grade. The tower
+used throughout is $\oracle \supset \computable \supset \polynomial$;
+the polynomial stratum's theorems remain open (@sec-theorem).
+
+## The three axes
+
+Three independent conditions on a claim $\Claim$, each defined once,
+without reference to any scheme:
+
+**Determination.**
+$\Det(\Claim) := \forall\, w\; \xi\; \xi',\ \Claim\ w\ \xi \leftrightarrow \Claim\ w\ \xi'$
+— the claim's truth value does not depend on the context, only on the
+record. Equivalently, $\Claim$ factors through the projection that
+forgets context: $\Det(\Claim) \leftrightarrow \exists\, \psi,\ \Claim =
+(\lambda\, w\; \_.\ \psi\ w)$, membership in the image of the pullback
+$\pstar$ along that projection. Where $\Det(\Claim)$ holds, write
+$\phihat$ for the resulting record-only predicate.
+
+**Certifiability** (at stratum $Q$). Whether $\phihat$ is
+semi-decidable/certifiable at $Q$'s computational power — $\Sigma_1$ at
+the computable stratum, $\mathrm{NP}$ with genuine size and time bounds
+at the polynomial one. (This axis was previously named "decidability";
+@sec-related-work explains the rename.)
+
+**Monotonicity.**
+$\Mono(\Claim) := \forall\, w\; w'\; \xi,\ \Claim\ w\ \xi \to w \sqsubseteq w' \to \Claim\ w'\ \xi$
+— once true, a claim stays true as the record is extended. For
+determined $\Claim$ this is equivalent to $\phihat$ being upward-closed
+under $\sqsubseteq$: $\UpC(\psi) := \forall\, w\; w',\ w \sqsubseteq w'
+\to \psi\ w \to \psi\ w'$.
+
+These three conditions are the paper's entire vocabulary. Everything
+that follows is a statement about how they combine.

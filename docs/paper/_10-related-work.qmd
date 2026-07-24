@@ -1,0 +1,144 @@
+# Related Work {#sec-related-work}
+
+Organized by the composition claim itself: five clusters, each already
+attested in the literature, none composed with the others into the form
+this paper states. Each cluster closes with the line that distinguishes
+this paper's use of it from the source's own.
+
+## (a) The residue thesis, stated repeatedly, never factored
+
+The thesis that trust occupies exactly the space verification cannot
+reach is old. "Trust enters where more exact knowledge is not
+available" [@frankel-1977]; "trust begins where prediction ends"
+[@lewis-weigert-1985]. Later work inherits the same unfactored
+formulation: trust as an attitude that lowers "the barrier of
+monitoring, challenging, checking, and questioning" [@nguyen-unquestioning],
+or as a leap "across the gorge of the unknowable" that "brackets out
+uncertainty and ignorance" as one undifferentiated act [@mollering-2001].
+Security-requirements engineering operationalizes the same residue as a
+discretionary argument-stopper: "trust assumptions are unsubstantiated
+grounds used in security satisfaction arguments... because trust
+assumptions are not argued, they stop the grounds-to-claim recursion"
+[@haley-et-al-2005]. Formal e-voting verifiability gives the strongest
+formal near-miss: the residue is named explicitly and the inference from
+"unverifiable" to "trusted" is stated outright, but the residue itself
+is a concrete, per-protocol component list, never factored by cause
+[@kremer-ryan-smyth-2010].
+
+**Line:** the thesis is old, and repeatedly operationalized down to
+the level of individual security arguments and protocol analyses. The
+residue is never factored *by cause* in any of these sources.
+
+## (b) The mathematical home of two axes
+
+Certifiability and monotonicity, taken together as one bundled notion —
+a semi-decidable property that is also stable under extension — is
+exactly the algebra of *observable* (or *affirmable*) properties in
+synthetic topology and domain theory, established decades before this
+paper: priority to Smyth's topological treatment of predicate
+transformers [@smyth-1983], developed by Abramsky's logic of observable
+properties [@abramsky-1987], consolidated by Vickers [@vickers-1989],
+and given its effective, computable form by Escardó, whose dictionary —
+semi-decidable property corresponds to open set, "observable" and
+"affirmable" name the same thing — is the form this paper actually
+instantiates [@escardo-2004]. That algebra's arrival in security is
+already documented: protocol-analysis goals are formalized as geometric
+sentences — exactly the finite-meet, arbitrary-join fragment of this
+algebra — with the trust policy itself held outside the algebra, as raw
+input never run through it [@dougherty-guttman-ramsdell-2018].
+
+**Line:** both axes are inherited and credited; this paper's delta is
+the *snapshot/enduring factoring* of the classical bundle
+(@sec-factorization) and the identification of the residue with trust,
+which none of these sources perform. It should never be written that
+"nobody applied the observables frame to security" — that specific claim
+is false, and this cluster is exactly why.
+
+## (c) The determination anchors
+
+That authenticity is not recoverable from a document's intrinsic form
+alone was hypothesized and *tested*, not merely asserted: the
+InterPARES Authenticity Task Force set out to show that intrinsic and
+extrinsic elements of documentary form establish authenticity, across
+case studies, and reported the hypothesis unsupported — "context shifts
+the analysis away from the record itself to the broader structural,
+procedural, and documentary framework" [@interpares-2002]. That finding
+has already crossed into computer science once, explicitly imported: "the
+verification of the authenticity of a resource is related to the
+reliability of the system/resource, and this reliability is crucially
+based upon complete documentation of both the creation process and the
+chain of preservation" [@factor-et-al-2009]. The philosophical anchor for
+the determination axis more generally is Goodman's autographic/allographic
+distinction [@goodman-1968]. A cluster of design axioms in modern
+software-supply-chain security is built entirely around the same
+premise without ever stating it as a limit: provenance and attestation
+frameworks exist precisely because genuineness is not recoverable from
+an artifact's bytes alone [@slsa; @in-toto; @c2pa; @prov-dm; @rfc9334].
+
+**Line:** the determination axis is reasoned about, tested, and
+engineered around — but never formalized as a decision-procedure-level
+limit over a byte string. That formalization is this paper's own.
+
+## (d) The monotonicity iff
+
+Monotonicity's identification with coordination-freedom is a
+biconditional in its own right, refereed for relational transducers
+[@ameloot-neven-vandenbussche-2013] and generalized, in an unrefereed but
+version-pinned preprint, to arbitrary concurrent specifications
+[@hellerstein-2026]. That work's own use of a Rice-theorem-flavored
+remark is worth noting precisely because of how it differs from this
+paper's use: it applies decidability *to* monotonicity, as a remark
+about the cost of *checking* whether a specification is monotone, never
+*beside* monotonicity as a co-equal axis of a trust taxonomy.
+
+**Line:** the biconditional is inherited from CALM; this paper's axis is
+the *evidence-endurance* reading of monotonicity specifically, composed
+alongside determination and certifiability rather than studied alone.
+
+## (e) Bounding the residue, rather than reducing or reaching it
+
+Two prior lines address "how much must be trusted," and neither
+characterizes or bounds a residue the way this paper does. Gligor and
+Woo prove that a trusted state is *reachable*, unconditionally, from an
+untrusted starting point — a positive construction that makes "how
+small can the trusted remainder be?" well-posed, but does not itself
+answer it [@gligor-woo-2019]; this paper's verification ceiling
+(@sec-instances) is exactly that answer. The lineage descending from
+Thompson's "Reflections on Trusting Trust" — diverse double-compiling,
+reproducible and bootstrappable builds — *reduces or diversifies* the
+trusted base, without ever proving any residual base is *minimal*
+[@thompson-1984]. Durán and Formanek give the closest genuine
+decomposition of a verification barrier found anywhere in this sweep,
+into two agent-relative conditions — accessibility and surveyability —
+but with zero computability-theoretic content and a framing that treats
+epistemic opacity as a property of a cognitive agent's access, not of a
+decision procedure over a bit string [@duran-formanek-2018].
+
+**Line:** this paper's contribution is a negative, characterize-and-bound
+result where the lineage offers positive constructions (reachability) or
+unbounded reduction (diversify the compiler, shrink the TCB) — the
+residue is bounded and proved minimal, not merely made smaller.
+
+## The pattern
+
+| Ingredient | Attested? | Where |
+|---|---|---|
+| Determination | yes — reasoned and empirically tested | Goodman 1968; InterPARES ~2002 (hypothesis falsified); Factor et al. 2009 (carried into CS) |
+| Certifiability $\times$ monotonicity, as one bundled algebra | yes — since 1983 | Smyth 1983; Abramsky 1987; Vickers 1989; Escardó 2004 |
+| Monotonicity $\Leftrightarrow$ coordination-freedom | yes — as an iff | Ameloot–Neven–Van den Bussche 2013; Hellerstein 2026 |
+| Trust as the residue of verification | yes — as a thesis, repeatedly | Frankel 1977; Lewis & Weigert 1985; Möllering 2001; Nguyen; operationalized by Haley et al. and Kremer–Ryan–Smyth |
+| **The composition of all four** | **not found in any venue reached** | — |
+
+Every ingredient has a home. The composition has none this sweep could
+reach — and a further pattern corroborates that absence rather than
+merely restating it: across three unrelated subfields (root-of-trust
+establishment, protocol analysis, e-voting verifiability), the
+literature consistently formalizes what must be *established* and
+consistently declines to formalize what must be *assumed*
+[@gligor-woo-2019; @dougherty-guttman-ramsdell-2018;
+@kremer-ryan-smyth-2010]. That is not plausibly one community's
+stylistic accident; it is the strongest available argument that the
+residue side of verification is genuinely unexplored territory, not
+merely territory this sweep failed to search — an argument from
+positive evidence about what the field *did* do, which does not depend
+on the coverage limits stated in @sec-scope-objections.
