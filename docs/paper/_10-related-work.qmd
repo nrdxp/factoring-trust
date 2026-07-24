@@ -23,11 +23,30 @@ assumptions are not argued, they stop the grounds-to-claim recursion"
 formal near-miss: the residue is named explicitly and the inference from
 "unverifiable" to "trusted" is stated outright, but the residue itself
 is a concrete, per-protocol component list, never factored by cause
-[@kremer-ryan-smyth-2010].
+[@kremer-ryan-smyth-2010]. That treatment is field-standard rather than
+idiosyncratic: the systematization of verifiability notions across
+e-voting finds the residue carved throughout by *honest-principal sets* —
+who must behave — and never by the cause of the failure
+[@cortier-et-al-2016]. The requirements lineage reaches 2024 with the
+gap still open, in a theory of security-related assumptions built
+directly on the trust-assumption tradition above, where decidability,
+monotonicity, and verifiability limits do not appear at all
+[@corallo-et-al-2024].
 
-**Line:** the thesis is old, and repeatedly operationalized down to
-the level of individual security arguments and protocol analyses. The
-residue is never factored *by cause* in any of these sources.
+Trust taxonomies come nearest to naming a structure and stop short.
+One decomposes trust in secure systems into seven attributes across six
+dimensions, but every dimension is a property of the *measurement
+apparatus* — how confidently, how recently, on whose authority an
+attribute was assessed — rather than an axis along which a claim can
+fail. Its bottom rung, "Assumed," is a single flat bucket with no
+account of why an attribute lands there; its closest approach to a limit
+result is an explicitly informal remark on bootstrapping circularity
+[@bradbury-et-al-2022].
+
+**Line:** the thesis is old, repeatedly operationalized down to the
+level of individual security arguments and protocol analyses, and still
+current in 2024. The residue is never factored *by cause* in any of
+these sources.
 
 ## (b) The mathematical home of two axes
 
@@ -115,15 +134,6 @@ result where the lineage offers positive constructions (reachability) or
 unbounded reduction (diversify the compiler, shrink the TCB) — the
 residue is bounded and proved minimal, not merely made smaller.
 
-<!-- CITE-GAP: Bradbury — named by the framing boundary for restoration
-     in this section; absent from references.bib. No distinguishing line
-     can be written without the source, and the cluster it belongs to is
-     not determined by the boundary either. -->
-<!-- CITE-GAP: Cortier — named by the framing boundary for restoration
-     in this section; absent from references.bib. Same constraint. -->
-<!-- CITE-GAP: Corallo — named by the framing boundary for restoration
-     in this section; absent from references.bib. Same constraint. -->
-
 ## The pattern
 
 | Ingredient | Attested? | Where |
@@ -131,7 +141,7 @@ residue is bounded and proved minimal, not merely made smaller.
 | Determination | yes — reasoned and empirically tested | Goodman 1968; InterPARES ~2002 (hypothesis falsified); Factor et al. 2009 (carried into CS) |
 | Certifiability $\times$ monotonicity, as one bundled algebra | yes — since 1983 | Smyth 1983; Abramsky 1987; Vickers 1989; Escardó 2004 |
 | Monotonicity $\Leftrightarrow$ coordination-freedom | yes — as an iff | Ameloot–Neven–Van den Bussche 2013; Hellerstein 2026 |
-| Trust as the residue of verification | yes — as a thesis, repeatedly | Frankel 1977; Lewis & Weigert 1985; Möllering 2001; Nguyen; operationalized by Haley et al. and Kremer–Ryan–Smyth |
+| Trust as the residue of verification | yes — as a thesis, repeatedly, through 2024 | Frankel 1977; Lewis & Weigert 1985; Möllering 2001; Nguyen; operationalized by Haley et al., Kremer–Ryan–Smyth, Cortier et al. 2016, Corallo et al. 2024 |
 | **The composition of all four** | **not found in any venue reached** | — |
 
 Every ingredient has a home; the composition has none this sweep could
