@@ -41,8 +41,9 @@ empirical demonstration. Those are follow-up work.
 ## Structure — target
 A single self-contained Lean workspace:
 - `Core/` — no Mathlib: model, axes, scheme, the biconditional, corollaries,
-  the factorization display.
-- `Effective/` — Mathlib: the computable stratum.
+  the feeding lemmas for the factorization display.
+- `Effective/` — Mathlib: the computable stratum, the factorization display
+  (`factorization_COMP`).
 - `Transport/` — the record-transport law.
 - `Ceiling/` — the general (domain-neutral) verification ceiling.
 - `Witness/` — the forced generator and the cell table.
