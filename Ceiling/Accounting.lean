@@ -103,13 +103,16 @@ theorem unclosed_member_defeats_total (gate : Payload → Bool) (tagOf : Payload
     hnc ((total_iff_every_nonseed_closed gate tagOf closureOk P σ a).mp hTotal m hmem hnotSeed)
 
 /-- Every `closed` member of `a`'s closure carries a policy-admitted
-    corroboration enumerated in `basis a` — the derived-species half of the
-    two-species story (surety's reference proved only the vouch half). -/
+    corroboration **targeting that member** enumerated in `basis a` — the
+    derived-species half of the two-species story (surety's reference proved
+    only the vouch half). The conclusion is pinned to `m` through `m.id`,
+    which is what `Evidence` targets (`Ceiling.Node.id`): an unrelated
+    corroboration sitting elsewhere in the basis does not discharge it. -/
 theorem closed_carries_corroboration_in_basis (gate : Payload → Bool) (tagOf : Payload → Tag)
     (closureOk : Payload → Bool) (P : Policy Signer) (σ : Snapshot Signer Tag)
     (a m : Node Payload) (hmem : m ∈ depclosure a)
     (hclosed : classify gate tagOf closureOk P σ m = .closed) :
-    ∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t, e = .corroboration s t := by
+    ∃ s, Evidence.corroboration (Tag := Tag) s m.id ∈ basis gate tagOf closureOk P σ a := by
   have hcorr : corroborated P σ m = true := by
     cases m with
     | ground i isSeed => simp [classify] at hclosed
@@ -119,63 +122,82 @@ theorem closed_carries_corroboration_in_basis (gate : Payload → Bool) (tagOf :
   obtain ⟨e, heσ, hematch⟩ := hcorr
   cases e with
   | corroboration s t =>
-      refine ⟨.corroboration s t, ?_, s, t, rfl⟩
+      simp only [Bool.and_eq_true_iff, decide_eq_true_eq] at hematch
+      obtain ⟨hadm, ht⟩ := hematch
+      subst ht
+      refine ⟨s, ?_⟩
       simp only [basis, List.mem_filter]
       refine ⟨heσ, ?_⟩
-      simp only [Bool.and_eq_true_iff] at hematch
-      simp only [hematch.1, Bool.true_and, List.any_eq_true]
-      exact ⟨m, hmem, by simp [hclosed, (of_decide_eq_true hematch.2).symm]⟩
+      simp only [hadm, Bool.true_and, List.any_eq_true]
+      exact ⟨m, hmem, by simp [hclosed]⟩
   | vouch s t tag => simp at hematch
 
 /-- Every `closed` member of `a`'s closure carries a policy-admitted vouch
-    enumerated in `basis a` — the asserted-species half. -/
+    **for that member's own `id` at that member's own tag** enumerated in
+    `basis a` — the asserted-species half. Stated on the `derived`
+    constructor, like `declaration_alone_never_closes`, because the vouched
+    tag is `tagOf` the member's OWN payload and only that constructor has
+    one; `ground` nodes never classify `closed` (`ground_forced_import`), so
+    nothing is lost. -/
 theorem closed_carries_vouch_in_basis (gate : Payload → Bool) (tagOf : Payload → Tag)
     (closureOk : Payload → Bool) (P : Policy Signer) (σ : Snapshot Signer Tag)
-    (a m : Node Payload) (hmem : m ∈ depclosure a)
-    (hclosed : classify gate tagOf closureOk P σ m = .closed) :
-    ∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t tag, e = .vouch s t tag := by
-  cases m with
-  | ground i isSeed => simp [classify] at hclosed
-  | derived i payload inputs =>
-      have hest :=
-        (declaration_alone_never_closes gate tagOf closureOk P σ i payload inputs hclosed).1
-      have hunfold := hest
-      simp only [established] at hunfold
-      obtain ⟨_, hv⟩ := Bool.and_eq_true_iff.mp hunfold
-      simp only [List.any_eq_true] at hv
-      obtain ⟨e, heσ, hematch⟩ := hv
-      cases e with
-      | vouch s t tag =>
-          refine ⟨.vouch s t tag, ?_, s, t, tag, rfl⟩
-          simp only [basis, List.mem_filter]
-          refine ⟨heσ, ?_⟩
-          simp only [Bool.and_eq_true_iff] at hematch
-          obtain ⟨⟨hsv, htv⟩, htagv⟩ := hematch
-          simp only [hsv, Bool.true_and, List.any_eq_true]
-          refine ⟨Node.derived i payload inputs, hmem, ?_⟩
-          have hi : i = t := (of_decide_eq_true htv).symm
-          simp only [Node.id, Bool.and_eq_true_iff]
-          exact ⟨by simp [hi], htagv, hest⟩
-      | corroboration s t => simp at hematch
+    (a : Node Payload) (i : Nat) (payload : Payload) (inputs : List (Node Payload))
+    (hmem : Node.derived i payload inputs ∈ depclosure a)
+    (hclosed : classify gate tagOf closureOk P σ (Node.derived i payload inputs) = .closed) :
+    ∃ s, Evidence.vouch s i (tagOf payload) ∈ basis gate tagOf closureOk P σ a := by
+  have hest :=
+    (declaration_alone_never_closes gate tagOf closureOk P σ i payload inputs hclosed).1
+  have hunfold := hest
+  simp only [established] at hunfold
+  obtain ⟨_, hv⟩ := Bool.and_eq_true_iff.mp hunfold
+  simp only [List.any_eq_true] at hv
+  obtain ⟨e, heσ, hematch⟩ := hv
+  cases e with
+  | vouch s t tag =>
+      simp only [Bool.and_eq_true_iff, decide_eq_true_eq] at hematch
+      obtain ⟨⟨hsv, htv⟩, htagv⟩ := hematch
+      subst htv
+      subst htagv
+      refine ⟨s, ?_⟩
+      simp only [basis, List.mem_filter]
+      refine ⟨heσ, ?_⟩
+      simp only [hsv, Bool.true_and, List.any_eq_true]
+      exact ⟨_, hmem, by simp [Node.id, hest]⟩
+  | corroboration s t => simp at hematch
 
 /-- Packaged enumeration: under `Total a`, EVERY non-seed member of `a`'s
-    closure carries both evidence species in `basis a` — `Total` forces each
-    non-seed member `closed` (`total_iff_every_nonseed_closed`), from which
+    closure is `derived` and carries both evidence species in `basis a`,
+    each pinned to THAT member — a corroboration targeting its own `id`, and
+    a vouch for its own `id` at `tagOf` its own payload. `Total` forces each
+    non-seed member `closed` (`total_iff_every_nonseed_closed`) and a
+    `closed` member is never `ground` (`ground_forced_import`), from which
     both per-member halves above apply. This is the "nothing is silently
     trusted at the ceiling" display: the enumeration ranges over the whole
-    closure, not just the root, and it needs `Total` nontrivially (an
-    unclosed member has no counted evidence to enumerate). The root-only
-    reading follows at `m := a` via `self_mem_depclosure`. -/
+    closure, not just the root, and a counted item can stand in for another
+    member only where the two share an `id` — i.e. are the same principal
+    under the model's identity notion, which is exactly what `Evidence`
+    targets (`Ceiling.Node.id`); the vouch half pins the member's `tagOf`
+    payload besides. It needs `Total` nontrivially (an unclosed member has
+    no counted evidence to enumerate). The root-only reading follows at
+    `m := a` via `self_mem_depclosure`. -/
 theorem total_carries_both_species (gate : Payload → Bool) (tagOf : Payload → Tag)
     (closureOk : Payload → Bool) (P : Policy Signer) (σ : Snapshot Signer Tag)
     (a : Node Payload) (hTotal : Total gate tagOf closureOk P σ a)
     (m : Node Payload) (hmem : m ∈ depclosure a) (hnotSeed : m.seed? = false) :
-    (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t, e = .corroboration s t) ∧
-      (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t tag, e = .vouch s t tag) := by
+    ∃ i payload inputs, m = .derived i payload inputs ∧
+      (∃ s, Evidence.corroboration (Tag := Tag) s i ∈ basis gate tagOf closureOk P σ a) ∧
+      (∃ s, Evidence.vouch s i (tagOf payload) ∈ basis gate tagOf closureOk P σ a) := by
   have hclosed : classify gate tagOf closureOk P σ m = .closed :=
     (total_iff_every_nonseed_closed gate tagOf closureOk P σ a).mp hTotal m hmem hnotSeed
-  exact ⟨closed_carries_corroboration_in_basis gate tagOf closureOk P σ a m hmem hclosed,
-        closed_carries_vouch_in_basis gate tagOf closureOk P σ a m hmem hclosed⟩
+  cases m with
+  | ground i isSeed =>
+      rw [ground_forced_import] at hclosed
+      exact absurd hclosed (by decide)
+  | derived i payload inputs =>
+      refine ⟨i, payload, inputs, rfl, ?_,
+        closed_carries_vouch_in_basis gate tagOf closureOk P σ a i payload inputs hmem hclosed⟩
+      simpa [Node.id] using
+        closed_carries_corroboration_in_basis gate tagOf closureOk P σ a _ hmem hclosed
 
 -- ===========================================================================
 -- Non-vacuity (the generic satisfiability-sense pattern)

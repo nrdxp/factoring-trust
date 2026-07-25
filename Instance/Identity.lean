@@ -350,8 +350,9 @@ theorem identity_ceiling {Comm : Type} (Γ : Commitment Comm)
     (TotalI P σ (chain evs) →
       trustSurfaceI P σ (chain evs) = (depclosure (chain evs)).filter (fun m => m.seed?)) ∧
     (TotalI P σ (chain evs) → ∀ m ∈ depclosure (chain evs), m.seed? = false →
-      (∃ e ∈ basisI P σ (chain evs), ∃ s t, e = .corroboration s t) ∧
-      (∃ e ∈ basisI P σ (chain evs), ∃ s t tag, e = .vouch s t tag)) :=
+      ∃ i payload inputs, m = .derived i payload inputs ∧
+        (∃ s, Evidence.corroboration (Tag := PrincipalId) s i ∈ basisI P σ (chain evs)) ∧
+        (∃ s, Evidence.vouch s i (tagOf payload) ∈ basisI P σ (chain evs))) :=
   Ceiling.ceiling Γ (bindingClaim BindsTo) hfiber (chain evs)
     (identityRealization globalLog evs hSorted hPos) gate tagOf closureOk P σ
 

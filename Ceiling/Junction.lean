@@ -650,8 +650,10 @@ theorem growth_alignment {Payload : Type} {a : Node Payload} (φ_bind : Claim)
 
 /-- **`ceiling`, superseding `Ceiling.Gate.ceiling`.** The companion display:
     the gate (i); the quantified-over-schemes seed junction (L2); the
-    ceiling's minimality equality (L3); and completeness (ii, unchanged from
-    the old bundle, `total_carries_both_species`). `ρ` is threaded through
+    ceiling's minimality equality (L3); and completeness (ii,
+    `total_carries_both_species` — per-member: each non-seed closure member
+    is `derived`, and both counted items name that member's own `id`, the
+    vouch its own `tagOf` payload besides). `ρ` is threaded through
     for `Discharges` to be well-typed — supplied by the caller (an instance)
     or, absent one, taken as an explicit hypothesis exactly like `hfiber`. -/
 theorem ceiling {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
@@ -665,8 +667,9 @@ theorem ceiling {Comm : Type} (Γ : Commitment Comm) (φ_bind : Claim)
       trustSurface gate tagOf closureOk P σ a = (depclosure a).filter (fun m => m.seed?)) ∧
     (Total gate tagOf closureOk P σ a →
       ∀ m ∈ depclosure a, m.seed? = false →
-        (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t, e = .corroboration s t) ∧
-        (∃ e ∈ basis gate tagOf closureOk P σ a, ∃ s t tag, e = .vouch s t tag)) :=
+        ∃ i payload inputs, m = .derived i payload inputs ∧
+          (∃ s, Evidence.corroboration (Tag := Tag) s i ∈ basis gate tagOf closureOk P σ a) ∧
+          (∃ s, Evidence.vouch s i (tagOf payload) ∈ basis gate tagOf closureOk P σ a)) :=
   ⟨binding_admits_no_scheme φ_bind hfiber Γ,
    seeds_undischargeable_and_residual Γ φ_bind hfiber a ρ gate tagOf closureOk P σ,
    fun hTotal => (ceiling_minimality gate tagOf closureOk P σ a).mp hTotal,

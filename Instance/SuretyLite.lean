@@ -128,8 +128,9 @@ theorem surety_ceiling {Comm : Type} (Γ : Commitment Comm)
         m ∈ trustSurfaceI P σ a) ∧
     (TotalI P σ a → trustSurfaceI P σ a = (depclosure a).filter (fun m => m.seed?)) ∧
     (TotalI P σ a → ∀ m ∈ depclosure a, m.seed? = false →
-      (∃ e ∈ basisI P σ a, ∃ s t, e = .corroboration s t) ∧
-      (∃ e ∈ basisI P σ a, ∃ s t tag, e = .vouch s t tag)) :=
+      ∃ i payload inputs, m = .derived i payload inputs ∧
+        (∃ s, Evidence.corroboration (Tag := ClassName) s i ∈ basisI P σ a) ∧
+        (∃ s, Evidence.vouch s i (tagOf payload) ∈ basisI P σ a)) :=
   Ceiling.ceiling Γ (bindingClaim Genuine) hfiber a (suretyRealization e0 a) gate tagOf closureOk P σ
 
 /-! ## The four non-vacuity witnesses (concrete `Unit` types) -/
