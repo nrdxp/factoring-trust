@@ -18,9 +18,15 @@ mkShell {
       # tcolorbox/fontawesome5 added: Quarto's PDF callout blocks (used for
       # the working-draft banner in index.qmd) render via tcolorbox with a
       # fontawesome5 icon; neither ships in scheme-medium.
+      #
+      # framed added: template.tex carries Pandoc's $highlighting-macros$,
+      # whose Shaded environment is built on framed.sty. Without it the
+      # placeholder is a trap — present, so listings look supported, but the
+      # first highlighted block fails the build. The paper has no listing
+      # today; this makes the placeholder honest rather than latent.
       inherit (texlive)
         scheme-medium pgfplots standalone tools ieeetran
-        tcolorbox fontawesome5 environ pgfopts tikzfill pdfcol;
+        tcolorbox fontawesome5 environ pgfopts tikzfill pdfcol framed;
     })
   ];
 }
