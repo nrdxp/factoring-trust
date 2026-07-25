@@ -93,6 +93,8 @@ $\Leftarrow$ direction of a machine-checked if-and-only-if — satisfy all
 three conditions, and the evidence scheme is *constructed* on the spot
 out of them.
 
+## The payoff
+
 The failed axis identifies the trust anchor. A determination failure
 names the witness of history — the signer, the attestor — who must be
 trusted because the record alone cannot settle the question. A
