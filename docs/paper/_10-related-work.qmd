@@ -12,6 +12,13 @@ reach is old. For Frankel, trusting means "going beyond the mere
 assessment of probabilities," and trust takes that assessment's place
 precisely when it cannot easily be made or is too costly to attempt; it
 enters "where more exact knowledge is not available" [@frankel-1977].
+The Lewis and Weigert formulation — trust "begins where prediction ends"
+[@lewis-weigert-1985] — reaches this paper through Möllering's
+genealogy, where the tradition's unfactored form is plainest: trust as a
+leap "across the gorge of the unknowable" that "brackets out uncertainty
+and ignorance" as one undifferentiated act [@mollering-2001]. Later work
+inherits it intact — an attitude that lowers "the barrier of monitoring,
+challenging, checking, and questioning" [@nguyen-unquestioning].
 Security-requirements engineering operationalizes the same residue as a
 discretionary argument-stopper: "trust assumptions are unsubstantiated
 grounds used in security satisfaction arguments... because trust
@@ -20,18 +27,17 @@ assumptions are not argued, they stop the grounds-to-claim recursion"
 formal near-miss: the residue is named explicitly and the inference from
 "unverifiable" to "trusted" is stated outright, but the residue itself
 is a concrete, per-protocol component list, never factored by cause
-[@kremer-ryan-smyth-2010]. And the requirements lineage reaches 2024
+[@kremer-ryan-smyth-2010]. That treatment is field-standard rather than
+idiosyncratic: the systematization of verifiability notions across
+e-voting finds the residue carved throughout by *honest-principal sets*
+— who must behave — and never by the cause of the failure
+[@cortier-et-al-2016]. And the requirements lineage reaches 2024
 with the gap still open, in a theory of security-related assumptions
 built directly on the trust-assumption tradition, where decidability,
 monotonicity, and verifiability limits do not appear at all
 [@corallo-et-al-2024].
 
-Those four are chosen, not exhaustive: an origin, an operationalization
-inside security argumentation, the closest formal treatment, and a
-date-stamp on the gap. The sociological literature between them inherits
-the same unfactored formulation without sharpening it.
-
-One neighbour sits closer than any of those, because it is itself a
+One neighbour sits closer than any of these, because it is itself a
 trust taxonomy and what this paper offers is a trust taxonomy *by
 cause*. It decomposes trust in secure systems into seven attributes
 across six dimensions — but every dimension grades the *measurement
