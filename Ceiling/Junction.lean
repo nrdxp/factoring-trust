@@ -715,7 +715,9 @@ theorem wNode_total : Total wGate wTagOf wClosureOk wPolicy wSnap wNode := by
     `Context.nontrivial` (`Core.lean`'s three-site accounting stays
     accurate) — over a genuine `Total` closure (`wNode_total`) and a genuine
     `RecordRealization` (`countRealization e`, parametric in one `Entry`),
-    with every conjunct of the restated `ceiling` firing on real data. -/
+    with the restated `ceiling`'s first three conjuncts firing on real data.
+    The fourth (completeness) is witnessed separately, over this same
+    closure, by `total_pins_to_its_member` below. -/
 theorem ceiling_nonvacuous (e : Entry) :
     ∃ (φ_bind : Claim), ¬ Determined φ_bind ∧
       (¬ ∃ S : Scheme idCommitment φ_bind, SnapshotSound S) ∧
@@ -731,5 +733,80 @@ theorem ceiling_nonvacuous (e : Entry) :
     (ceiling_minimality wGate wTagOf wClosureOk wPolicy wSnap wNode).mp wNode_total⟩
 
 end Nonvacuity
+
+-- ===========================================================================
+-- Strictness of the per-member accounting conclusions
+-- ===========================================================================
+
+/-! **A different question from the block above.** Non-vacuity asks whether a
+statement's hypotheses are inhabited. **Strictness** asks whether its
+CONCLUSION says more than the degenerate reading it replaced —
+`Ceiling.Accounting`'s completeness theorems once concluded with an
+unconstrained `∃ e ∈ basis a, ∃ s t, e = .corroboration s t`, a sentence in
+which the member being spoken about does not occur, hence identical for
+every member and satisfiable, for a closure of any size, by a single counted
+item. A referee who reads the two sections as one learns nothing from
+either.
+
+The pair below fixes the per-member reading in place. `total_pins_to_its_member`
+extracts the pin from real data — it has no proof against the anonymous
+conclusion, so relaxing the statement breaks the build.
+`anonymous_basis_claim_is_degenerate` exhibits the gap directly: a legitimate
+non-seed closure member at which the anonymous conclusion holds and the
+pinned one is refuted. -/
+
+section Strictness
+
+/-- The pin, extracted at real data: over `wNode`'s `Total` closure the
+    counted corroboration names `wNode`'s OWN id. This is also the `ceiling`
+    completeness conjunct firing on a real instance — the one conjunct
+    `ceiling_nonvacuous` does not reach. -/
+theorem total_pins_to_its_member :
+    ∃ s, Evidence.corroboration (Tag := Unit) s wNode.id ∈
+      basis wGate wTagOf wClosureOk wPolicy wSnap wNode := by
+  obtain ⟨i, _payload, _inputs, hm, hcorr, _⟩ :=
+    total_carries_both_species wGate wTagOf wClosureOk wPolicy wSnap wNode wNode_total
+      wNode (self_mem_depclosure wNode) (by simp [wNode, Node.seed?])
+  have hid : wNode.id = i := by rw [hm]; rfl
+  rw [hid]
+  exact hcorr
+
+/-- `wNode` with an UNCOUNTED node above it: `wSnap` names id 1 only, so id 2
+    carries no evidence of its own. -/
+def wUncounted : Node Unit := .derived 2 () [wNode]
+
+/-- **The anonymous conclusion is degenerate, and the pinned one is not.** At
+    `wUncounted` — a genuine non-seed member of its own closure — the
+    anonymous conclusion is satisfied outright by the items `wSnap` supplies
+    for the DIFFERENT member below it, while the pinned conclusion is
+    refuted. `Total` necessarily fails here (last conjunct): were it to hold,
+    `total_carries_both_species` would supply the pin. That is the point —
+    the two conclusions are compared at a fixed member, which is where the
+    anonymous form's member-independence lived, and the theorem's own
+    hypotheses are untouched. -/
+theorem anonymous_basis_claim_is_degenerate :
+    wUncounted ∈ depclosure wUncounted ∧ wUncounted.seed? = false ∧
+      ((∃ e ∈ basis wGate wTagOf wClosureOk wPolicy wSnap wUncounted,
+          ∃ s t, e = Evidence.corroboration s t) ∧
+        (∃ e ∈ basis wGate wTagOf wClosureOk wPolicy wSnap wUncounted,
+          ∃ s t tag, e = Evidence.vouch s t tag)) ∧
+      ¬ (∃ s, Evidence.corroboration (Tag := Unit) s wUncounted.id ∈
+          basis wGate wTagOf wClosureOk wPolicy wSnap wUncounted) ∧
+      ¬ Total wGate wTagOf wClosureOk wPolicy wSnap wUncounted := by
+  refine ⟨self_mem_depclosure wUncounted, by simp [wUncounted, Node.seed?], ⟨?_, ?_⟩, ?_, ?_⟩
+  · refine ⟨Evidence.corroboration () 1, ?_, (), 1, rfl⟩
+    simp [basis, wUncounted, wNode, wSnap, wPolicy, wGate, wTagOf, wClosureOk, depclosure,
+      classify, established, corroborated, Node.id, Node.seed?]
+  · refine ⟨Evidence.vouch () 1 (), ?_, (), 1, (), rfl⟩
+    simp [basis, wUncounted, wNode, wSnap, wPolicy, wGate, wTagOf, wClosureOk, depclosure,
+      classify, established, corroborated, Node.id, Node.seed?]
+  · rintro ⟨s, hs⟩
+    simp [basis, wUncounted, wNode, wSnap, wPolicy, wGate, wTagOf, wClosureOk, depclosure,
+      classify, established, corroborated, Node.id, Node.seed?] at hs
+  · refine unclosed_member_defeats_total wGate wTagOf wClosureOk wPolicy wSnap wUncounted
+      wUncounted (self_mem_depclosure wUncounted) (by simp [wUncounted, Node.seed?]) ?_
+    simp [wUncounted, wNode, classify, established, wGate, wTagOf, wPolicy, wSnap]
+
+end Strictness
 
 end Ceiling
