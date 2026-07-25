@@ -28,8 +28,18 @@ monotonicity, and verifiability limits do not appear at all
 
 Those four are chosen, not exhaustive: an origin, an operationalization
 inside security argumentation, the closest formal treatment, and a
-date-stamp on the gap. The sociological and taxonomic literature between
-them inherits the same unfactored formulation without sharpening it.
+date-stamp on the gap. The sociological literature between them inherits
+the same unfactored formulation without sharpening it.
+
+One neighbour sits closer than any of those, because it is itself a
+trust taxonomy and what this paper offers is a trust taxonomy *by
+cause*. It decomposes trust in secure systems into seven attributes
+across six dimensions — but every dimension grades the *measurement
+apparatus*, how confidently and how recently and on whose authority an
+attribute was assessed, rather than naming an axis along which a claim
+can fail. Its bottom rung, "Assumed," is a single flat bucket, and it
+offers no account of why an attribute lands in it. That account is what
+this paper is [@bradbury-et-al-2022].
 
 **Line:** the thesis is old, repeatedly operationalized down to the
 level of individual security arguments and protocol analyses, and still
