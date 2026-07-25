@@ -24,15 +24,15 @@ canonical log's current head." The claim, not the record alone, is what
 a verifier is asked to check.
 
 **The declared axiom base.** $\mathit{Entry}$ and $\Context$ are
-introduced as opaque types (*Entry*, *Context*), which is what keeps
+introduced as opaque types (\lean{Entry}, \lean{Context}), which is what keeps
 every result below parametric: no theorem may inspect an entry's
 structure or a context's. Two genuine assumptions accompany them —
-*Context.inhabited*, that some context exists, and *Context.nontrivial*,
+\lean{Context.inhabited}, that some context exists, and \lean{Context.nontrivial},
 that two distinct ones do. Those four declarations are everything this
-development adds to Lean's own *propext*, *Classical.choice* and
-*Quot.sound*.
+development adds to Lean's own \lean{propext}, \lean{Classical.choice} and
+\lean{Quot.sound}.
 
-*Context.nontrivial* is consumed at three sites, and all three are
+\lean{Context.nontrivial} is consumed at three sites, and all three are
 non-vacuity witnesses: that undetermined claims exist at all
 , and the two undetermined rows of
 @sec-cell-table. Over a one-element context every
@@ -52,7 +52,7 @@ including the certifiability half of @sec-cell-table's first row.
 
 ## The offline verifier
 
-A **commitment** $\Gamma$ (*Commitment*) fixes a type $\Comm$ of
+A **commitment** $\Gamma$ fixes a type $\Comm$ of
 committed values, a function $C: \Record \to \Comm$ producing one, a
 binding axiom on $C$, and a relation $VC$ certifying that the record
 behind one committed value extends the record behind another.
@@ -67,7 +67,7 @@ supplies instead is *computational* binding, and the distance between
 the two is exactly the binding residual of @sec-floor — granted, not
 proved.
 
-A **scheme** for $\Claim$ under $\Gamma$ (*Scheme*) is a certificate
+A **scheme** for $\Claim$ under $\Gamma$ is a certificate
 type $\mathit{Proof}$ together with a verifier
 $V: \Comm \to \mathit{Proof} \to \mathrm{Prop}$ that decides, from a
 committed value and a certificate alone — never from the record or the
@@ -89,10 +89,10 @@ Two verifiers of the same commitment can disagree about how much they
 trust what they see. The model distinguishes exactly two soundness
 flavors, both over the same scheme machinery:
 
-- **Snapshot-sound** (*SnapshotSound*): the certificate is valid for the
+- **Snapshot-sound**: the certificate is valid for the
  record as it stood when the certificate was produced. Nothing is
  claimed about what happens as the record grows.
-- **Enduring-sound** (*EnduringSound*): the certificate remains valid
+- **Enduring-sound**: the certificate remains valid
  for every extension of the record. A certificate produced today keeps
  verifying against tomorrow's, larger record.
 
@@ -105,12 +105,12 @@ A scheme's certificate and verifier are graded by the computational
 power required to run them. Three strata, in decreasing generality:
 
 - $\oracle$ — no computability constraint; the verifier may decide
- anything. Certifiability here is *NPMembership*, an idealized
+ anything. Certifiability here is NPMembership, an idealized
  existence-of-a-checker condition carrying no complexity bound, and
  every record predicate satisfies it (@sec-theorem).
 - $\computable$ — the verifier's components are computable over a
- *Primcodable* alphabet, and certifiability is *ComputableMembership*,
- which does bind: it demands a *ComputablePred* checker.
+ Primcodable alphabet, and certifiability is ComputableMembership,
+ which does bind: it demands a ComputablePred checker.
 - $\polynomial$ — the verifier runs in polynomial time on a
  polynomially-sized certificate. This stratum is *described here and
  not mechanized*: no predicate in the development encodes those bounds,
@@ -132,7 +132,7 @@ tower used throughout is $\oracle \supset \computable \supset
 Three independent conditions on a claim $\Claim$, each defined once,
 without reference to any scheme:
 
-**Determination** (*Determined*).
+**Determination**.
 $\Det(\Claim):= \forall\, w\; \xi\; \xi',\ \Claim\ w\ \xi \leftrightarrow \Claim\ w\ \xi'$
 — the claim's truth value does not depend on the context, only on the
 record. Equivalently, $\Claim$ factors through the projection that
@@ -140,7 +140,7 @@ forgets context: $\Det(\Claim) \leftrightarrow \exists\, \psi,\ \Claim =
 (\lambda\, w\; \_.\ \psi\ w)$, membership in the image of the pullback
 $\pstar$ along that projection. Where
 $\Det(\Claim)$ holds, write $\phihat$ for the resulting record-only
-predicate (*determinedProj*).
+predicate.
 
 **Certifiability** (at stratum $Q$). Whether $\phihat$ is
 semi-decidable at $Q$'s power — $\Sigma_1$ at the computable stratum
@@ -150,7 +150,7 @@ The axis is defined on $\phihat$ rather than on $\Claim$, so it exists
 only where determination holds; @sec-cell-table turns on that
 dependency.
 
-**Monotonicity** (*Monotone*).
+**Monotonicity**.
 $\Mono(\Claim):= \forall\, w\; w'\; \xi,\ \Claim\ w\ \xi \to w \sqsubseteq w' \to \Claim\ w'\ \xi$
 — once true, a claim stays true as the record is extended. For
 determined $\Claim$ this is equivalent to $\phihat$ being upward-closed
@@ -164,12 +164,12 @@ that follows is a statement about how they combine.
 \begin{figure}[tb]
 \centering
 \begin{tikzpicture}[>={Stealth[round]}, node distance=22mm, semithick]
-  \node (W) {$\World = \Record \times \Context$};
-  \node (R) [below=16mm of W] {$\Record$};
-  \node (P) [right=34mm of R] {$\mathrm{Prop}$};
-  \draw[->] (W) -- node[left]  {$\pi$} (R);
-  \draw[->] (R) -- node[below] {$\psi$} (P);
-  \draw[->] (W) -- node[above right, xshift=1mm] {$\varphi$} (P);
+ \node (W) {$\World = \Record \times \Context$};
+ \node (R) [below=16mm of W] {$\Record$};
+ \node (P) [right=34mm of R] {$\mathrm{Prop}$};
+ \draw[->] (W) -- node[left] {$\pi$} (R);
+ \draw[->] (R) -- node[below] {$\psi$} (P);
+ \draw[->] (W) -- node[above right, xshift=1mm] {$\varphi$} (P);
 \end{tikzpicture}
 \caption{The determination axis, as a factoring. A claim $\varphi$ lives
 on worlds; $\pi$ forgets the context. $\varphi$ is \emph{determined}

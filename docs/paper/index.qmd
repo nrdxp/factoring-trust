@@ -59,6 +59,7 @@ date: 2026-07-24
 \newcommand{\TTend}{\textsc{TT-end}}
 \newcommand{\EON}{\textsc{EON}}
 \newcommand{\EALM}{\textsc{EALM}}
+\newcommand{\lean}[1]{\textsf{#1}}
 \newcommand{\oracle}{\textsf{oracle}}
 \newcommand{\computable}{\textsf{computable}}
 \newcommand{\polynomial}{\textsf{polynomial}}

@@ -1,4 +1,4 @@
-# Appendix: Claims and Their Declarations {#sec-carriers .unnumbered}
+# Appendix: Claims and Their Declarations {#sec-carriers.unnumbered}
 
 Every claim this paper makes about the mechanization, against the
 declaration that carries it. Nothing in the body depends on reading
