@@ -63,6 +63,13 @@
 % Theorem environments provided by Quarto (do not declare here)
 \usepackage{amsthm}
 
+% ─── Pandoc syntax highlighting ───────────────────────────────────────────────
+% Pandoc emits \begin{Shaded} for any highlighted block and defines Shaded,
+% together with the token commands, only through this placeholder. Omitting
+% it makes every code listing a build failure with "Environment Shaded
+% undefined" — latent for as long as the paper contains no listing.
+$highlighting-macros$
+
 % ─── Custom preamble (math macros, etc.) ──────────────────────────────────────
 $for(header-includes)$
 $header-includes$

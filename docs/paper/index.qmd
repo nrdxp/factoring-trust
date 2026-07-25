@@ -28,8 +28,8 @@ abstract: |
   same factoring beyond append-only records to any structure whose
   artifacts are justified by the artifacts they were built from,
   provided the domain can say what record each artifact commits. We
-  instantiate it twice from one shared core: a cryptographic identity
-  system, whose hash chain is proved to supply those records, and a
+  instantiate it twice from one shared core: an identity system, whose
+  chain of key events is proved to support such a record, and a
   deliberately light source-integrity system, instantiated over a
   content-neutral stand-in instead. Every ingredient of
   this factoring is independently attested in the literature — the
@@ -59,6 +59,7 @@ date: 2026-07-24
 \newcommand{\TTend}{\textsc{TT-end}}
 \newcommand{\EON}{\textsc{EON}}
 \newcommand{\EALM}{\textsc{EALM}}
+\newcommand{\lean}[1]{\textsf{#1}}
 \newcommand{\oracle}{\textsf{oracle}}
 \newcommand{\computable}{\textsf{computable}}
 \newcommand{\polynomial}{\textsf{polynomial}}
@@ -90,3 +91,5 @@ date: 2026-07-24
 {{< include _12-acknowledgment.qmd >}}
 
 {{< include _13-appendix-witnesses.qmd >}}
+
+{{< include _14-appendix-carriers.qmd >}}

@@ -70,7 +70,7 @@ different axes and take three visibly different repairs.
 principal $A$." Authorship is a fact about key custody, which is
 context, not bytes; the gate of @sec-theorem fires and no scheme exists
 at any stratum. Such claims provably exist
-(`Witness.Cells.exists_undetermined_monotone`); reading any *particular*
+; reading any *particular*
 genuineness or binding claim as one of them is an explicit modeling
 hypothesis about the fiber over the record, never a theorem. **Cure:**
 admit a witness of history — a signer or attestor whose say-so stands in
@@ -80,7 +80,7 @@ for what the record cannot settle.
 degenerate" — that a build emits from a finite table rather than
 computing its output. The claim is fixed by the committed bytes,
 independent of how the generator is written
-(`Witness.Generator.degenerate`, `degenerate_extensional`), and monotone,
+, and monotone,
 since a committed generator stays committed. It is not semi-decidable: a
 semantic property of an unbounded-domain denotation, which Rice–Shapiro
 places outside $\Sigma_1$ — cited mathematics, not mechanized here.
@@ -90,7 +90,7 @@ procedure can perform, or restrict to a decidable subclass.
 **T3, monotonicity.** "Entry $e$ is absent from the record,"
 equivalently "$w$ is the current head." Determined, certifiable, and
 refuted by the next append
-(`Witness.Cells.absenceClaim_not_monotone`). **Cure:** admit a holder of
+. **Cure:** admit a holder of
 liveness on the present — a witness quorum or gossip protocol — or
 restrict to "absent as of time $t$," or accept an expiry window.
 

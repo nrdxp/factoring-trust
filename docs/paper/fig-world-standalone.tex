@@ -1,0 +1,11 @@
+% Standalone wrapper: compiles fig-world.tex alone so dvisvgm can derive
+% the SVG the HTML build uses. Not part of the paper build.
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{amsmath,amssymb}
+\usetikzlibrary{arrows.meta,positioning}
+\newcommand{\Record}{\mathit{Record}}
+\newcommand{\Context}{\mathit{Context}}
+\newcommand{\World}{\mathit{World}}
+\begin{document}
+\input{fig-world.tex}
+\end{document}

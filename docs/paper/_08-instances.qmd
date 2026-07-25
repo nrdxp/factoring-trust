@@ -11,33 +11,51 @@ fact.
 Generalize from a single append-only record to a **well-founded
 justification structure**: a directed acyclic graph of artifacts, each
 either a leaf or carrying a derived record naming its own inputs
-(`Node`), together with a fail-closed classification of every artifact
-into one of four buckets — `closed`, `attestGap`, `establishGap`,
-`import` (`classify`) — relative to an admitted policy $P$ and an
-evidence snapshot $\sigma$. Acyclicity is by construction rather than by
+, together with a fail-closed classification of every artifact
+into one of four buckets relative to an admitted policy $P$ and an
+evidence snapshot $\sigma$: $\lean{closed}$, meaning the artifact's
+establishment is fully accounted for; $\lean{establishGap}$ and $\lean{attestGap}$,
+naming which half is missing; and $\lean{import}$, the bucket a genesis seed
+always lands in.
+
+Two species of evidence do that accounting, and the distinction between
+them is the one the whole display turns on. A **corroboration** is an
+admitted party's re-verification of an artifact against its own
+committed content — a check anyone else could re-run. A **vouch** is an
+admitted party's keyed judgment binding the artifact to the principal it
+names — testimony, which no one can re-run. Corroborations are evidence
+a verifier could in principle reproduce; vouches are exactly the trust
+the rest of this paper is about. Acyclicity is by construction rather than by
 assumption: a node's inputs are syntactic subterms of the node, so no
 artifact can name itself, transitively or otherwise, and the structure
 cannot express a circular justification to have to exclude.
 
 Two derived quantities carry the accounting. The **trust surface**
-$T(a)$ is $a$'s dependency closure minus its `closed` members — every
-node landing in one of the three residue buckets (`trustSurface`). The
+$T(a)$ is $a$'s dependency closure minus its $\lean{closed}$ members — every
+node landing in one of the three residue buckets. The
 **assumption basis** $B(a)$ is the policy-admitted evidence those
-non-residue classifications actually rest on (`basis`). `Total` names
-the state in which every non-seed member of the closure is `closed`
-(`total_iff_every_nonseed_closed`).
+non-residue classifications actually rest on. $\lean{Total}$ names
+the state in which every non-seed member of the closure is $\lean{closed}$
+.
 
 **Joining the two worlds.** The accounting vocabulary above — artifacts,
 buckets, policies — and the scheme vocabulary of @sec-model share no
 object either is defined in terms of, so a statement about the trust
 surface says nothing about evidence schemes until the two are linked.
 The link is a **record realization** for a closure
-(`RecordRealization`): a map $\mathit{recordOf}$ from artifacts to
-records satisfying two conditions on that closure — **(R1)** building on
-an artifact extends its record, $m \in \mathit{depclosure}\ n
-\Rightarrow \mathit{recordOf}\ m \sqsubseteq \mathit{recordOf}\ n$, and
-**(R2)** an artifact is a genesis seed exactly when its record commits
-no prior entries.
+: a map $\mathit{recordOf}$ from artifacts to
+records satisfying two conditions **within one artifact $a$'s dependency
+closure**, and nowhere else — **(R1)** for $n$ in that closure, building
+on an artifact extends its record, $m \in \mathit{depclosure}\ n
+\Rightarrow \mathit{recordOf}\ m \sqsubseteq \mathit{recordOf}\ n$; and
+**(R2)** within that closure, an artifact is a genesis seed exactly when
+its record commits no prior entries.
+
+The scoping is load-bearing, not fastidious. Stated over every node of
+the type, (R2) is refutable — the type admits a node flagged as a seed
+with an arbitrary identifier, which no builder constructs but the
+constructors permit. Scoped to a closure, it becomes exactly what a real
+builder's own structure can discharge.
 
 The neutral core cannot supply this and should not. $\mathit{Entry}$ is
 opaque by construction (@sec-model), so no map into $\Record$ is
@@ -45,40 +63,45 @@ definable there at all; the realization is the domain's to provide,
 bundled as a structure the way a commitment is. Given one, "$S$
 establishes artifact $m$ without admission" becomes a genuine relation —
 $S$ is snapshot-sound *and* accepts a certificate for $m$'s own record
-(`Discharges`) — whose two halves are consumed in a single step
-(`discharges_forces_binding`).
+— whose two halves are consumed in a single step
+.
 
 ::: {.theorem}
-**The verification ceiling** (`Ceiling.ceiling`). For such a structure
+**The verification ceiling**. For such a structure
 with a record realization, under an explicit underdetermination
 hypothesis on the domain's binding claim:
 
 (i) **Gate.** The binding or genuineness claim admits no snapshot-sound
-    evidence scheme over any commitment (`binding_admits_no_scheme`).
+ evidence scheme over any commitment.
 
 (ii) **Seed junction.** For *every* scheme, every seed in the closure is
-    undischarged and lies in the trust surface
-    (`seeds_undischargeable_and_residual`).
+ undischarged and lies in the trust surface
+.
 
-(iii) **Minimality.** Under `Total`, the trust surface *equals* the
-    closure's seeds (`ceiling_minimality`). That equality is the
-    *ceiling*: a system achieving it cannot be improved on.
+(iii) **Minimality.** $\lean{Total}$ holds *if and only if* the trust surface
+ equals the closure's seeds. That equality is
+ the *ceiling*: a system achieving it cannot be improved on, and
+ reaching it is not merely implied by totality but equivalent to it.
 
-(iv) **Completeness.** Under `Total`, every non-seed member carries both
-    evidence species — a corroboration and a vouch — in the assumption
-    basis (`total_carries_both_species`). Nothing is silently trusted.
+(iv) **Completeness.** Under $\lean{Total}$, every non-seed member of the
+ closure carries both evidence species — a corroboration and a vouch
+ — in the assumption basis. Nothing is
+ silently trusted.
 :::
 
-All four are proved. Minimality is an equality rather than an inference
-drawn by the reader, and (ii) is quantified over schemes rather than
-argued from the gate case by case — which is what the realization buys
-and what makes the surface's minimality a statement about evidence at
-all.
+All four are proved, and (iii) is a biconditional rather than the single
+implication a ceiling display needs.
 
-Parts (iii) and (iv) are conditioned on `Total`, which raises the
+The per-member force of (iv) is sharpened by a companion fact: a closed
+artifact's own declaration never suffices to close it, since closing
+requires evidence admitted against that artifact's own identity and
+payload. Nothing an artifact says
+about itself counts as evidence for itself.
+
+Parts (iii) and (iv) are conditioned on $\lean{Total}$, which raises the
 obvious question: can admitting more evidence undo it? No — totality
 survives every extension of the evidence snapshot, unconditionally
-(`total_mono_snapshot`). The direction is worth noticing. Growth of the
+. The direction is worth noticing. Growth of the
 *record* can defeat a claim, which is exactly @sec-cell-table's T3
 flavour; growth of the *evidence* cannot defeat the accounting kept over
 it.
@@ -106,36 +129,44 @@ beginning of a theory. Each instance names the cells it exercises, so
 the complementarity is checkable rather than asserted. The cell labels
 are those of @tbl-cells.
 
-**Identity.** A cryptographic identity system whose record is a hash
-chain of key events and whose genesis is a single binding commitment
-(`identity_ceiling`). It exercises **T1** — its genesis binding claim
+**Identity.** An identity system whose record is a chain of key events
+and whose genesis is a single binding commitment.
+The mechanized chain is structural — an ordered sequence of events, each
+naming a principal — with no hash function in it; what the instance
+exercises is the accounting, not the cryptography. It exercises **T1** — its genesis binding claim
 fails determination under the domain's fiber hypothesis, since
 byte-identical chains can arise under honest custody or under
 impersonation — and **T3**, through the split-view example below. Its
 sharpest statement is not the ceiling instantiation but a stronger,
-domain-specific one: under `Total`, the trust surface of a chain is
+domain-specific one: under $\lean{Total}$, the trust surface of a chain is
 *exactly* the genesis binding and nothing else
-(`principal_trust_bounded`), which follows from splitting the chain's
+, which follows from splitting the chain's
 dependency closure into its derived nodes and its single seed
-(`depclosure_chain`). This instance has no conditional frontier — no
+. This instance has no conditional frontier — no
 forced-generator or Rice-theoretic tightness result stands between the
 model and the theorem — which makes it the cleanest evidence that the
 completeness and minimality machinery is not build-specific.
 
-**Its records are proved to realize the ceiling, not assumed to.**
-`identityRealization` constructs the realization rather than positing
-it: records are prefixes of an ambient append-only log keyed on artifact
-identifier, and (R1) and (R2) are discharged by induction on the chain's
-own structure (`identity_id_mono`, `identity_id_seedBoundary`) under two
+**Its realization is constructed, not assumed.** The instance builds one
+rather than positing it: an artifact's record is the prefix
+of an ambient append-only log determined by that artifact's identifier,
+and (R1) and (R2) are discharged by induction on the chain's own
+structure under two
 hypotheses about the caller's event list — that identifiers do not
-increase toward the root, and that identifier zero is reserved for
-genesis. The realization therefore carries content: what an artifact's
-record *is* depends on what the chain actually contains. A real system's
-records are shown to be the kind of thing the ceiling is about.
+increase as one descends from the chain's head toward its genesis, and
+that identifier zero is reserved for genesis. A third hypothesis, that
+identifiers distinguish artifacts, is carried and not discharged.
+
+The realization therefore *varies* with the artifact: distinct
+identifiers get distinct records, which is what (R1) and (R2) need. It
+does not read the artifact's payload, and the log it indexes into is
+supplied by the caller rather than derived from the chain — so what is
+proved is that this domain's structure supports a realization, not that
+its key events determine one.
 
 **A light source-integrity instance.** Its build-domain name, wherever
 the general ceiling is instantiated to source integrity, is the **surety
-ceiling** (`surety_ceiling`). It exercises **T1** — genuineness of a
+ceiling**. It exercises **T1** — genuineness of a
 source artifact fails determination under the same shape of fiber
 hypothesis — and **T2**, since the certifiability failure it inherits is
 committed-generator degeneracy, which rests on cited mathematics rather
@@ -152,7 +183,7 @@ grade is otherwise uniformly machine-checked, and that uniformity is
 what the split protects.
 
 **Its realization is content-neutral, and the asymmetry with identity is
-real.** `suretyRealization` instantiates the general `countRealization`,
+real.** This instance takes the general construction,
 which satisfies (R1) and (R2) unconditionally — it is also what
 establishes that those two conditions are jointly satisfiable at all —
 but distinguishes artifacts only by how many entries they commit. The
@@ -168,15 +199,15 @@ is the claim @sec-cell-table makes and the only one made here.
 Neither instance imports a computability library — the ceiling's content
 is accounting and impossibility, and neither needs one. Across every
 declaration in the ceiling's own development, the axioms used are Lean's
-`propext` and `Quot.sound`, together with the model's declared opacities
+$\lean{propext}$ and $\lean{Quot.sound}$, together with the model's declared opacities
 wherever a statement reaches into the scheme world; choice is not among
 them.
 
 **Both instances are non-vacuous**, each carrying four concrete
-witnesses over finite types; @sec-witnesses lists them. The sharpest
+witnesses over finite types, listed in Appendix A. The sharpest
 shows the accounting genuinely depends on admitted testimony rather than
 deriving everything from the gate — a policy admitting no vouchers
-forbids every non-seed `Total` (`no_vouchers_no_total`).
+forbids every non-seed $\lean{Total}$.
 
 ## The extended worked example: split-view, resolved without a fourth axis
 
@@ -196,12 +227,12 @@ spent is the admitted anchor — an entailment move against $P$
 
 **Cross-verifier**: "the two views I have been shown are consistent with
 each other," where consistency means one view extends the other
-(`viewsConsistent`). Posed over the joint record of shown views, this
+. Posed over the joint record of shown views, this
 claim is determined and certifiable — a consistency proof is literally
 its certificate — and **non-monotone**: two views consistent today can
 diverge tomorrow, and the mechanization exhibits exactly that flip
-(`consistency_flips`, over a two-element alphabet, which such a
-divergence provably requires). This is the monotonicity-failure case,
+(over a two-element alphabet, which such a divergence provably
+requires). This is the monotonicity-failure case,
 $\EON$ applies directly, and the cure coordinates of @sec-cell-table
 predict the deployed defenses verbatim: entailment via a witness quorum
 or gossip protocol, cosigned
@@ -211,7 +242,7 @@ expiry window.
 A sharper fact falls out for free. Divergence, once it exists, is
 *permanent* under further extension of both views: two records that
 disagree at a position keep disagreeing there forever
-(`divergence_permanent`). So *equivocation* is monotone and affirmable —
+. So *equivocation* is monotone and affirmable —
 its evidence, once obtained, endures — while *honesty* is refutative,
 never provable forever, only falsifiable at the next check. That
 asymmetry is why gossip protocols work at all, and why "this log is

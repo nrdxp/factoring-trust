@@ -7,7 +7,7 @@ two of the paper's three axes with an algebra that predates this paper
 by four decades.
 
 ::: {.theorem}
-**The factorization display** (`factorization_COMP`). At the computable
+**The factorization display**. At the computable
 stratum, enduring flavor: $\Claim$ admits an enduring, offline,
 computable evidence scheme **iff**
 $$\Claim \in \pstar\big(\Sigma_1 \cap \UpC(\sqsubseteq)\big),$$
@@ -18,10 +18,9 @@ $\psi$ is upward-closed under $\sqsubseteq$, and $\Claim = \lambda\, w\;
 
 The display is $\TTend(\computable)$ repackaged, and its proof says so:
 it rewrites along the biconditional, then discharges two record-side
-facts converting the axes into conditions on $\psi$ —
-`determined_eq_proj`, that a determined claim *is* its own record-only
-projection, and `monotone_iff_projUpClosed`, that for a determined claim
-monotonicity *is* upward-closure of that projection. What the display
+facts converting the axes into conditions on $\psi$: that a determined
+claim *is* its own record-only projection, and that for a determined
+claim monotonicity *is* upward-closure of that projection. What the display
 adds is legibility, not new mathematics, and three things must be said
 before that legibility can be trusted.
 
@@ -29,7 +28,7 @@ before that legibility can be trusted.
 
 **(i) The stratum matters.** The identification above is a fact about
 the *computable* stratum specifically. At the oracle stratum,
-$\pstar(\exists \cdot \mathrm{ALL} \cap \UpC(\sqsubseteq))$ is simply
+$\pstar(\Sigma_1^{\oracle} \cap \UpC(\sqsubseteq))$ is simply
 every upward-closed predicate on records — the Alexandrov topology on
 $(\Record, \sqsubseteq)$, with no effectivity content at all. At the
 polynomial stratum, $\mathrm{NP} \cap \UpC(\sqsubseteq)$ is not even
@@ -43,8 +42,9 @@ contribution within an inherited algebra.** The display covers
 *enduring* evidence only. A claim's snapshot-record-side class is
 $\Sigma_1$ *simpliciter* — semi-decidable at a fixed stage, with no
 upward-closure demanded. This is not a gap in the display; it is the
-sharpest sentence available: **snapshot evidence is affirmability of the
-finite stage; enduring evidence is observability of the limit.** The
+sharpest sentence available: **snapshot evidence needs only that a claim
+be certifiable at the stage it is checked; enduring evidence needs that
+and stability under everything the record may later become.** The
 classical tradition's single bundled notion — "observable property,"
 meaning simultaneously semi-decidable *and* stable — factors, in this
 setting, across the snapshot/enduring distinction, into certifiability

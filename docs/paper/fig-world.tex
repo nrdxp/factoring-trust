@@ -1,0 +1,19 @@
+% SINGLE SOURCE OF TRUTH for the determination diagram.
+%
+% The PDF build \input's this file directly. The HTML build cannot — a raw
+% LaTeX block is dropped there — so it uses fig-world.svg, which is DERIVED
+% from this file and is not regenerated automatically.
+%
+% IF YOU EDIT THIS FILE, REGENERATE THE SVG:
+%   nix-shell --run 'cd docs/paper && \
+%     latex -output-format=dvi fig-world-standalone.tex && \
+%     dvisvgm --no-fonts --exact fig-world-standalone.dvi -o fig-world.svg'
+%
+\begin{tikzpicture}[>={Stealth[round]}, semithick]
+  \node (W) {$\World = \Record \times \Context$};
+  \node (R) [below=16mm of W] {$\Record$};
+  \node (P) [right=34mm of R] {$\mathrm{Prop}$};
+  \draw[->] (W) -- node[left]  {$\pi$} (R);
+  \draw[->] (R) -- node[below] {$\psi$} (P);
+  \draw[->] (W) -- node[above right, xshift=1mm] {$\varphi$} (P);
+\end{tikzpicture}

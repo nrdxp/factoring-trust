@@ -1,20 +1,20 @@
-# Appendix: Non-Vacuity Witnesses {#sec-witnesses .unnumbered}
+# Appendix A: Non-Vacuity Witnesses {.unnumbered}
 
 Both instances of @sec-instances carry the same four witnesses over
 finite types, so that no theorem there is vacuously true of an empty
 structure. Nothing in the body depends on reading them.
 
 1. **A closed artifact.** An evidence snapshot supplying one admitted
-   vouch and one admitted corroboration classifies the artifact
-   `closed`.
-2. **A base-bounded `Total`.** A single artifact closing directly onto
-   the genesis seed satisfies `Total`, which is what makes the
-   minimality equality of @sec-instances non-empty.
-3. **A defeated `Total`.** The same shape with the evidence snapshot
-   emptied fails `Total` through an `establishGap`
-   (`unclosed_member_defeats_total`), so `Total` is a real condition
-   rather than one satisfied by construction.
-4. **No vouchers, no `Total`.** A policy admitting no vouchers forbids
-   every non-seed `Total` (`no_vouchers_no_total`). This is the sharpest
-   of the four: the accounting depends on admitted testimony, and does
-   not derive everything from the gate.
+ vouch and one admitted corroboration classifies the artifact
+ $\lean{closed}$.
+2. **A base-bounded $\lean{Total}$.** A single artifact closing directly onto
+ the genesis seed satisfies $\lean{Total}$, which is what makes the
+ minimality equality of @sec-instances non-empty.
+3. **A defeated $\lean{Total}$.** The same shape with the evidence snapshot
+ emptied fails $\lean{Total}$ through an $\lean{establishGap}$
+, so $\lean{Total}$ is a real condition
+ rather than one satisfied by construction.
+4. **No vouchers, no $\lean{Total}$.** A policy admitting no vouchers forbids
+ every non-seed $\lean{Total}$. This is the sharpest
+ of the four: the accounting depends on admitted testimony, and does
+ not derive everything from the gate.

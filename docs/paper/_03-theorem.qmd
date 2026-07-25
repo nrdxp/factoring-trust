@@ -17,8 +17,6 @@ above the verification floor (@sec-floor).
 $Q$-verifier **iff** $\Det(\Claim)$ holds and $\phihat$ is
 $Q$-certifiable.
 
-Carriers: `snapshot_characterization` at $\oracle$;
-`trichotomy_snap_COMP_iff` at $\computable$.
 :::
 
 ::: {.theorem}
@@ -26,15 +24,13 @@ Carriers: `snapshot_characterization` at $\oracle$;
 $Q$-verifier **iff** $\Det(\Claim)$ holds, $\phihat$ is
 $Q$-certifiable, and $\Mono(\Claim)$ holds.
 
-Carriers: `trichotomy_ALL_iff` at $\oracle$; `comp_COMP_iff` at
-$\computable$.
 :::
 
 $\TTend$ is $\TTsnap$ plus monotonicity — the only new demand an
 enduring guarantee places on a claim already checkable at a snapshot.
 That increment is itself a biconditional: with determination and
 certifiability granted, an enduring scheme exists exactly when the claim
-is monotone (`endurance_iff_monotone`).
+is monotone.
 
 ## The direction that does the work
 
@@ -43,40 +39,39 @@ central claim rests on the less obvious one.
 
 The $\Rightarrow$ legs are the impossibility half, and each is a
 separate small theorem: a scheme's existence forces determination
-(`snapshot_characterization_determined`), forces certifiability of the
-projection (`snapshot_characterization_np`), and — for the enduring
-flavor — forces monotonicity (`endurance_forces_monotone`). Read
+, forces certifiability of the
+projection, and — for the enduring
+flavor — forces monotonicity. Read
 contrapositively, these are the statements that turn a failed axis into
 an impossibility rather than a difficulty.
 
 The $\Leftarrow$ leg is a **construction**. Given the three conditions,
-`enduringScheme` *builds* a scheme: its certificate is a record paired
+the development *builds* a scheme: its certificate is a record paired
 with a certifiability witness and a verification certificate, and its
 verifier is the checker conjoined with the commitment's own
-verification. `enduringScheme_enduringSound` proves the result
-enduring-sound, and `endurance_construction` packages the two. Nothing
+verification. That scheme is then proved enduring-sound. Nothing
 in that argument searches a space of candidate schemes and reports
 success; it exhibits the scheme and proves it works.
 
 This is what licenses the word "exactly." A fourth necessary condition
 would have to be one the construction silently relies on, and the
-construction is short enough to confirm that it does not — its only
-inputs are determination, a checker, and upward-closure.
+construction's inputs are exactly determination, a checker, and
+upward-closure — nothing else enters it.
 @sec-factorization makes the resulting count legible; it does not
 establish it.
 
 ## Per-stratum status
 
-The tower is graded honestly. Every cell is proved at every stratum this
-paper claims, except the polynomial stratum, which is conjectural
-throughout.
+@tbl-strata gives the status of each cell. All are proved at every
+stratum this paper claims, except the polynomial stratum, which is
+conjectural throughout.
 
 | flavor $\times$ stratum | verifier condition | status |
 |:----|:----|:----|
-| snapshot $\times$ oracle | none | proved (`snapshot_characterization`) |
-| enduring $\times$ oracle | none | proved (`trichotomy_ALL_iff`) |
-| snapshot $\times$ computable | commitment components computable | proved (`trichotomy_snap_COMP_iff`) |
-| enduring $\times$ computable | and the verification-certificate predicate computable | proved (`comp_COMP_iff`) |
+| snapshot $\times$ oracle | none | proved ($\lean{snapshot\_characterization}$) |
+| enduring $\times$ oracle | none | proved ($\lean{trichotomy\_ALL\_iff}$) |
+| snapshot $\times$ computable | commitment components computable | proved ($\lean{trichotomy\_snap\_COMP\_iff}$) |
+| enduring $\times$ computable | and the verification-certificate predicate computable | proved ($\lean{comp\_COMP\_iff}$) |
 | snapshot / enduring $\times$ polynomial | polynomial time and size | open (conjectured) |
 
 : Per-stratum status of $\TTsnap$ and $\TTend$. {#tbl-strata}
@@ -84,13 +79,12 @@ throughout.
 The polynomial stratum differs in kind from the rest of the tower. Its
 theorems are not weakly proved or proved under extra hypotheses; they
 are not proved at all, and no predicate in the development even encodes
-the complexity bounds they would need (@sec-model). The paper states
-that rather than implying three proved strata where one is open.
+the complexity bounds they would need (@sec-model).
 
 Oracle certifiability restricts nothing: every record predicate
-satisfies `NPMembership`, and the mechanization proves this rather than
-leaving it folklore (`npMembership_trivial`). So at $\oracle$, $\TTsnap$
-collapses to determination alone (`snapshot_iff_determined_ALL`), and
+satisfies NPMembership, and the mechanization proves this rather than
+leaving it folklore. So at $\oracle$, $\TTsnap$
+collapses to determination alone, and
 the oracle rows above carry less content than their computable
 counterparts. Reporting "three axes" at a stratum where one is satisfied
 by everything would overstate the result: the trichotomy's effective
@@ -101,8 +95,7 @@ content lives at the computable stratum, which is why
 
 **The determination gate.** Contrapositive of $\TTsnap(Q)$'s first
 conjunct: a claim that is not record-determined admits no scheme, at any
-stratum, of any soundness flavor (`determination_gate`, from
-`snapshot_characterization_determined`). This is the trichotomy's most
+stratum, of any soundness flavor. This is the trichotomy's most
 basic consequence, the reason two cells of @sec-cell-table are empty by
 theorem rather than by omission, and the single fact the companion
 theorem of @sec-instances shares with this one.
@@ -125,15 +118,19 @@ Both questions are answered at once by $\TTend(\oracle)$ presented
 fibered — determination and certifiability supplied as hypotheses rather
 than stated inside the existential, which is exactly the packaging a
 reader already holding a determined, certifiable claim wants
-(`endurance_iff_monotone`). $\EALM$ is thus the
+. $\EALM$ is thus the
 determination-and-monotonicity face of the three axes, with
 certifiability discharged into its hypotheses rather than absent.
 
 **$\EON$ — a trilemma.** A verifier may want a claim checked *Offline*,
 from a certificate alone; checked *Eternally*, with that certificate
 never expiring; and checked about *Now*, the record's present state
-rather than some past prefix. It may have any two. All three is not
-expensive but impossible, and the reading is sharp: a system with a
+rather than some past prefix. All three at once is not expensive but
+impossible. Two of the three pairings are realized in this model —
+offline-and-eternal by the construction above, offline-and-present by a
+snapshot scheme — while eternal-and-present requires giving up offline,
+which this model has no way to express, since @sec-model builds the
+offline constraint into the verifier's type. The reading is sharp: a system with a
 nameable authority can serve eternal offline evidence and needs no
 coordination for it, while every "is this current" question is a
 coordination problem no artifact retires. Whether a guarantee needs a
@@ -142,7 +139,7 @@ argument.
 
 The impossibility corner is the contrapositive of $\TTend(Q)$'s forward
 direction at a claim known to be non-monotone: no enduring scheme
-exists, at any stratum (`eon_trilemma_impossibility`). The *Offline* corner
+exists, at any stratum. The *Offline* corner
 needs no hypothesis to hold it — it is enforced by the verifier's type
 (@sec-model), which gives $V$ no access to the record, a clock, or the
 context. What the impossibility removes is therefore *Eternal*: a
