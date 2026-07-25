@@ -1,9 +1,17 @@
 import Core.Schemes
+import Core.CollisionExtraction
 
 /-!
 # Snapshot — the snapshot characterization
 
 `φ` admits a snapshot-sound scheme iff record-determined ∧ `φ̂` is oracle-certifiable.
+
+The verifier `V h c := C(c.w) = h ∧ Chk(c.w, c.t)` is exactly the shape
+`Core.CollisionExtraction`'s reduction is stated over, so `snapshotScheme`'s soundness
+is proved *through* that reduction with `Γ.binding` supplying `NoCollision Γ.C`. The
+idealized stratum is thereby the collision stratum's `NoCollision` instance rather
+than a parallel argument, and the one step this characterization takes on faith is
+named where it is taken.
 -/
 
 namespace EonEalm
@@ -27,10 +35,9 @@ theorem snapshotScheme_snapshotSound {Comm : Type} (Γ : Commitment Comm) (φ : 
     (hnp : ∀ w, determinedProj φ hd w ↔ ∃ t, Chk w t) :
     SnapshotSound (snapshotScheme Γ φ hd Witness Chk hnp) := by
   intro w c hacc ξ
-  obtain ⟨hCeq, hchk⟩ := hacc
-  have hCw : c.1 = w := Γ.binding c.1 w hCeq
-  have hchk' : Chk w c.2 := by rw [hCw] at hchk; exact hchk
-  have hφ' : determinedProj φ hd w := (hnp w).mpr ⟨c.2, hchk'⟩
+  have hφ' : determinedProj φ hd w :=
+    collision_extraction_reduction_of_noCollision Γ.C Witness Chk (determinedProj φ hd)
+      hnp Γ.binding w c hacc
   exact (determinedProj_iff hd w ξ).mp hφ'
 
 /-- Snapshot characterization, backward direction. -/
