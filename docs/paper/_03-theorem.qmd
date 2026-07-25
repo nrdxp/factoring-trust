@@ -1,9 +1,11 @@
 # The Trichotomy Theorem {#sec-theorem}
 
-One theorem, stated once, across the tower of strata from @sec-model.
-Two previously separate results — $\EON$ and $\EALM$ — fall out of it as
-corollaries rather than standing as independent theorems with proofs of
-their own.
+One theorem, stated once, across the tower of strata from @sec-model. It
+subsumes two results that were established, and mechanized, separately
+before it: $\EALM$ — *Endurance As Logical Monotonicity* — and the
+$\EON$ trilemma, whose corners are *Eternal*, *Offline*, and *Now*, of
+which a scheme may have at most two. Both now fall out as corollaries
+rather than standing as theorems with proofs of their own.
 
 Fix an entry alphabet $R$, a commitment $\Gamma$ whose components sit at
 stratum $Q$, and a claim $\Claim$ over $R$. The statements below hold
@@ -115,9 +117,14 @@ claim and wants to know exactly what monotonicity buys
 
 **$\EON$.** The contrapositive of $\TTend(Q)$'s forward direction at a
 claim known to be non-monotone: no enduring scheme exists, at any
-stratum (`eon_trilemma_impossibility`). Where $\EALM$ answers "what do I
-need, additionally, for endurance," $\EON$ answers "what have I lost,
-permanently, once endurance is known to fail."
+stratum (`eon_trilemma_impossibility`). The trilemma's *Offline* corner
+needs no hypothesis to hold it — it is enforced by the verifier's type
+(@sec-model), which gives $V$ no access to the record, a clock, or the
+context. What the impossibility removes is therefore *Eternal*: a
+non-monotone claim can be checked offline now, or checked forever, and
+not both. Where $\EALM$ answers "what do I need, additionally, for
+endurance," $\EON$ answers "what have I lost, permanently, once
+endurance is known to fail."
 
 A companion theorem — the **verification ceiling** — generalizes the
 gate above from append-only records to any well-founded justification
