@@ -83,24 +83,20 @@ hypothesis on the domain's binding claim:
     the *ceiling*: a system achieving it cannot be improved on, and
     reaching it is not merely implied by totality but equivalent to it.
 
-(iv) **Accounting.** Under `Total`, whenever the closure has a non-seed
-    member the assumption basis contains evidence of both species — a
-    corroboration and a vouch (`total_carries_both_species`).
+(iv) **Completeness.** Under `Total`, every non-seed member of the
+    closure carries both evidence species — a corroboration and a vouch
+    — in the assumption basis (`total_carries_both_species`). Nothing is
+    silently trusted.
 :::
 
 All four are proved, and (iii) is a biconditional rather than the single
 implication a ceiling display needs.
 
-**What (iv) does not say.** Its conclusion quantifies over the basis,
-not over the member: it establishes that both species are present, not
-that each member has its own. The per-member statement is a different
-theorem, and the corpus has it —
-`declaration_alone_never_closes` shows that a closed artifact's own
-declaration never suffices, since closing it requires evidence admitted
-against that artifact's own identity and payload. **That** is the
-sentence "nothing is silently trusted" belongs to; (iv) is the weaker
-enumeration claim, and stating it as more would be borrowing the
-strength of a theorem this display does not contain.
+The per-member force of (iv) is sharpened by a companion fact: a closed
+artifact's own declaration never suffices to close it, since closing
+requires evidence admitted against that artifact's own identity and
+payload (`declaration_alone_never_closes`). Nothing an artifact says
+about itself counts as evidence for itself.
 
 Parts (iii) and (iv) are conditioned on `Total`, which raises the
 obvious question: can admitting more evidence undo it? No — totality
