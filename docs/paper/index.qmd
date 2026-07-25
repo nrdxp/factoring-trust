@@ -10,24 +10,28 @@ abstract: |
   certificate authority, a genesis seed, a witness quorum — and the
   literature that studies each such system formalizes what can be
   *established* while leaving the remainder assumed, listed, and never
-  analyzed. We give that remainder a shape. We show that trust is
-  exactly the complement of verifiability and that, above a floor of two
-  named residuals, the complement *factors*: verification of a claim
-  over a growing, append-only record fails for exactly one of three
-  reasons — the claim is not determined by the record, the record does
-  not certify it at the verifier's computational power, or the claim
-  does not survive the record's growth — and each failure names whom the
-  verifier must trust and what repairing it costs. The "exactly" is
-  derived rather than stipulated: a biconditional machine-checked in Lean
-  4 across a tower of verifier strata (oracle, computable; the polynomial
-  stratum remains an open conjecture), whose reverse direction constructs
-  the evidence scheme out of the three conditions. A companion theorem —
-  the verification ceiling — carries the factoring from append-only
-  records to any well-founded justification structure that admits a
-  record realization, and we instantiate it twice over one neutral core:
-  a cryptographic identity system, whose own records are proved to be
-  such a realization, and a deliberately light source-integrity system,
-  which instantiates the ceiling over a neutral realization instead. Every ingredient of
+  analyzed. We give that remainder a shape. Two assumptions are
+  irreducible, and we grant them: that the cryptography holds, and that
+  the verifier being run is the one that was specified — Thompson's
+  trusting-trust attack. Above those two, trust is exactly the
+  complement of verifiability, and that complement *factors*.
+  Verification of a claim over a growing, append-only record fails for
+  exactly one of three reasons: the claim is not determined by the
+  record, the record does not certify it at the verifier's computational
+  power, or the claim does not survive the record's growth. Each failure
+  names whom the verifier must trust and what repairing it costs. The
+  "exactly" is derived rather than stipulated — a biconditional
+  machine-checked in Lean 4 across a tower of verifier strata (oracle,
+  computable; the polynomial stratum remains an open conjecture), whose
+  reverse direction constructs the evidence scheme out of the three
+  conditions. A companion theorem, the verification ceiling, carries the
+  same factoring beyond append-only records to any structure whose
+  artifacts are justified by the artifacts they were built from,
+  provided the domain can say what record each artifact commits. We
+  instantiate it twice from one shared core: a cryptographic identity
+  system, whose hash chain is proved to supply those records, and a
+  deliberately light source-integrity system, instantiated over a
+  content-neutral stand-in instead. Every ingredient of
   this factoring is independently attested in the literature — the
   observables-frame algebra of synthetic topology, CALM's
   monotonicity-coordination biconditional, archival diplomatics'
