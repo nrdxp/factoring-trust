@@ -11,14 +11,7 @@ The thesis that trust occupies exactly the space verification cannot
 reach is old. For Frankel, trusting means "going beyond the mere
 assessment of probabilities," and trust takes that assessment's place
 precisely when it cannot easily be made or is too costly to attempt; it
-enters "where more exact knowledge is not available" [@frankel-1977]. The Lewis and
-Weigert formulation — trust "begins where prediction ends"
-[@lewis-weigert-1985] — reaches this paper through Möllering's
-genealogy, where the tradition's unfactored form is plainest: trust as a
-leap "across the gorge of the unknowable" that "brackets out uncertainty
-and ignorance" as one undifferentiated act [@mollering-2001]. Later work
-inherits it intact — an attitude that lowers "the barrier of monitoring,
-challenging, checking, and questioning" [@nguyen-unquestioning].
+enters "where more exact knowledge is not available" [@frankel-1977].
 Security-requirements engineering operationalizes the same residue as a
 discretionary argument-stopper: "trust assumptions are unsubstantiated
 grounds used in security satisfaction arguments... because trust
@@ -27,25 +20,16 @@ assumptions are not argued, they stop the grounds-to-claim recursion"
 formal near-miss: the residue is named explicitly and the inference from
 "unverifiable" to "trusted" is stated outright, but the residue itself
 is a concrete, per-protocol component list, never factored by cause
-[@kremer-ryan-smyth-2010]. That treatment is field-standard rather than
-idiosyncratic: the systematization of verifiability notions across
-e-voting finds the residue carved throughout by *honest-principal sets* —
-who must behave — and never by the cause of the failure
-[@cortier-et-al-2016]. The requirements lineage reaches 2024 with the
-gap still open, in a theory of security-related assumptions built
-directly on the trust-assumption tradition above, where decidability,
+[@kremer-ryan-smyth-2010]. And the requirements lineage reaches 2024
+with the gap still open, in a theory of security-related assumptions
+built directly on the trust-assumption tradition, where decidability,
 monotonicity, and verifiability limits do not appear at all
 [@corallo-et-al-2024].
 
-Trust taxonomies come nearest to naming a structure and stop short.
-One decomposes trust in secure systems into seven attributes across six
-dimensions, but every dimension is a property of the *measurement
-apparatus* — how confidently, how recently, on whose authority an
-attribute was assessed — rather than an axis along which a claim can
-fail. Its bottom rung, "Assumed," is a single flat bucket with no
-account of why an attribute lands there; its closest approach to a limit
-result is an explicitly informal remark on bootstrapping circularity
-[@bradbury-et-al-2022].
+Those four are chosen, not exhaustive: an origin, an operationalization
+inside security argumentation, the closest formal treatment, and a
+date-stamp on the gap. The sociological and taxonomic literature between
+them inherits the same unfactored formulation without sharpening it.
 
 **Line:** the thesis is old, repeatedly operationalized down to the
 level of individual security arguments and protocol analyses, and still

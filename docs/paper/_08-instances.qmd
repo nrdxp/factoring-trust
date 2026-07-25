@@ -172,14 +172,11 @@ declaration in the ceiling's own development, the axioms used are Lean's
 wherever a statement reaches into the scheme world; choice is not among
 them.
 
-**Both instances are non-vacuous, and the mechanization says how.** Each
-carries four concrete witnesses over finite types — an artifact that
-classifies `closed`; a base-bounded `Total`; a `Total` defeated by an
-`establishGap` when the evidence snapshot is emptied
-(`unclosed_member_defeats_total`); and a policy admitting no vouchers,
-which forbids every non-seed `Total` (`no_vouchers_no_total`). The last
-is the sharpest of the four: it shows the accounting genuinely depends
-on admitted testimony rather than deriving everything from the gate.
+**Both instances are non-vacuous**, each carrying four concrete
+witnesses over finite types; @sec-witnesses lists them. The sharpest
+shows the accounting genuinely depends on admitted testimony rather than
+deriving everything from the gate — a policy admitting no vouchers
+forbids every non-seed `Total` (`no_vouchers_no_total`).
 
 ## The extended worked example: split-view, resolved without a fourth axis
 
@@ -195,7 +192,7 @@ For a fixed anchor this claim is determined, monotone, and certifiable
 *over the canonical record*; the verifier's actual difficulty is that
 its only access to the canonical record is the anchor itself. The trust
 spent is the admitted anchor — an entailment move against $P$
-(@sec-cures), not a new axis.
+(@sec-cell-table), not a new axis.
 
 **Cross-verifier**: "the two views I have been shown are consistent with
 each other," where consistency means one view extends the other
@@ -205,7 +202,7 @@ its certificate — and **non-monotone**: two views consistent today can
 diverge tomorrow, and the mechanization exhibits exactly that flip
 (`consistency_flips`, over a two-element alphabet, which such a
 divergence provably requires). This is the monotonicity-failure case,
-$\EON$ applies directly, and @sec-cures predicts the deployed defenses
+$\EON$ applies directly, and @sec-cell-table predicts the deployed defenses
 verbatim: entailment via a witness quorum or gossip protocol, cosigned
 checkpoints, restriction to "consistent as of time $t$," or an accepted
 expiry window.

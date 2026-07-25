@@ -44,9 +44,8 @@ without bounding it, and bounding it is what @sec-instances does.
 ## The question folklore has always asked, never answered
 
 Folklore has long said what the remainder *is*. For Frankel, trust
-enters "where more exact knowledge is not available" [@frankel-1977];
-for Lewis and Weigert it "begins where prediction ends"
-[@lewis-weigert-1985]. These are the ancestors of this
+enters "where more exact knowledge is not available" [@frankel-1977].
+That is the ancestor of this
 paper's thesis-half, and the sociological and epistemological work
 descending from them inherits the same unfactored formulation
 (@sec-related-work).
@@ -148,8 +147,9 @@ instantiates over a content-neutral one (`suretyRealization`,
 
 **C5.** The cell table: eight nominal cells, two empty *by theorem*
 rather than for want of a witness, six inhabited — one verifiable and
-five flavors of trust, each with its own anchor and minimal cure
-(@sec-cell-table: `undetermined_cell_empty`).
+five flavors of trust, each with its own anchor, and each cure a move
+along one of four coordinates (@sec-cell-table:
+`undetermined_cell_empty`).
 
 **C6.** Two usable forms of the theorem, each answering a question a
 designer asks on its own (@sec-theorem). $\EALM$ — *Endurance As
@@ -162,5 +162,5 @@ and depth is not what a specialization is for.
 
 The remaining sections carry the scaffolding these stand on:
 @sec-model fixes the vocabulary, @sec-floor states the two residuals,
-@sec-cures prices repair, @sec-scope-objections states what is not
-claimed, and @sec-related-work gives each ingredient its home.
+@sec-scope-objections states what is not claimed, and
+@sec-related-work gives each ingredient its home.

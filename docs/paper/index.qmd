@@ -75,8 +75,6 @@ date: 2026-07-24
 
 {{< include _06-cell-table.qmd >}}
 
-{{< include _07-cures.qmd >}}
-
 {{< include _08-instances.qmd >}}
 
 {{< include _09-scope-objections.qmd >}}
@@ -86,3 +84,5 @@ date: 2026-07-24
 {{< include _11-conclusion.qmd >}}
 
 {{< include _12-acknowledgment.qmd >}}
+
+{{< include _13-appendix-witnesses.qmd >}}
