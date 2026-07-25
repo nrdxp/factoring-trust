@@ -1,0 +1,66 @@
+# Appendix: Claims and Their Declarations {#sec-carriers .unnumbered}
+
+Every claim this paper makes about the mechanization, against the
+declaration that carries it. Nothing in the body depends on reading
+this; it exists so a reviewer checking the supplementary development has
+one list rather than a name in every other sentence.
+
+| Claim | Declaration |
+|:------------------------------------|:---------------------------|
+| **The trichotomy** | |
+| Snapshot characterization, oracle | snapshot\_characterization |
+| Snapshot characterization, computable | trichotomy\_snap\_COMP\_iff |
+| Enduring characterization, oracle | trichotomy\_ALL\_iff |
+| Enduring characterization, computable | comp\_COMP\_iff |
+| A scheme forces determination | snapshot\_characterization\_determined |
+| A scheme forces certifiability | snapshot\_characterization\_np |
+| Endurance forces monotonicity | endurance\_forces\_monotone |
+| The $\Leftarrow$ construction | enduringScheme, enduringScheme\_enduringSound, endurance\_construction |
+| Monotonicity as the sole increment | endurance\_iff\_monotone |
+| **Corollaries** | |
+| The determination gate | determination\_gate |
+| Oracle certifiability is vacuous | npMembership\_trivial |
+| Oracle snapshot collapses to determination | snapshot\_iff\_determined\_ALL |
+| The trilemma's impossibility corner | eon\_trilemma\_impossibility |
+| **The model** | |
+| Determination factors through the projection | determined\_iff\_factors |
+| Monotonicity is upward-closure | monotone\_iff\_projUpClosed |
+| Undetermined claims exist | exists\_undetermined\_claim |
+| **The factorization display** | |
+| The display at the computable stratum | factorization\_COMP |
+| **The cell table** | |
+| Row 1, inclusion | Cells.inclusionClaim, inclusionClaim\_computableMembership |
+| Row 2, absence and current head | absenceClaim\_not\_monotone, revokedClaim\_not\_monotone |
+| Rows 3–4, committed-generator degeneracy | Witness.Generator.degenerate, degenerate\_extensional |
+| Row 5, undetermined yet monotone | exists\_undetermined\_monotone |
+| Row 6, authored and currently absent | authoredAbsentClaim\_not\_determined, authoredAbsentClaim\_not\_monotone |
+| Rows 7–8, empty by theorem | undetermined\_cell\_empty, undetermined\_cell\_empty\_nonmonotone |
+| Transport restates the axes | transport\_applies\_to\_eonEalm |
+| Transport cannot cure two axes | neutral\_cannot\_cure |
+| **The verification ceiling** | |
+| The packaged display | Ceiling.ceiling |
+| The record realization | RecordRealization |
+| Establishment without admission | Discharges, discharges\_forces\_binding |
+| (i) The gate | binding\_admits\_no\_scheme |
+| (ii) The seed junction | seeds\_undischargeable\_and\_residual |
+| (iii) Minimality, as a biconditional | ceiling\_minimality |
+| (iv) Both species in the basis | total\_carries\_both\_species |
+| A declaration never closes itself | declaration\_alone\_never\_closes |
+| Totality survives new evidence | total\_mono\_snapshot |
+| Totality as closure-wide closedness | total\_iff\_every\_nonseed\_closed |
+| The general realization construction | countRealization |
+| **The instances** | |
+| Identity at the ceiling | identity\_ceiling |
+| Identity's trust surface is the genesis binding | principal\_trust\_bounded |
+| The chain's dependency closure | depclosure\_chain |
+| Identity's realization | identityRealization, identity\_id\_mono, identity\_id\_seedBoundary |
+| Source integrity at the ceiling | surety\_ceiling, suretyRealization |
+| No vouchers, no totality | no\_vouchers\_no\_total |
+| Totality defeated by an evidence gap | unclosed\_member\_defeats\_total |
+| **The split-view example** | |
+| View consistency | viewsConsistent |
+| Consistency is not monotone | consistency\_flips |
+| Divergence is permanent | divergence\_permanent |
+
+: Each claim in the body, and the declaration in the supplementary
+development that carries it. {#tbl-carriers}

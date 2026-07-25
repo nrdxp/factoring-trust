@@ -37,7 +37,7 @@ exists.
 
 The determination gate (@sec-theorem) refutes exactly that, so both rows
 are uninhabited and the proof is one line from the gate in each case
-(`undetermined_cell_empty`, `undetermined_cell_empty_nonmonotone`).
+.
 Their emptiness is not a gap in the search for examples; it is the
 gate's content, restated as a census.
 
@@ -46,23 +46,20 @@ gate's content, restated as a census.
 The rows do not all carry the same grade.
 
 **Rows 1, 2, 5, and 6 are mechanized.** Row 1 is inclusion, "$e$ appears
-in $w$" — `Cells.inclusionClaim`, carried end-to-end at the computable
-stratum by `inclusionClaim_computableMembership`. Row 2 is absence, or
+in $w$" — carried end-to-end at the computable stratum. Row 2 is
+absence, or
 equivalently "$w$ is the current head": determined and certifiable, and
-refuted by the next append (`absenceClaim_not_monotone`; the same
-failure appears for revocation under record transport,
-`revokedClaim_not_monotone`). Row 5 holds unconditionally — claims that
+refuted by the next append; the same failure appears for revocation
+under record transport. Row 5 holds unconditionally — claims that
 are undetermined yet monotone provably exist
-(`exists_undetermined_monotone`), with nothing left for the reader to
+, with nothing left for the reader to
 discharge. Row 6 composes the two: "authored by $A$ and currently
-absent" (`authoredAbsentClaim_not_determined`,
-`authoredAbsentClaim_not_monotone`).
+absent".
 
 **Rows 3 and 4 are the weakest rows, and the table should say so.**
 Their witness is degeneracy of a committed generator — a build that emits from a finite table rather
 than computing. The predicate is formalized, and proved independent of
-how the generator is written (`Witness.Generator.degenerate`,
-`degenerate_extensional`), but its failure of semi-decidability is
+how the generator is written, but its failure of semi-decidability is
 Rice–Shapiro applied to a semantic property of an unbounded-domain
 denotation, and this paper cites that step rather than mechanizing it:
 no computation model is built here. The predicate also lives over an
@@ -90,16 +87,16 @@ covers the whole verification apparatus, so strengthening a commitment
 is a $Q$-move rather than a fifth mechanism.
 
 - **Transport** moves $R$, re-expressing a claim over a different
-  alphabet. This one is mechanized rather than argued: the axes restate
-  over an arbitrary alphabet and specialize back
-  (`transport_applies_to_eonEalm`). It is also the most limited of the
-  four — re-expression alone provably cannot repair a determination or a
-  monotonicity failure (`neutral_cannot_cure`), so transport moves a
-  claim to where another coordinate can act, and never cures on its own.
+ alphabet. This one is mechanized rather than argued: the axes restate
+ over an arbitrary alphabet and specialize back
+. It is also the most limited of the
+ four — re-expression alone provably cannot repair a determination or a
+ monotonicity failure, so transport moves a
+ claim to where another coordinate can act, and never cures on its own.
 - **Upgrade** moves $Q$, strengthening the verifier or the commitment.
 - **Restriction** moves $\varphi$, narrowing the claim to a subclass
-  that does satisfy the conditions, at the cost of answering a weaker
-  question.
+ that does satisfy the conditions, at the cost of answering a weaker
+ question.
 - **Entailment** moves $P$, admitting a new trusted fact outright.
 
 Only entailment is debit-valued. The other three can be undone or

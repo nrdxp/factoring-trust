@@ -9,34 +9,33 @@ read.
 ## Records, contexts, and claims
 
 A **record** is a finite, append-only sequence of entries,
-$\Record := \mathrm{List}\ \mathit{Entry}$, ordered by the prefix
+$\Record:= \mathrm{List}\ \mathit{Entry}$, ordered by the prefix
 relation $\sqsubseteq$: $w \sqsubseteq w'$ iff $w$ is a prefix of $w'$.
 Records grow only by appending — nothing already committed is ever
 edited or removed. A **context** $\Context$ stands for everything a
 verifier does *not* see: causal history, wall-clock time, key custody,
 the existence of other records. A **world** pairs the two,
-$\World := \Record \times \Context$.
+$\World:= \Record \times \Context$.
 
 A **claim** is a predicate over a world,
-$\Claim : \Record \to \Context \to \mathrm{Prop}$ — "the entry at
+$\Claim: \Record \to \Context \to \mathrm{Prop}$ — "the entry at
 position $k$ was authored by principal $A$," "record $w$ is the
 canonical log's current head." The claim, not the record alone, is what
 a verifier is asked to check.
 
 **The declared axiom base.** $\mathit{Entry}$ and $\Context$ are
-introduced as opaque types (`Entry`, `Context`), which is what keeps
+introduced as opaque types (*Entry*, *Context*), which is what keeps
 every result below parametric: no theorem may inspect an entry's
 structure or a context's. Two genuine assumptions accompany them —
-`Context.inhabited`, that some context exists, and `Context.nontrivial`,
+*Context.inhabited*, that some context exists, and *Context.nontrivial*,
 that two distinct ones do. Those four declarations are everything this
-development adds to Lean's own `propext`, `Classical.choice` and
-`Quot.sound`.
+development adds to Lean's own *propext*, *Classical.choice* and
+*Quot.sound*.
 
-`Context.nontrivial` is consumed at three sites, and all three are
+*Context.nontrivial* is consumed at three sites, and all three are
 non-vacuity witnesses: that undetermined claims exist at all
-(`exists_undetermined_claim`), and the two undetermined rows of
-@sec-cell-table (`exists_undetermined_monotone`,
-`authoredAbsentClaim_not_determined`). Over a one-element context every
+, and the two undetermined rows of
+@sec-cell-table. Over a one-element context every
 claim is trivially determined, so without it the determination axis
 would be vacuous and those rows empty.
 
@@ -53,8 +52,8 @@ including the certifiability half of @sec-cell-table's first row.
 
 ## The offline verifier
 
-A **commitment** $\Gamma$ (`Commitment`) fixes a type $\Comm$ of
-committed values, a function $C : \Record \to \Comm$ producing one, a
+A **commitment** $\Gamma$ (*Commitment*) fixes a type $\Comm$ of
+committed values, a function $C: \Record \to \Comm$ producing one, a
 binding axiom on $C$, and a relation $VC$ certifying that the record
 behind one committed value extends the record behind another.
 
@@ -68,9 +67,9 @@ supplies instead is *computational* binding, and the distance between
 the two is exactly the binding residual of @sec-floor — granted, not
 proved.
 
-A **scheme** for $\Claim$ under $\Gamma$ (`Scheme`) is a certificate
+A **scheme** for $\Claim$ under $\Gamma$ (*Scheme*) is a certificate
 type $\mathit{Proof}$ together with a verifier
-$V : \Comm \to \mathit{Proof} \to \mathrm{Prop}$ that decides, from a
+$V: \Comm \to \mathit{Proof} \to \mathrm{Prop}$ that decides, from a
 committed value and a certificate alone — never from the record or the
 context — whether $\Claim$ holds. This is the paper's one modeling
 commitment: **the verifier's type is the offline property**. The
@@ -90,12 +89,12 @@ Two verifiers of the same commitment can disagree about how much they
 trust what they see. The model distinguishes exactly two soundness
 flavors, both over the same scheme machinery:
 
-- **Snapshot-sound** (`SnapshotSound`): the certificate is valid for the
-  record as it stood when the certificate was produced. Nothing is
-  claimed about what happens as the record grows.
-- **Enduring-sound** (`EnduringSound`): the certificate remains valid
-  for every extension of the record. A certificate produced today keeps
-  verifying against tomorrow's, larger record.
+- **Snapshot-sound** (*SnapshotSound*): the certificate is valid for the
+ record as it stood when the certificate was produced. Nothing is
+ claimed about what happens as the record grows.
+- **Enduring-sound** (*EnduringSound*): the certificate remains valid
+ for every extension of the record. A certificate produced today keeps
+ verifying against tomorrow's, larger record.
 
 The distinction is not cosmetic. It is what lets a single classical
 notion — "observable property," bundling semi-decidability with
@@ -106,17 +105,17 @@ A scheme's certificate and verifier are graded by the computational
 power required to run them. Three strata, in decreasing generality:
 
 - $\oracle$ — no computability constraint; the verifier may decide
-  anything. Certifiability here is `NPMembership`, an idealized
-  existence-of-a-checker condition carrying no complexity bound, and
-  every record predicate satisfies it (@sec-theorem).
+ anything. Certifiability here is *NPMembership*, an idealized
+ existence-of-a-checker condition carrying no complexity bound, and
+ every record predicate satisfies it (@sec-theorem).
 - $\computable$ — the verifier's components are computable over a
-  `Primcodable` alphabet, and certifiability is `ComputableMembership`,
-  which does bind: it demands a `ComputablePred` checker.
+ *Primcodable* alphabet, and certifiability is *ComputableMembership*,
+ which does bind: it demands a *ComputablePred* checker.
 - $\polynomial$ — the verifier runs in polynomial time on a
-  polynomially-sized certificate. This stratum is *described here and
-  not mechanized*: no predicate in the development encodes those bounds,
-  which is part of why its theorems are stated as conjectures
-  (@sec-theorem).
+ polynomially-sized certificate. This stratum is *described here and
+ not mechanized*: no predicate in the development encodes those bounds,
+ which is part of why its theorems are stated as conjectures
+ (@sec-theorem).
 
 A fourth, intermediate stratum — requiring only classical decidability
 of the commitment's equality test — adds no content: classical
@@ -133,15 +132,15 @@ tower used throughout is $\oracle \supset \computable \supset
 Three independent conditions on a claim $\Claim$, each defined once,
 without reference to any scheme:
 
-**Determination** (`Determined`).
-$\Det(\Claim) := \forall\, w\; \xi\; \xi',\ \Claim\ w\ \xi \leftrightarrow \Claim\ w\ \xi'$
+**Determination** (*Determined*).
+$\Det(\Claim):= \forall\, w\; \xi\; \xi',\ \Claim\ w\ \xi \leftrightarrow \Claim\ w\ \xi'$
 — the claim's truth value does not depend on the context, only on the
 record. Equivalently, $\Claim$ factors through the projection that
 forgets context: $\Det(\Claim) \leftrightarrow \exists\, \psi,\ \Claim =
 (\lambda\, w\; \_.\ \psi\ w)$, membership in the image of the pullback
-$\pstar$ along that projection (`determined_iff_factors`). Where
+$\pstar$ along that projection. Where
 $\Det(\Claim)$ holds, write $\phihat$ for the resulting record-only
-predicate (`determinedProj`).
+predicate (*determinedProj*).
 
 **Certifiability** (at stratum $Q$). Whether $\phihat$ is
 semi-decidable at $Q$'s power — $\Sigma_1$ at the computable stratum
@@ -151,12 +150,35 @@ The axis is defined on $\phihat$ rather than on $\Claim$, so it exists
 only where determination holds; @sec-cell-table turns on that
 dependency.
 
-**Monotonicity** (`Monotone`).
-$\Mono(\Claim) := \forall\, w\; w'\; \xi,\ \Claim\ w\ \xi \to w \sqsubseteq w' \to \Claim\ w'\ \xi$
+**Monotonicity** (*Monotone*).
+$\Mono(\Claim):= \forall\, w\; w'\; \xi,\ \Claim\ w\ \xi \to w \sqsubseteq w' \to \Claim\ w'\ \xi$
 — once true, a claim stays true as the record is extended. For
 determined $\Claim$ this is equivalent to $\phihat$ being upward-closed
-(`UpClosed`, `monotone_iff_projUpClosed`): $\UpC(\psi) := \forall\, w\;
+: $\UpC(\psi):= \forall\, w\;
 w',\ w \sqsubseteq w' \to \psi\ w \to \psi\ w'$.
 
 These three conditions are the paper's entire vocabulary. Everything
 that follows is a statement about how they combine.
+
+```{=latex}
+\begin{figure}[tb]
+\centering
+\begin{tikzpicture}[>={Stealth[round]}, node distance=22mm, semithick]
+  \node (W) {$\World = \Record \times \Context$};
+  \node (R) [below=16mm of W] {$\Record$};
+  \node (P) [right=34mm of R] {$\mathrm{Prop}$};
+  \draw[->] (W) -- node[left]  {$\pi$} (R);
+  \draw[->] (R) -- node[below] {$\psi$} (P);
+  \draw[->] (W) -- node[above right, xshift=1mm] {$\varphi$} (P);
+\end{tikzpicture}
+\caption{The determination axis, as a factoring. A claim $\varphi$ lives
+on worlds; $\pi$ forgets the context. $\varphi$ is \emph{determined}
+exactly when it factors through $\pi$ --- when some record-only $\psi$
+makes the triangle commute, so that $\varphi = \psi \circ \pi$. The
+determined claims are therefore the image of the pullback $\pi^{*}$,
+which sends $\psi$ to $\psi \circ \pi$. Certifiability and monotonicity
+are conditions on $\psi$; where no such $\psi$ exists there is nothing
+for them to be conditions on, which is why the cell table's
+certifiability column is undefined on the undetermined rows.}
+\end{figure}
+```

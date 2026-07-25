@@ -15,7 +15,7 @@ assumption belongs to the floor exactly when removing it removes the
 commitment's binding property entirely, with no substitute available
 inside the model. The mechanization keeps this boundary visible — the
 commitment's binding and verification conditions are hypotheses of the
-`Commitment` structure, supplied by the instantiator, never derived.
+*Commitment* structure, supplied by the instantiator, never derived.
 
 **The fidelity residual** (on $V$'s side). A verifier is, physically, a
 running program, and no record-side argument can establish that the

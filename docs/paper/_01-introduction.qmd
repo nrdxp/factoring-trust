@@ -64,13 +64,13 @@ claim over a growing, append-only record fails for exactly one of three
 reasons:
 
 - **Determination.** The fact is not a function of the committed record
-  — the record underdetermines the history that produced it.
+ — the record underdetermines the history that produced it.
 - **Certifiability.** The fact is in the record, but not certifiable
-  from it at the verifier's computational power — semi-decidable
-  ($\Sigma_1$) at the computable stratum, in $\mathrm{NP}$ at the
-  polynomial one.
+ from it at the verifier's computational power — semi-decidable
+ ($\Sigma_1$) at the computable stratum, in $\mathrm{NP}$ at the
+ polynomial one.
 - **Monotonicity.** The fact does not stay true as the record grows —
-  the evidence cannot endure past the moment it was produced.
+ the evidence cannot endure past the moment it was produced.
 
 Each axis is inherited, and credited as such. Archival diplomatics
 hypothesized the opposite of the determination axis and reported it
@@ -121,18 +121,16 @@ supplementary material. There is no separate mechanization section
 because there is nothing to segregate.
 
 **C1.** The trichotomy as a biconditional, both legs proved, at the
-oracle and computable strata (@sec-theorem: `trichotomy_ALL_iff`,
-`trichotomy_snap_COMP_iff`, `comp_COMP_iff`). The polynomial stratum is
+oracle and computable strata (@sec-theorem). The polynomial stratum is
 an open conjecture and is stated as one.
 
 **C2.** The determination axis and its gate, non-vacuous
-unconditionally (@sec-model, @sec-theorem: `determination_gate`,
-`exists_undetermined_claim`).
+unconditionally (@sec-model, @sec-theorem).
 
 **C3.** The factorization display, at the computable stratum and
 enduring flavor: evidence-admitting claims are the effective observables
 frame pulled back along the context-forgetting projection
-(@sec-factorization: `factorization_COMP`). Separately, the
+(@sec-factorization). Separately, the
 snapshot/enduring split *factors* the tradition's bundled "observable"
 into two independent axes — this paper's own delta inside an inherited
 algebra.
@@ -140,28 +138,24 @@ algebra.
 **C4.** The verification ceiling — a companion theorem, not a corollary
 — over any well-founded justification structure admitting a record
 realization, with the accounting and scheme worlds joined by a proved
-relation rather than an analogy (@sec-instances: `Ceiling.ceiling`,
-`RecordRealization`, `Discharges`). It is instantiated twice over one
+relation rather than an analogy (@sec-instances). It is instantiated twice over one
 neutral core: the identity instance discharges a content-carrying
-realization from its own structure (`identityRealization`,
-`principal_trust_bounded`), and the light source-integrity instance
-instantiates over a content-neutral one (`suretyRealization`,
-`surety_ceiling`).
+realization from its own structure, and the light source-integrity instance
+instantiates over a content-neutral one.
 
 **C5.** The cell table: eight nominal cells, two empty *by theorem*
 rather than for want of a witness, six inhabited — one verifiable and
 five flavors of trust, each with its own anchor, and each cure a move
-along one of four coordinates (@sec-cell-table:
-`undetermined_cell_empty`).
+along one of four coordinates (@sec-cell-table).
 
 **C6.** Two usable forms of the theorem, each answering a question a
 designer asks on its own (@sec-theorem). $\EALM$ — *Endurance As
 Logical Monotonicity* — says what monotonicity buys: whether a
 guarantee can rest on one self-contained certificate forever, or needs
-refreshing (`endurance_iff_monotone`). The $\EON$ trilemma says what is
+refreshing. The $\EON$ trilemma says what is
 permanently lost when it cannot: a non-monotone claim cannot be checked
 offline, about the present, and forever
-(`eon_trilemma_impossibility`). Neither is deep,
+. Neither is deep,
 and depth is not what a specialization is for.
 
 The remaining sections carry the scaffolding these stand on:
