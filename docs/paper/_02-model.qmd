@@ -166,26 +166,17 @@ These three conditions are the paper's entire vocabulary, and the diagram on thi
 the other two. Everything that follows is a statement about how
 they combine.
 
+::: {.content-visible when-format="pdf"}
 ```{=latex}
 \begin{figure}[t]
 \centering
-\begin{tikzpicture}[>={Stealth[round]}, semithick]
-  \node (W) {$\World = \Record \times \Context$};
-  \node (R) [below=16mm of W] {$\Record$};
-  \node (P) [right=34mm of R] {$\mathrm{Prop}$};
-  \draw[->] (W) -- node[left]  {$\pi$} (R);
-  \draw[->] (R) -- node[below] {$\psi$} (P);
-  \draw[->] (W) -- node[above right, xshift=1mm] {$\varphi$} (P);
-\end{tikzpicture}
-\caption{The determination axis, as a factoring. A claim $\varphi$ lives
-on worlds; $\pi$ forgets the context. $\varphi$ is \emph{determined}
-exactly when it factors through $\pi$ --- when some record-only $\psi$
-makes the triangle commute, so that $\varphi = \psi \circ \pi$. The
-determined claims are the image of the pullback $\pi^{*}$, which sends
-$\psi$ to $\psi \circ \pi$. Certifiability and monotonicity are
-conditions on $\psi$; where no such $\psi$ exists there is nothing for
-them to be conditions on, which is why the cell table's certifiability
-column is undefined on the undetermined rows.}
+\input{fig-world.tex}
+\caption{The determination axis, as a factoring. A claim $\varphi$ lives on worlds; $\pi$ forgets the context. $\varphi$ is \emph{determined} exactly when it factors through $\pi$ --- when some record-only $\psi$ makes the triangle commute, so that $\varphi = \psi \circ \pi$. The determined claims are the image of the pullback $\pi^{*}$, which sends $\psi$ to $\psi \circ \pi$. Certifiability and monotonicity are conditions on $\psi$; where no such $\psi$ exists there is nothing for them to be conditions on, which is why the cell table's certifiability column is undefined on the undetermined rows.}
 \label{fig:world}
 \end{figure}
 ```
+:::
+
+::: {.content-visible when-format="html"}
+![The determination axis, as a factoring. A claim $\varphi$ lives on worlds; $\pi$ forgets the context. $\varphi$ is *determined* exactly when it factors through $\pi$ — when some record-only $\psi$ makes the triangle commute, so that $\varphi = \psi \circ \pi$. The determined claims are the image of the pullback $\pi^{*}$, which sends $\psi$ to $\psi \circ \pi$. Certifiability and monotonicity are conditions on $\psi$; where no such $\psi$ exists there is nothing for them to be conditions on, which is why the cell table's certifiability column is undefined on the undetermined rows.](fig-world.svg)
+:::
