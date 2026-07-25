@@ -29,7 +29,7 @@ before that legibility can be trusted.
 
 **(i) The stratum matters.** The identification above is a fact about
 the *computable* stratum specifically. At the oracle stratum,
-$\pstar(\exists \cdot \mathrm{ALL} \cap \UpC(\sqsubseteq))$ is simply
+$\pstar(\Sigma_1^{\oracle} \cap \UpC(\sqsubseteq))$ is simply
 every upward-closed predicate on records — the Alexandrov topology on
 $(\Record, \sqsubseteq)$, with no effectivity content at all. At the
 polynomial stratum, $\mathrm{NP} \cap \UpC(\sqsubseteq)$ is not even
@@ -43,8 +43,9 @@ contribution within an inherited algebra.** The display covers
 *enduring* evidence only. A claim's snapshot-record-side class is
 $\Sigma_1$ *simpliciter* — semi-decidable at a fixed stage, with no
 upward-closure demanded. This is not a gap in the display; it is the
-sharpest sentence available: **snapshot evidence is affirmability of the
-finite stage; enduring evidence is observability of the limit.** The
+sharpest sentence available: **snapshot evidence needs only that a claim
+be certifiable at the stage it is checked; enduring evidence needs that
+and stability under everything the record may later become.** The
 classical tradition's single bundled notion — "observable property,"
 meaning simultaneously semi-decidable *and* stable — factors, in this
 setting, across the snapshot/enduring distinction, into certifiability

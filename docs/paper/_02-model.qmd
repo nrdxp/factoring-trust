@@ -28,12 +28,17 @@ introduced as opaque types (`Entry`, `Context`), which is what keeps
 every result below parametric: no theorem may inspect an entry's
 structure or a context's. Two genuine assumptions accompany them —
 `Context.inhabited`, that some context exists, and `Context.nontrivial`,
-that two distinct ones do. Those four declarations are the
-development's entire axiomatic surface. `Context.nontrivial` is
-load-bearing exactly once, in the proof that undetermined claims exist
-(`exists_undetermined_claim`): over a one-element context every claim is
-trivially determined and the determination axis would be vacuous.
-Stating that dependency is cheaper than leaving a reader to find it.
+that two distinct ones do. Those four declarations are everything this
+development adds to Lean's own `propext`, `Classical.choice` and
+`Quot.sound`.
+
+`Context.nontrivial` is consumed at three sites, and all three are
+non-vacuity witnesses: that undetermined claims exist at all
+(`exists_undetermined_claim`), and the two undetermined rows of
+@sec-cell-table (`exists_undetermined_monotone`,
+`authoredAbsentClaim_not_determined`). Over a one-element context every
+claim is trivially determined, so without it the determination axis
+would be vacuous and those rows empty.
 
 **What a checker must trust.** Nothing mathematical is assumed. The four
 declarations above are modeling opacity, not asserted theorems, and no
@@ -42,25 +47,44 @@ Rice and Rice–Shapiro it cites them, and neither is axiomatized, so no
 Lean proof appeals to either. The dependency on a
 mathematics library is confined to a single import in a single file,
 which brings in a computability development for the computable stratum.
-The core, the verification ceiling, the transport law, the cell-table
-witnesses and both instances are library-free. A reviewer checking
-everything except the computable stratum needs Lean and this
-development, and nothing else.
+The core, the verification ceiling, the transport law and both instances
+are library-free; what is not is the computable stratum's own content,
+including the certifiability half of @sec-cell-table's first row.
 
 ## The offline verifier
 
-A **commitment** $\Gamma$ (`Commitment`) packages a record's committed
-representation: a component type $C$ — a digest, say — a binding
-relation, and a verification-certificate type $VC$ with soundness and
-completeness conditions relative to $C$. A **scheme** for $\Claim$ under
-$\Gamma$ (`Scheme`) is a certificate type together with a verifier
-$V : \mathit{Comm} \to \mathit{Proof} \to \mathrm{Prop}$ that decides,
-from the commitment and a certificate alone — never from the record or
-the context directly — whether $\Claim$ holds. This is the paper's one
-modeling commitment: **the verifier's type is the offline property**.
-Asking whether $\Claim$ admits a scheme is exactly asking whether
-$\Claim$ can be checked from a committed digest and a certificate, with
-no further access to history.
+A **commitment** $\Gamma$ (`Commitment`) fixes a type $\Comm$ of
+committed values, a function $C : \Record \to \Comm$ producing one, a
+binding axiom on $C$, and a relation $VC$ certifying that the record
+behind one committed value extends the record behind another.
+
+**Binding here is exact, and that is a real limitation.** The axiom is
+injectivity of $C$, which no compressing function satisfies; the
+development states the consequence outright, that binding with
+compression is unsatisfiable, and every commitment it instantiates is
+the identity. So the mechanized commitment is an information-theoretic
+idealization of a digest rather than a digest. What a hash function
+supplies instead is *computational* binding, and the distance between
+the two is exactly the binding residual of @sec-floor — granted, not
+proved.
+
+A **scheme** for $\Claim$ under $\Gamma$ (`Scheme`) is a certificate
+type $\mathit{Proof}$ together with a verifier
+$V : \Comm \to \mathit{Proof} \to \mathrm{Prop}$ that decides, from a
+committed value and a certificate alone — never from the record or the
+context — whether $\Claim$ holds. This is the paper's one modeling
+commitment: **the verifier's type is the offline property**. The
+constraint is on what $V$ may consult, not on how large a certificate
+may be; size bounds belong to the polynomial stratum, which this
+development does not mechanize.
+
+Completeness is stated as certificate *existence*, never as a bundled
+prover, and that is forced rather than stylistic: a scheme carrying an
+efficient prover would, composed with an efficient $C$ and $V$, decide
+$\phihat$ outright — so a characterization claiming a scheme for every
+determined, certifiable claim would carry an unconditional
+$\mathrm{P} = \mathrm{NP}$ obligation. Bare witness existence is what
+keeps @sec-theorem free of it.
 
 Two verifiers of the same commitment can disagree about how much they
 trust what they see. The model distinguishes exactly two soundness
@@ -115,7 +139,7 @@ $\Det(\Claim) := \forall\, w\; \xi\; \xi',\ \Claim\ w\ \xi \leftrightarrow \Clai
 record. Equivalently, $\Claim$ factors through the projection that
 forgets context: $\Det(\Claim) \leftrightarrow \exists\, \psi,\ \Claim =
 (\lambda\, w\; \_.\ \psi\ w)$, membership in the image of the pullback
-$\pstar$ along that projection (`determined_eq_proj`). Where
+$\pstar$ along that projection (`determined_iff_factors`). Where
 $\Det(\Claim)$ holds, write $\phihat$ for the resulting record-only
 predicate (`determinedProj`).
 

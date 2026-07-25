@@ -26,7 +26,7 @@ The second is a diagnostic rather than a result, and is offered as such.
 Machine-learned alignment resists verification on all three axes at
 once: behavior on unseen inputs is not *determined* by any finite
 training record; semantic behavioral properties are not *certifiable*,
-by Rice's theorem; and an alignment claim over an open input space is
+by Rice–Shapiro; and an alignment claim over an open input space is
 not *monotone*, since one adversarial input falsifies it after
 arbitrarily much confirming evidence. Turning that into a theorem
 requires pinning down what "aligned" means as a claim in this paper's

@@ -28,8 +28,8 @@ abstract: |
   same factoring beyond append-only records to any structure whose
   artifacts are justified by the artifacts they were built from,
   provided the domain can say what record each artifact commits. We
-  instantiate it twice from one shared core: a cryptographic identity
-  system, whose hash chain is proved to supply those records, and a
+  instantiate it twice from one shared core: an identity system, whose
+  chain of key events is proved to support such a record, and a
   deliberately light source-integrity system, instantiated over a
   content-neutral stand-in instead. Every ingredient of
   this factoring is independently attested in the literature — the

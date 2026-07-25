@@ -36,9 +36,8 @@ residual would require a third realized component in a scheme's
 signature, and none exists — the same discipline the trichotomy itself
 uses, where the count is a consequence of the structure being counted.
 
-Both residuals are, honestly, unmechanized: they concern physical
-realization, not the record-and-context model @sec-model formalizes, and
-this paper states that plainly rather than let a reader discover it.
-What is mechanized is everything *above* the floor — the claim that,
+Both residuals are unmechanized. They concern physical realization
+rather than the record-and-context model of @sec-model. What is
+mechanized is everything *above* the floor — the claim that,
 once a binding commitment and a faithful verifier are granted, exactly
 three further reasons can defeat verification, and no others.

@@ -12,9 +12,20 @@ Generalize from a single append-only record to a **well-founded
 justification structure**: a directed acyclic graph of artifacts, each
 either a leaf or carrying a derived record naming its own inputs
 (`Node`), together with a fail-closed classification of every artifact
-into one of four buckets — `closed`, `attestGap`, `establishGap`,
-`import` (`classify`) — relative to an admitted policy $P$ and an
-evidence snapshot $\sigma$. Acyclicity is by construction rather than by
+into one of four buckets relative to an admitted policy $P$ and an
+evidence snapshot $\sigma$ (`classify`): `closed`, meaning the artifact's
+establishment is fully accounted for; `establishGap` and `attestGap`,
+naming which half is missing; and `import`, the bucket a genesis seed
+always lands in.
+
+Two species of evidence do that accounting, and the distinction between
+them is the one the whole display turns on. A **corroboration** is an
+admitted party's re-verification of an artifact against its own
+committed content — a check anyone else could re-run. A **vouch** is an
+admitted party's keyed judgment binding the artifact to the principal it
+names — testimony, which no one can re-run. Corroborations are evidence
+a verifier could in principle reproduce; vouches are exactly the trust
+the rest of this paper is about. Acyclicity is by construction rather than by
 assumption: a node's inputs are syntactic subterms of the node, so no
 artifact can name itself, transitively or otherwise, and the structure
 cannot express a circular justification to have to exclude.
@@ -33,11 +44,18 @@ object either is defined in terms of, so a statement about the trust
 surface says nothing about evidence schemes until the two are linked.
 The link is a **record realization** for a closure
 (`RecordRealization`): a map $\mathit{recordOf}$ from artifacts to
-records satisfying two conditions on that closure — **(R1)** building on
-an artifact extends its record, $m \in \mathit{depclosure}\ n
-\Rightarrow \mathit{recordOf}\ m \sqsubseteq \mathit{recordOf}\ n$, and
-**(R2)** an artifact is a genesis seed exactly when its record commits
-no prior entries.
+records satisfying two conditions **within one artifact $a$'s dependency
+closure**, and nowhere else — **(R1)** for $n$ in that closure, building
+on an artifact extends its record, $m \in \mathit{depclosure}\ n
+\Rightarrow \mathit{recordOf}\ m \sqsubseteq \mathit{recordOf}\ n$; and
+**(R2)** within that closure, an artifact is a genesis seed exactly when
+its record commits no prior entries.
+
+The scoping is load-bearing, not fastidious. Stated over every node of
+the type, (R2) is refutable — the type admits a node flagged as a seed
+with an arbitrary identifier, which no builder constructs but the
+constructors permit. Scoped to a closure, it becomes exactly what a real
+builder's own structure can discharge.
 
 The neutral core cannot supply this and should not. $\mathit{Entry}$ is
 opaque by construction (@sec-model), so no map into $\Record$ is
@@ -60,20 +78,29 @@ hypothesis on the domain's binding claim:
     undischarged and lies in the trust surface
     (`seeds_undischargeable_and_residual`).
 
-(iii) **Minimality.** Under `Total`, the trust surface *equals* the
-    closure's seeds (`ceiling_minimality`). That equality is the
-    *ceiling*: a system achieving it cannot be improved on.
+(iii) **Minimality.** `Total` holds *if and only if* the trust surface
+    equals the closure's seeds (`ceiling_minimality`). That equality is
+    the *ceiling*: a system achieving it cannot be improved on, and
+    reaching it is not merely implied by totality but equivalent to it.
 
-(iv) **Completeness.** Under `Total`, every non-seed member carries both
-    evidence species — a corroboration and a vouch — in the assumption
-    basis (`total_carries_both_species`). Nothing is silently trusted.
+(iv) **Accounting.** Under `Total`, whenever the closure has a non-seed
+    member the assumption basis contains evidence of both species — a
+    corroboration and a vouch (`total_carries_both_species`).
 :::
 
-All four are proved. Minimality is an equality rather than an inference
-drawn by the reader, and (ii) is quantified over schemes rather than
-argued from the gate case by case — which is what the realization buys
-and what makes the surface's minimality a statement about evidence at
-all.
+All four are proved, and (iii) is a biconditional rather than the single
+implication a ceiling display needs.
+
+**What (iv) does not say.** Its conclusion quantifies over the basis,
+not over the member: it establishes that both species are present, not
+that each member has its own. The per-member statement is a different
+theorem, and the corpus has it —
+`declaration_alone_never_closes` shows that a closed artifact's own
+declaration never suffices, since closing it requires evidence admitted
+against that artifact's own identity and payload. **That** is the
+sentence "nothing is silently trusted" belongs to; (iv) is the weaker
+enumeration claim, and stating it as more would be borrowing the
+strength of a theorem this display does not contain.
 
 Parts (iii) and (iv) are conditioned on `Total`, which raises the
 obvious question: can admitting more evidence undo it? No — totality
@@ -106,9 +133,11 @@ beginning of a theory. Each instance names the cells it exercises, so
 the complementarity is checkable rather than asserted. The cell labels
 are those of @tbl-cells.
 
-**Identity.** A cryptographic identity system whose record is a hash
-chain of key events and whose genesis is a single binding commitment
-(`identity_ceiling`). It exercises **T1** — its genesis binding claim
+**Identity.** An identity system whose record is a chain of key events
+and whose genesis is a single binding commitment (`identity_ceiling`).
+The mechanized chain is structural — an ordered sequence of events, each
+naming a principal — with no hash function in it; what the instance
+exercises is the accounting, not the cryptography. It exercises **T1** — its genesis binding claim
 fails determination under the domain's fiber hypothesis, since
 byte-identical chains can arise under honest custody or under
 impersonation — and **T3**, through the split-view example below. Its
@@ -122,16 +151,22 @@ forced-generator or Rice-theoretic tightness result stands between the
 model and the theorem — which makes it the cleanest evidence that the
 completeness and minimality machinery is not build-specific.
 
-**Its records are proved to realize the ceiling, not assumed to.**
-`identityRealization` constructs the realization rather than positing
-it: records are prefixes of an ambient append-only log keyed on artifact
-identifier, and (R1) and (R2) are discharged by induction on the chain's
-own structure (`identity_id_mono`, `identity_id_seedBoundary`) under two
+**Its realization is constructed, not assumed.** `identityRealization`
+builds one rather than positing it: an artifact's record is the prefix
+of an ambient append-only log determined by that artifact's identifier,
+and (R1) and (R2) are discharged by induction on the chain's own
+structure (`identity_id_mono`, `identity_id_seedBoundary`) under two
 hypotheses about the caller's event list — that identifiers do not
-increase toward the root, and that identifier zero is reserved for
-genesis. The realization therefore carries content: what an artifact's
-record *is* depends on what the chain actually contains. A real system's
-records are shown to be the kind of thing the ceiling is about.
+increase as one descends from the chain's head toward its genesis, and
+that identifier zero is reserved for genesis. A third hypothesis, that
+identifiers distinguish artifacts, is carried and not discharged.
+
+The realization therefore *varies* with the artifact: distinct
+identifiers get distinct records, which is what (R1) and (R2) need. It
+does not read the artifact's payload, and the log it indexes into is
+supplied by the caller rather than derived from the chain — so what is
+proved is that this domain's structure supports a realization, not that
+its key events determine one.
 
 **A light source-integrity instance.** Its build-domain name, wherever
 the general ceiling is instantiated to source integrity, is the **surety

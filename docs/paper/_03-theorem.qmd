@@ -60,16 +60,15 @@ success; it exhibits the scheme and proves it works.
 
 This is what licenses the word "exactly." A fourth necessary condition
 would have to be one the construction silently relies on, and the
-construction is short enough to confirm that it does not — its only
-inputs are determination, a checker, and upward-closure.
+construction's inputs are exactly determination, a checker, and
+upward-closure — nothing else enters it.
 @sec-factorization makes the resulting count legible; it does not
 establish it.
 
 ## Per-stratum status
 
-The tower is graded honestly. Every cell is proved at every stratum this
-paper claims, except the polynomial stratum, which is conjectural
-throughout.
+Every cell is proved at every stratum this paper claims, except the
+polynomial stratum, which is conjectural throughout.
 
 | flavor $\times$ stratum | verifier condition | status |
 |:----|:----|:----|
@@ -84,8 +83,7 @@ throughout.
 The polynomial stratum differs in kind from the rest of the tower. Its
 theorems are not weakly proved or proved under extra hypotheses; they
 are not proved at all, and no predicate in the development even encodes
-the complexity bounds they would need (@sec-model). The paper states
-that rather than implying three proved strata where one is open.
+the complexity bounds they would need (@sec-model).
 
 Oracle certifiability restricts nothing: every record predicate
 satisfies `NPMembership`, and the mechanization proves this rather than
@@ -132,8 +130,12 @@ certifiability discharged into its hypotheses rather than absent.
 **$\EON$ — a trilemma.** A verifier may want a claim checked *Offline*,
 from a certificate alone; checked *Eternally*, with that certificate
 never expiring; and checked about *Now*, the record's present state
-rather than some past prefix. It may have any two. All three is not
-expensive but impossible, and the reading is sharp: a system with a
+rather than some past prefix. All three at once is not expensive but
+impossible. Two of the three pairings are realized in this model —
+offline-and-eternal by the construction above, offline-and-present by a
+snapshot scheme — while eternal-and-present requires giving up offline,
+which this model has no way to express, since @sec-model builds the
+offline constraint into the verifier's type. The reading is sharp: a system with a
 nameable authority can serve eternal offline evidence and needs no
 coordination for it, while every "is this current" question is a
 coordination problem no artifact retires. Whether a guarantee needs a
