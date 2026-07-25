@@ -9,8 +9,10 @@ stays Core-only): rows 3 and 5's record-only part, `e ∉ w`, is
 membership predicate, closed under `ComputablePred.not`. Row 1 cites
 `TrichotomyComp.inclusionClaim_computableMembership` (already landed, not
 reproduced here); rows 2 and 5's C column is n.a. (fibered — see
-`Witness.Cells`'s module doc); rows 4 and 6 are cited-grade
-(Rice/Rice–Shapiro), mechanized nowhere in this workspace.
+`Witness.Cells`'s module doc); rows 4 and 6's degeneracy reading stays
+cited (Rice/Rice–Shapiro), and their cells are inhabited by
+`Effective.NonCertifiable`'s divergence claims, whose failure of
+`ComputableMembership` is proved from Mathlib's halting problem.
 -/
 
 namespace Effective.Cells

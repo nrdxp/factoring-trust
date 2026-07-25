@@ -19,11 +19,17 @@ trust flavors, each with its own witness claim, grade, and minimal cure.
 Each row is marked **mechanized-parametric** (a Lean witness, parametric
 in a given `Entry`/`Context` where `Core.Model.Entry` carries no
 inhabitedness axiom — the landed `inclusionClaim`/`revokedClaim` idiom) or
-**cited** (Rice/Rice–Shapiro-grade — this workspace has no computation
-model, so a genuine `¬Σ₁` fact cannot be mechanized here; see
-`Witness.Generator`'s module doc for why, and `Core.Corollaries`'
-`npMembership_trivial` for why the oracle stratum can't manufacture one
-either).
+**cited** (Rice/Rice–Shapiro-grade — degeneracy's failure of
+semi-decidability is a theorem this workspace cites rather than proves;
+see `Witness.Generator`'s module doc for why no computation model is built
+there, and `Core.Corollaries`' `npMembership_trivial` for why the oracle
+stratum cannot manufacture a `¬Σ₁` fact either).
+
+The two `¬C` rows carry both grades. Their *cited* witness is degeneracy,
+as below. Their *mechanized* inhabitant is a different claim — divergence
+of a committed build — which needs Mathlib's halting problem and so lands
+at the computable stratum (`Effective.NonCertifiable`), cited from here
+rather than restated, since this file stays Core-only.
 
 ## Where `Context.nontrivial` is consumed in this file
 
@@ -108,17 +114,22 @@ theorem absenceClaim_not_monotone (e : Entry) (ξ : Context) :
 /-! Certifiability is annotated in `Effective.Cells` (this file stays
 Core-only). -/
 
-/-! ## Row 4 — (D, ¬C, M), "trust the voucher" (cited-grade)
+/-! ## Row 4 — (D, ¬C, M), "trust the voucher"
 
-The existing witness — `Witness.Generator.degenerate`/`genuine` — is
-cited, never restated: "the committed generator is degenerate" is fixed
-by the bytes (`Witness.Generator.degenerate_extensional`), monotone (a
-committed generator stays committed, so once degenerate, always
-degenerate under further extension of the record), and non-certifiable
-by Rice–Shapiro (a purely semantic property of an unbounded-domain
-generator's denotation — `Witness.Generator`'s module doc explains why
-this workspace mechanizes no computation model to state that theorem
-about). No new Lean content in this row. -/
+The cited witness — `Witness.Generator.degenerate`/`genuine` — is cited,
+never restated: "the committed generator is degenerate" is fixed by the
+bytes (`Witness.Generator.degenerate_extensional`), monotone (a committed
+generator stays committed, so once degenerate, always degenerate under
+further extension of the record), and non-certifiable by Rice–Shapiro (a
+purely semantic property of an unbounded-domain generator's denotation —
+`Witness.Generator`'s module doc explains why this file's package
+mechanizes no computation model to state that theorem about).
+
+The cell's mechanized inhabitant is
+`Effective.NonCertifiable.stuckClaim` — "some entry names a build that
+never terminates" — `Determined`, `Monotone`, and proved to fail
+`ComputableMembership` from the halting problem. No new Lean content in
+this row: both witnesses live elsewhere. -/
 
 /-! ## Row 5 — (¬D, –, ¬M), "authored-by-A and currently-absent" -/
 
@@ -149,13 +160,19 @@ theorem authoredAbsentClaim_not_monotone (ξ₁ : Context) (e : Entry) :
 Core-only). -/
 
 /-! ## Row 6 — (D, ¬C, ¬M), "the current head's committed generator is
-degenerate" (cited-grade)
+degenerate"
 
 The composed reading: bytes-fixed (as row 4), but now flips on further
 extension of the record (the current head's generator need not be the
-prior head's), and Rice–Shapiro-blocked exactly as row 4. Doc-row only,
-citing `Witness.Generator` and the statement's T2 floor — no Lean here
-(design fact 2: this workspace mechanizes no computation model). -/
+prior head's), and Rice–Shapiro-blocked exactly as row 4 — cited, citing
+`Witness.Generator` and the statement's T2 floor.
+
+The cell's mechanized inhabitant is
+`Effective.NonCertifiable.unsettledClaim` — "no entry names a build that
+has terminated" — `Determined`, refuted by the next append that lands a
+settled build (`unsettledClaim_not_monotone`), and non-certifiable by the
+same halting-problem restriction. No Lean here: both witnesses live
+elsewhere. -/
 
 /-! ## The two empty-by-theorem displays -/
 
