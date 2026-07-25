@@ -30,7 +30,7 @@ forced kind is this paper's object.
 
 The sharpest exposure of a result this abstract is whether its
 definitions are the right ones. The argument is convergent validity on
-three independent prongs.
+two independent prongs.
 
 First, each definition has an independently-adequate home outside this
 paper: monotonicity's upward-closed outcomes are CALM's monotone
@@ -46,11 +46,6 @@ Second, the instances bite on real systems — most concretely the
 split-view reduction of @sec-instances, which predicts a transparency
 log's actual deployed defenses rather than classifying the attack after
 the fact.
-
-Third, the framework *derives* rather than accommodates: that a failed
-axis names a specific anchor — signer, voucher, witness quorum —
-recovers the inventory deployed practice converged on by other means,
-which is not a check definitions can be tuned to pass.
 
 ## Does the factoring distinguish anything? (W2)
 

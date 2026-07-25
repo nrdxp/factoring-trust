@@ -41,8 +41,6 @@ are uninhabited and the proof is one line from the gate in each case
 Their emptiness is not a gap in the search for examples; it is the
 gate's content, restated as a census.
 
-## The witnesses, and the grade each carries
-
 The grades differ, and the table would be dishonest if it hid that.
 
 **Rows 1, 2, 5, and 6 are mechanized.** Row 1 is inclusion, "$e$ appears

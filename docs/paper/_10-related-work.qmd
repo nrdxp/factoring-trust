@@ -150,15 +150,6 @@ result where the lineage offers positive constructions (reachability) or
 unbounded reduction (diversify the compiler, shrink the TCB) — the
 residue is bounded and proved minimal, not merely made smaller.
 
-## The pattern
-
-| Ingredient | Attested? | Where |
-|---|---|---|
-| Determination | yes — reasoned and empirically tested | Goodman 1968; InterPARES ~2002 (hypothesis falsified); Factor et al. 2009 (carried into CS) |
-| Certifiability $\times$ monotonicity, as one bundled algebra | yes — since 1983 | Smyth 1983; Abramsky 1987; Vickers 1989; Escardó 2004 |
-| Monotonicity $\Leftrightarrow$ coordination-freedom | yes — as an iff | Ameloot–Neven–Van den Bussche 2013; Hellerstein 2026 |
-| Trust as the residue of verification | yes — as a thesis, repeatedly, through 2024 | Frankel 1977; Lewis & Weigert 1985; Möllering 2001; Nguyen; operationalized by Haley et al., Kremer–Ryan–Smyth, Cortier et al. 2016, Corallo et al. 2024 |
-| **The composition of all four** | **not found in any venue reached** | — |
 
 Every ingredient has a home; the composition has none this sweep could
 reach. A further pattern corroborates that absence rather than merely

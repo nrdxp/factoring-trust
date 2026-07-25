@@ -78,8 +78,6 @@ notion — "observable property," bundling semi-decidability with
 stability — pull apart into two independent axes in this setting
 (@sec-factorization).
 
-## Verifier strata
-
 A scheme's certificate and verifier are graded by the computational
 power required to run them. Three strata, in decreasing generality:
 

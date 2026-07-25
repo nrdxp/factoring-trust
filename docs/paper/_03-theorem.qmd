@@ -86,8 +86,6 @@ are not proved at all, and no predicate in the development even encodes
 the complexity bounds they would need (@sec-model). The paper states
 that rather than implying three proved strata where one is open.
 
-## One axis is degenerate at the oracle stratum
-
 Oracle certifiability restricts nothing: every record predicate
 satisfies `NPMembership`, and the mechanization proves this rather than
 leaving it folklore (`npMembership_trivial`). So at $\oracle$, $\TTsnap$
@@ -108,16 +106,47 @@ basic consequence, the reason two cells of @sec-cell-table are empty by
 theorem rather than by omission, and the single fact the companion
 theorem of @sec-instances shares with this one.
 
-**$\EALM$.** $\TTend(\oracle)$ presented fibered — determination and
-certifiability supplied as hypotheses rather than stated inside the
-existential. No content beyond the theorem above; a different packaging,
-oriented toward a reader who already holds a determined, certifiable
-claim and wants to know exactly what monotonicity buys
-(`endurance_iff_monotone`).
+**$\EALM$, and what it was.** Before the theorem above existed,
+*Endurance As Logical Monotonicity* stood alone as a two-question test
+on a claim, and the questions were the point. First: *is the claim a
+function of the record?* If not — "this key belongs to Alice," "this
+source is genuine" — no certificate settles it at any effort, and the
+design's only remaining move is to name a party and point at them.
+Second: *does the claim stay true as the record grows?* If so, one
+self-contained certificate serves forever, offline, with no
+coordination between anyone; if not, no static artifact can promise it
+and the claim must be refreshed. Its content was that those two answers
+determine the machinery a guarantee needs — a signature, a witness
+network, or nothing beyond the evidence itself — and that the line the
+second question draws is the same monotonicity line CALM identified for
+coordination-freedom [@ameloot-neven-vandenbussche-2013;
+@hellerstein-2026], now governing whether *evidence* can stand alone
+rather than whether computation can.
 
-**$\EON$.** The contrapositive of $\TTend(Q)$'s forward direction at a
-claim known to be non-monotone: no enduring scheme exists, at any
-stratum (`eon_trilemma_impossibility`). The trilemma's *Offline* corner
+$\EALM$ is therefore the determination-and-monotonicity fragment of this
+paper's three axes: everything but certifiability, which it had no
+occasion to separate. It survives as $\TTend(\oracle)$ presented fibered
+— determination and certifiability supplied as hypotheses rather than
+stated inside the existential — which is exactly the packaging a reader
+holding a determined, certifiable claim wants
+(`endurance_iff_monotone`). What the one theorem adds is the third axis
+and the strata; what it preserves is both questions, unchanged.
+
+**$\EON$, and what it was.** The trilemma $\EALM$'s second question
+implies. A verifier may want a claim checked *Offline*, from a
+certificate alone; checked *Eternally*, with that certificate never
+expiring; and checked about *Now*, the record's present state rather
+than some past prefix. It may have any two. Wanting all three is not
+expensive but impossible, and the practical reading is sharp: a system
+with a nameable authority can serve eternal offline evidence and needs
+no coordination for it, while every "is this current" question is a
+coordination problem no artifact retires. That turned a recurring
+architectural argument — whether a given guarantee needs a consensus
+mechanism at all — into a consequence of where a claim sits.
+
+The impossibility corner is the contrapositive of $\TTend(Q)$'s forward
+direction at a claim known to be non-monotone: no enduring scheme
+exists, at any stratum (`eon_trilemma_impossibility`). The *Offline* corner
 needs no hypothesis to hold it — it is enforced by the verifier's type
 (@sec-model), which gives $V$ no access to the record, a clock, or the
 context. What the impossibility removes is therefore *Eternal*: a

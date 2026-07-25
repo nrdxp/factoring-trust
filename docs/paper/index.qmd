@@ -36,14 +36,6 @@ abstract: |
 date: 2026-07-24
 ---
 
-::: {.callout-warning}
-## Working draft
-
-This paper is under active development and is **not** the frozen artifact.
-The Lean mechanization accompanying it is frozen; this prose has not been
-reviewed or venue-gated and may change without notice.
-:::
-
 <!-- Math macros — shared across HTML (KaTeX) and PDF (pdflatex).
      Bare \newcommand lines are parsed by Pandoc itself, so they
      reach KaTeX for math rendering AND expand in prose for HTML. -->
