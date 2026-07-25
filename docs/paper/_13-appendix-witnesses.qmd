@@ -1,4 +1,4 @@
-# Appendix: Non-Vacuity Witnesses {#sec-witnesses.unnumbered}
+# Appendix A: Non-Vacuity Witnesses {.unnumbered}
 
 Both instances of @sec-instances carry the same four witnesses over
 finite types, so that no theorem there is vacuously true of an empty

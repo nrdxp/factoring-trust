@@ -204,7 +204,7 @@ wherever a statement reaches into the scheme world; choice is not among
 them.
 
 **Both instances are non-vacuous**, each carrying four concrete
-witnesses over finite types; @sec-witnesses lists them. The sharpest
+witnesses over finite types, listed in Appendix A. The sharpest
 shows the accounting genuinely depends on admitted testimony rather than
 deriving everything from the gate — a policy admitting no vouchers
 forbids every non-seed \lean{Total}.

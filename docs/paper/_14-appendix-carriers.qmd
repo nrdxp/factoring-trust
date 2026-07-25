@@ -1,4 +1,4 @@
-# Appendix: Claims and Their Declarations {#sec-carriers.unnumbered}
+# Appendix B: Claims and Their Declarations {.unnumbered}
 
 Every claim this paper makes about the mechanization, against the
 declaration that carries it. Nothing in the body depends on reading
@@ -63,4 +63,4 @@ one list rather than a name in every other sentence.
 | Divergence is permanent | divergence\_permanent |
 
 : Each claim in the body, and the declaration in the supplementary
-development that carries it. {#tbl-carriers}
+development that carries it.

@@ -62,8 +62,9 @@ establish it.
 
 ## Per-stratum status
 
-Every cell is proved at every stratum this paper claims, except the
-polynomial stratum, which is conjectural throughout.
+@tbl-strata gives the status of each cell. All are proved at every
+stratum this paper claims, except the polynomial stratum, which is
+conjectural throughout.
 
 | flavor $\times$ stratum | verifier condition | status |
 |:----|:----|:----|

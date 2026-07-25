@@ -2,9 +2,9 @@
 
 The model is kept deliberately small: two definitions per axis, each
 with its credited home stated inline, and nothing else. Every object
-below is mechanized in Lean 4, and the declaration name is given so a
-reader can go straight to it; nothing here depends on Lean syntax to be
-read.
+below is mechanized in Lean 4; Appendix B lists each claim this paper
+makes against the declaration that carries it, so nothing here depends
+on Lean syntax to be read.
 
 ## Records, contexts, and claims
 
@@ -157,11 +157,13 @@ determined $\Claim$ this is equivalent to $\phihat$ being upward-closed
 : $\UpC(\psi):= \forall\, w\;
 w',\ w \sqsubseteq w' \to \psi\ w \to \psi\ w'$.
 
-These three conditions are the paper's entire vocabulary. Everything
-that follows is a statement about how they combine.
+These three conditions are the paper's entire vocabulary, and the
+diagram at the head of this page shows how the first of them sits
+against the other two. Everything that follows is a statement about how
+they combine.
 
 ```{=latex}
-\begin{figure}[tb]
+\begin{figure}[t]
 \centering
 \begin{tikzpicture}[>={Stealth[round]}, node distance=22mm, semithick]
  \node (W) {$\World = \Record \times \Context$};
