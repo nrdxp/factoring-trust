@@ -56,19 +56,27 @@ are undetermined yet monotone provably exist
 discharge. Row 6 composes the two: "authored by $A$ and currently
 absent".
 
-**Rows 3 and 4 are the weakest rows, and the table should say so.**
-Their witness is degeneracy of a committed generator — a build that emits from a finite table rather
-than computing. The predicate is formalized, and proved independent of
-how the generator is written, but its failure of semi-decidability is
-Rice–Shapiro applied to a semantic property of an unbounded-domain
-denotation, and this paper cites that step rather than mechanizing it:
-no computation model is built here. The predicate also lives over an
-abstract generator rather than over $\Record$ and $\Claim$, so unlike
-rows 1, 2, 5 and 6 these two have no mechanized inhabitant of the
-model's own claim type: they are the argued rows. Row 4 is row 3
-composed with row 2's failure of endurance — the *current head's*
-committed generator is degenerate — and carries no declaration of its
-own.
+**Rows 3 and 4 are inhabited, but by a claim other than the one this
+paper leads with, and that is why they remain the weakest rows.** Both
+cells have mechanized inhabitants of the model's own claim type: that
+the record contains an entry whose build diverges — determined and
+monotone, giving row 3 — and that every entry names a divergent build,
+which is determined and fails monotonicity, giving row 4. Their
+non-certifiability is proved rather than assumed, by identifying
+$\Sigma_1$-membership as the trichotomy defines it with recursive
+enumerability and appealing to the halting problem, and both are closed
+against the biconditional of @sec-theorem rather than argued around it.
+
+The exemplar the table names is a different claim, and it is still
+argued. Degeneracy of a committed generator — a build that emits from a
+finite table rather than computing — is formalized, and proved
+independent of how the generator is written, but its failure of
+semi-decidability is Rice–Shapiro applied to a semantic property of an
+unbounded-domain denotation, and this paper cites that step rather than
+mechanizing it. Rice–Shapiro is not mechanized anywhere in this
+development. A cell needs one inhabitant, not a particular one, so these
+rows are inhabited on strictly weaker mathematics than the example that
+motivates them.
 
 **Row 5 also has an interpreted twin.** The genuineness and binding
 claims of @sec-instances are read as instances of it, and that reading

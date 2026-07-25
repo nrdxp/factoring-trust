@@ -8,6 +8,7 @@
 \allowdisplaybreaks                  % allow page breaks in display math
 
 
-% Diagram support for the model figure in the paper body.
-\usepackage{tikz}
+% Diagram support for the model figure. template.tex already loads tikz
+% and the calc/decorations/patterns libraries; these two are the ones it
+% does not, and the figure needs both.
 \usetikzlibrary{arrows.meta,positioning}

@@ -68,10 +68,10 @@ conjectural throughout.
 
 | flavor $\times$ stratum | verifier condition | status |
 |:----|:----|:----|
-| snapshot $\times$ oracle | none | proved (\lean{snapshot\_characterization}) |
-| enduring $\times$ oracle | none | proved (\lean{trichotomy\_ALL\_iff}) |
-| snapshot $\times$ computable | commitment components computable | proved (\lean{trichotomy\_snap\_COMP\_iff}) |
-| enduring $\times$ computable | and the verification-certificate predicate computable | proved (\lean{comp\_COMP\_iff}) |
+| snapshot $\times$ oracle | none | proved ($\lean{snapshot\_characterization}$) |
+| enduring $\times$ oracle | none | proved ($\lean{trichotomy\_ALL\_iff}$) |
+| snapshot $\times$ computable | commitment components computable | proved ($\lean{trichotomy\_snap\_COMP\_iff}$) |
+| enduring $\times$ computable | and the verification-certificate predicate computable | proved ($\lean{comp\_COMP\_iff}$) |
 | snapshot / enduring $\times$ polynomial | polynomial time and size | open (conjectured) |
 
 : Per-stratum status of $\TTsnap$ and $\TTend$. {#tbl-strata}

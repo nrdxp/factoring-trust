@@ -9,33 +9,32 @@ on Lean syntax to be read.
 ## Records, contexts, and claims
 
 A **record** is a finite, append-only sequence of entries,
-$\Record:= \mathrm{List}\ \mathit{Entry}$, ordered by the prefix
+$\Record := \mathrm{List}\ \mathit{Entry}$, ordered by the prefix
 relation $\sqsubseteq$: $w \sqsubseteq w'$ iff $w$ is a prefix of $w'$.
 Records grow only by appending — nothing already committed is ever
 edited or removed. A **context** $\Context$ stands for everything a
 verifier does *not* see: causal history, wall-clock time, key custody,
 the existence of other records. A **world** pairs the two,
-$\World:= \Record \times \Context$.
+$\World := \Record \times \Context$.
 
 A **claim** is a predicate over a world,
-$\Claim: \Record \to \Context \to \mathrm{Prop}$ — "the entry at
+$\Claim : \Record \to \Context \to \mathrm{Prop}$ — "the entry at
 position $k$ was authored by principal $A$," "record $w$ is the
 canonical log's current head." The claim, not the record alone, is what
 a verifier is asked to check.
 
 **The declared axiom base.** $\mathit{Entry}$ and $\Context$ are
-introduced as opaque types (\lean{Entry}, \lean{Context}), which is what keeps
+introduced as opaque types ($\lean{Entry}$, $\lean{Context}$), which is what keeps
 every result below parametric: no theorem may inspect an entry's
 structure or a context's. Two genuine assumptions accompany them —
-\lean{Context.inhabited}, that some context exists, and \lean{Context.nontrivial},
+$\lean{Context.inhabited}$, that some context exists, and $\lean{Context.nontrivial}$,
 that two distinct ones do. Those four declarations are everything this
-development adds to Lean's own \lean{propext}, \lean{Classical.choice} and
-\lean{Quot.sound}.
+development adds to Lean's own $\lean{propext}$, $\lean{Classical.choice}$ and
+$\lean{Quot.sound}$.
 
-\lean{Context.nontrivial} is consumed at three sites, and all three are
-non-vacuity witnesses: that undetermined claims exist at all
-, and the two undetermined rows of
-@sec-cell-table. Over a one-element context every
+$\lean{Context.nontrivial}$ is consumed at three sites, and all three are
+non-vacuity witnesses: that undetermined claims exist at all, and the
+two undetermined rows of @sec-cell-table. Over a one-element context every
 claim is trivially determined, so without it the determination axis
 would be vacuous and those rows empty.
 
@@ -53,23 +52,29 @@ including the certifiability half of @sec-cell-table's first row.
 ## The offline verifier
 
 A **commitment** $\Gamma$ fixes a type $\Comm$ of
-committed values, a function $C: \Record \to \Comm$ producing one, a
+committed values, a function $C : \Record \to \Comm$ producing one, a
 binding axiom on $C$, and a relation $VC$ certifying that the record
 behind one committed value extends the record behind another.
 
 **Binding here is exact, and that is a real limitation.** The axiom is
-injectivity of $C$, which no compressing function satisfies; the
-development states the consequence outright, that binding with
-compression is unsatisfiable, and every commitment it instantiates is
-the identity. So the mechanized commitment is an information-theoretic
-idealization of a digest rather than a digest. What a hash function
-supplies instead is *computational* binding, and the distance between
-the two is exactly the binding residual of @sec-floor — granted, not
-proved.
+injectivity of $C$, and the development proves what follows rather than
+noting it: every commitment exhibits an injection of the whole record
+space into its codomain, so no codomain smaller than that space can host
+one. At the extreme a one-bit digest hosts no commitment at all, since
+two values cannot separate three distinct records. The obstruction is
+the binding field itself, so it survives any reformulation that keeps
+that field — no constructor, however ingenious, hands back a hash.
+
+Every commitment the development instantiates is accordingly
+non-compressing: the identity, or expanding. So the mechanized
+commitment is an information-theoretic idealization of a digest rather
+than a digest, and what a hash function supplies instead is
+*computational* binding. The distance between the two is exactly the
+binding residual of @sec-floor — granted, not proved.
 
 A **scheme** for $\Claim$ under $\Gamma$ is a certificate
 type $\mathit{Proof}$ together with a verifier
-$V: \Comm \to \mathit{Proof} \to \mathrm{Prop}$ that decides, from a
+$V : \Comm \to \mathit{Proof} \to \mathrm{Prop}$ that decides, from a
 committed value and a certificate alone — never from the record or the
 context — whether $\Claim$ holds. This is the paper's one modeling
 commitment: **the verifier's type is the offline property**. The
@@ -105,12 +110,12 @@ A scheme's certificate and verifier are graded by the computational
 power required to run them. Three strata, in decreasing generality:
 
 - $\oracle$ — no computability constraint; the verifier may decide
- anything. Certifiability here is NPMembership, an idealized
- existence-of-a-checker condition carrying no complexity bound, and
- every record predicate satisfies it (@sec-theorem).
-- $\computable$ — the verifier's components are computable over a
- Primcodable alphabet, and certifiability is ComputableMembership,
- which does bind: it demands a ComputablePred checker.
+  anything. Certifiability here is an idealized
+  existence-of-a-checker condition carrying no complexity bound, and
+  every record predicate satisfies it (@sec-theorem).
+- $\computable$ — the verifier's components are computable over an
+  encodable alphabet, and certifiability binds: it demands a computable
+  checker.
 - $\polynomial$ — the verifier runs in polynomial time on a
  polynomially-sized certificate. This stratum is *described here and
  not mechanized*: no predicate in the development encodes those bounds,
@@ -119,7 +124,7 @@ power required to run them. Three strata, in decreasing generality:
 
 A fourth, intermediate stratum — requiring only classical decidability
 of the commitment's equality test — adds no content: classical
-decidability is universal by $\texttt{Classical.propDecidable}$, so its
+decidability is universal by $\lean{Classical.propDecidable}$, so its
 verdicts coincide with the oracle stratum's. It survives in the
 mechanization as constructive scaffolding that de-risked the computable
 stratum, credited honestly rather than presented as a fourth grade. The
@@ -133,7 +138,7 @@ Three independent conditions on a claim $\Claim$, each defined once,
 without reference to any scheme:
 
 **Determination**.
-$\Det(\Claim):= \forall\, w\; \xi\; \xi',\ \Claim\ w\ \xi \leftrightarrow \Claim\ w\ \xi'$
+$\Det(\Claim) := \forall\, w\; \xi\; \xi',\ \Claim\ w\ \xi \leftrightarrow \Claim\ w\ \xi'$
 — the claim's truth value does not depend on the context, only on the
 record. Equivalently, $\Claim$ factors through the projection that
 forgets context: $\Det(\Claim) \leftrightarrow \exists\, \psi,\ \Claim =
@@ -151,36 +156,36 @@ only where determination holds; @sec-cell-table turns on that
 dependency.
 
 **Monotonicity**.
-$\Mono(\Claim):= \forall\, w\; w'\; \xi,\ \Claim\ w\ \xi \to w \sqsubseteq w' \to \Claim\ w'\ \xi$
+$\Mono(\Claim) := \forall\, w\; w'\; \xi,\ \Claim\ w\ \xi \to w \sqsubseteq w' \to \Claim\ w'\ \xi$
 — once true, a claim stays true as the record is extended. For
 determined $\Claim$ this is equivalent to $\phihat$ being upward-closed
-: $\UpC(\psi):= \forall\, w\;
+: $\UpC(\psi) := \forall\, w\;
 w',\ w \sqsubseteq w' \to \psi\ w \to \psi\ w'$.
 
-These three conditions are the paper's entire vocabulary, and the
-diagram at the head of this page shows how the first of them sits
-against the other two. Everything that follows is a statement about how
+These three conditions are the paper's entire vocabulary, and the diagram on this page shows how the first of them sits against
+the other two. Everything that follows is a statement about how
 they combine.
 
 ```{=latex}
 \begin{figure}[t]
 \centering
-\begin{tikzpicture}[>={Stealth[round]}, node distance=22mm, semithick]
- \node (W) {$\World = \Record \times \Context$};
- \node (R) [below=16mm of W] {$\Record$};
- \node (P) [right=34mm of R] {$\mathrm{Prop}$};
- \draw[->] (W) -- node[left] {$\pi$} (R);
- \draw[->] (R) -- node[below] {$\psi$} (P);
- \draw[->] (W) -- node[above right, xshift=1mm] {$\varphi$} (P);
+\begin{tikzpicture}[>={Stealth[round]}, semithick]
+  \node (W) {$\World = \Record \times \Context$};
+  \node (R) [below=16mm of W] {$\Record$};
+  \node (P) [right=34mm of R] {$\mathrm{Prop}$};
+  \draw[->] (W) -- node[left]  {$\pi$} (R);
+  \draw[->] (R) -- node[below] {$\psi$} (P);
+  \draw[->] (W) -- node[above right, xshift=1mm] {$\varphi$} (P);
 \end{tikzpicture}
 \caption{The determination axis, as a factoring. A claim $\varphi$ lives
 on worlds; $\pi$ forgets the context. $\varphi$ is \emph{determined}
 exactly when it factors through $\pi$ --- when some record-only $\psi$
 makes the triangle commute, so that $\varphi = \psi \circ \pi$. The
-determined claims are therefore the image of the pullback $\pi^{*}$,
-which sends $\psi$ to $\psi \circ \pi$. Certifiability and monotonicity
-are conditions on $\psi$; where no such $\psi$ exists there is nothing
-for them to be conditions on, which is why the cell table's
-certifiability column is undefined on the undetermined rows.}
+determined claims are the image of the pullback $\pi^{*}$, which sends
+$\psi$ to $\psi \circ \pi$. Certifiability and monotonicity are
+conditions on $\psi$; where no such $\psi$ exists there is nothing for
+them to be conditions on, which is why the cell table's certifiability
+column is undefined on the undetermined rows.}
+\label{fig:world}
 \end{figure}
 ```

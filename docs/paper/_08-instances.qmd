@@ -13,9 +13,9 @@ justification structure**: a directed acyclic graph of artifacts, each
 either a leaf or carrying a derived record naming its own inputs
 , together with a fail-closed classification of every artifact
 into one of four buckets relative to an admitted policy $P$ and an
-evidence snapshot $\sigma$: \lean{closed}, meaning the artifact's
-establishment is fully accounted for; \lean{establishGap} and \lean{attestGap},
-naming which half is missing; and \lean{import}, the bucket a genesis seed
+evidence snapshot $\sigma$: $\lean{closed}$, meaning the artifact's
+establishment is fully accounted for; $\lean{establishGap}$ and $\lean{attestGap}$,
+naming which half is missing; and $\lean{import}$, the bucket a genesis seed
 always lands in.
 
 Two species of evidence do that accounting, and the distinction between
@@ -31,11 +31,11 @@ artifact can name itself, transitively or otherwise, and the structure
 cannot express a circular justification to have to exclude.
 
 Two derived quantities carry the accounting. The **trust surface**
-$T(a)$ is $a$'s dependency closure minus its \lean{closed} members — every
+$T(a)$ is $a$'s dependency closure minus its $\lean{closed}$ members — every
 node landing in one of the three residue buckets. The
 **assumption basis** $B(a)$ is the policy-admitted evidence those
-non-residue classifications actually rest on. \lean{Total} names
-the state in which every non-seed member of the closure is \lean{closed}
+non-residue classifications actually rest on. $\lean{Total}$ names
+the state in which every non-seed member of the closure is $\lean{closed}$
 .
 
 **Joining the two worlds.** The accounting vocabulary above — artifacts,
@@ -78,12 +78,12 @@ hypothesis on the domain's binding claim:
  undischarged and lies in the trust surface
 .
 
-(iii) **Minimality.** \lean{Total} holds *if and only if* the trust surface
+(iii) **Minimality.** $\lean{Total}$ holds *if and only if* the trust surface
  equals the closure's seeds. That equality is
  the *ceiling*: a system achieving it cannot be improved on, and
  reaching it is not merely implied by totality but equivalent to it.
 
-(iv) **Completeness.** Under \lean{Total}, every non-seed member of the
+(iv) **Completeness.** Under $\lean{Total}$, every non-seed member of the
  closure carries both evidence species — a corroboration and a vouch
  — in the assumption basis. Nothing is
  silently trusted.
@@ -98,7 +98,7 @@ requires evidence admitted against that artifact's own identity and
 payload. Nothing an artifact says
 about itself counts as evidence for itself.
 
-Parts (iii) and (iv) are conditioned on \lean{Total}, which raises the
+Parts (iii) and (iv) are conditioned on $\lean{Total}$, which raises the
 obvious question: can admitting more evidence undo it? No — totality
 survives every extension of the evidence snapshot, unconditionally
 . The direction is worth noticing. Growth of the
@@ -138,7 +138,7 @@ fails determination under the domain's fiber hypothesis, since
 byte-identical chains can arise under honest custody or under
 impersonation — and **T3**, through the split-view example below. Its
 sharpest statement is not the ceiling instantiation but a stronger,
-domain-specific one: under \lean{Total}, the trust surface of a chain is
+domain-specific one: under $\lean{Total}$, the trust surface of a chain is
 *exactly* the genesis binding and nothing else
 , which follows from splitting the chain's
 dependency closure into its derived nodes and its single seed
@@ -199,7 +199,7 @@ is the claim @sec-cell-table makes and the only one made here.
 Neither instance imports a computability library — the ceiling's content
 is accounting and impossibility, and neither needs one. Across every
 declaration in the ceiling's own development, the axioms used are Lean's
-\lean{propext} and \lean{Quot.sound}, together with the model's declared opacities
+$\lean{propext}$ and $\lean{Quot.sound}$, together with the model's declared opacities
 wherever a statement reaches into the scheme world; choice is not among
 them.
 
@@ -207,7 +207,7 @@ them.
 witnesses over finite types, listed in Appendix A. The sharpest
 shows the accounting genuinely depends on admitted testimony rather than
 deriving everything from the gate — a policy admitting no vouchers
-forbids every non-seed \lean{Total}.
+forbids every non-seed $\lean{Total}$.
 
 ## The extended worked example: split-view, resolved without a fourth axis
 

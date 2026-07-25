@@ -6,15 +6,15 @@ structure. Nothing in the body depends on reading them.
 
 1. **A closed artifact.** An evidence snapshot supplying one admitted
  vouch and one admitted corroboration classifies the artifact
- \lean{closed}.
-2. **A base-bounded \lean{Total}.** A single artifact closing directly onto
- the genesis seed satisfies \lean{Total}, which is what makes the
+ $\lean{closed}$.
+2. **A base-bounded $\lean{Total}$.** A single artifact closing directly onto
+ the genesis seed satisfies $\lean{Total}$, which is what makes the
  minimality equality of @sec-instances non-empty.
-3. **A defeated \lean{Total}.** The same shape with the evidence snapshot
- emptied fails \lean{Total} through an \lean{establishGap}
-, so \lean{Total} is a real condition
+3. **A defeated $\lean{Total}$.** The same shape with the evidence snapshot
+ emptied fails $\lean{Total}$ through an $\lean{establishGap}$
+, so $\lean{Total}$ is a real condition
  rather than one satisfied by construction.
-4. **No vouchers, no \lean{Total}.** A policy admitting no vouchers forbids
- every non-seed \lean{Total}. This is the sharpest
+4. **No vouchers, no $\lean{Total}$.** A policy admitting no vouchers forbids
+ every non-seed $\lean{Total}$. This is the sharpest
  of the four: the accounting depends on admitted testimony, and does
  not derive everything from the gate.

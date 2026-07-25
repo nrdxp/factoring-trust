@@ -23,6 +23,7 @@ one list rather than a name in every other sentence.
 | Oracle snapshot collapses to determination | snapshot\_iff\_determined\_ALL |
 | The trilemma's impossibility corner | eon\_trilemma\_impossibility |
 | **The model** | |
+| Commitments cannot compress | commitment\_codomain\_embeds\_record, no\_commitment\_over\_bool |
 | Determination factors through the projection | determined\_iff\_factors |
 | Monotonicity is upward-closure | monotone\_iff\_projUpClosed |
 | Undetermined claims exist | exists\_undetermined\_claim |
@@ -31,7 +32,9 @@ one list rather than a name in every other sentence.
 | **The cell table** | |
 | Row 1, inclusion | Cells.inclusionClaim, inclusionClaim\_computableMembership |
 | Row 2, absence and current head | absenceClaim\_not\_monotone, revokedClaim\_not\_monotone |
-| Rows 3–4, committed-generator degeneracy | Witness.Generator.degenerate, degenerate\_extensional |
+| Row 3, a divergent build in the record | stuckClaim, stuckClaim\_no\_snapshot\_scheme, stuckClaim\_no\_enduring\_scheme |
+| Row 4, every entry a divergent build | unsettledClaim, unsettledClaim\_no\_snapshot\_scheme |
+| Rows 3–4, the named exemplar (argued) | Witness.Generator.degenerate, degenerate\_extensional |
 | Row 5, undetermined yet monotone | exists\_undetermined\_monotone |
 | Row 6, authored and currently absent | authoredAbsentClaim\_not\_determined, authoredAbsentClaim\_not\_monotone |
 | Rows 7–8, empty by theorem | undetermined\_cell\_empty, undetermined\_cell\_empty\_nonmonotone |
