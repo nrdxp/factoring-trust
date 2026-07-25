@@ -75,6 +75,14 @@ argued from the gate case by case — which is what the realization buys
 and what makes the surface's minimality a statement about evidence at
 all.
 
+Parts (iii) and (iv) are conditioned on `Total`, which raises the
+obvious question: can admitting more evidence undo it? No — totality
+survives every extension of the evidence snapshot, unconditionally
+(`total_mono_snapshot`). The direction is worth noticing. Growth of the
+*record* can defeat a claim, which is exactly @sec-cell-table's T3
+flavour; growth of the *evidence* cannot defeat the accounting kept over
+it.
+
 This remains a **companion** and not a corollary. It shares the gate;
 everything else — the classification, the two evidence species, the
 accounting, the junction — is its own machinery, proved over vocabulary
