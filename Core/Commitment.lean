@@ -49,6 +49,38 @@ noncomputable def idCommitment : Commitment Record where
     simp only [id] at h₀eq heq; rw [h₀eq, heq] at hvc; exact hvc
   completeness := fun w₀ w hext => ⟨(), by simpa using hext⟩
 
+/-! ## Incompressibility — the binding axiom's price, mechanized
+
+The module doc-comment above records "binding-with-compression is unsatisfiable" as
+a design note. It is a theorem. `binding` says `C` is injective, so every
+`Commitment Comm` exhibits an injection `Record ↪ Comm`: the codomain is at least
+as large as the entire record space. A digest space — a codomain *smaller* than
+`Record` — therefore admits no `Commitment` at all, and no construction can supply
+one. `Bool` is the smallest digest space and settles the general shape: one entry
+already makes the record space larger than any two-element codomain. -/
+
+/-- Incompressibility, abstract form: a `Commitment` codomain receives all of
+    `Record` injectively. Compression is not merely unassumed — it is excluded. -/
+theorem commitment_codomain_embeds_record {Comm : Type} (Γ : Commitment Comm) :
+    ∃ f : Record → Comm, ∀ w w', f w = f w' → w = w' :=
+  ⟨Γ.C, Γ.binding⟩
+
+/-- Pigeonhole at the smallest digest space: given one entry, `[]`, `[e]`, `[e, e]`
+    are three distinct records and `Bool` has two values, so two must collide. -/
+theorem no_injection_record_to_bool (e : Entry) (f : Record → Bool)
+    (hinj : ∀ w w', f w = f w' → w = w') : False := by
+  have key : ∀ a b c : Bool, a = b ∨ a = c ∨ b = c := by decide
+  rcases key (f []) (f [e]) (f [e, e]) with h | h | h
+  · exact absurd (hinj _ _ h) (by simp)
+  · exact absurd (hinj _ _ h) (by simp)
+  · exact absurd (hinj _ _ h) (by simp)
+
+/-- A one-bit digest space hosts no commitment. The obstruction is `binding`
+    itself, so it survives every reformulation that keeps that field: to express a
+    hash, a development must weaken the *structure*, not strengthen a proof. -/
+theorem no_commitment_over_bool (e : Entry) (Γ : Commitment Bool) : False :=
+  no_injection_record_to_bool e Γ.C Γ.binding
+
 /-! ## A computable commitment witness
 
 `idCommitment` above is `noncomputable` and carries no `Decidable` instance, so it
