@@ -16,17 +16,13 @@ source-integrity instance's frontier tightness results, and the floor's
 two residuals, which concern physical realization rather than the model
 of @sec-model.
 
-Three lines of work follow. The first is semantic: the display of
-@sec-factorization asks to be stated as a morphism between categories of
-claims rather than as a membership condition, which is a
-programming-languages paper and not a security one. The second is
-empirical: the full source-integrity treatment — corroboration quorums,
-format and parse gates, and the forced-generator tightness results the
-light instance of @sec-instances omits by design — is conditional and
-prose-grade where this paper is machine-checked, and belongs in its own
-venue.
+Two lines of work follow. The first is empirical: the full
+source-integrity treatment — corroboration quorums, format and parse
+gates, and the forced-generator tightness results the light instance of
+@sec-instances omits by design — is conditional and prose-grade where
+this paper is machine-checked, and belongs in its own venue.
 
-The third is a diagnostic rather than a result, and is offered as such.
+The second is a diagnostic rather than a result, and is offered as such.
 Machine-learned alignment resists verification on all three axes at
 once: behavior on unseen inputs is not *determined* by any finite
 training record; semantic behavioral properties are not *certifiable*,

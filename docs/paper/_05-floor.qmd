@@ -29,17 +29,12 @@ record-side verification of "this execution is faithful," a
 faithfulness-violating execution can be constructed that the
 verification cannot distinguish from a faithful one.
 
-## Why exactly two, and why this is a boundary and not a grab-bag
-
-The floor's count is not asserted by enumeration; it follows from what a
-scheme *is*. A scheme realizes exactly two operative components — a
-commitment and a verifier — and each contributes exactly one residual,
-because each is where the model's abstractions bottom out in something
-physical. A third residual would require a scheme to have a third
-realized component in its signature; none does. This is the same
-discipline the trichotomy itself uses (@sec-theorem, @sec-factorization):
-the count is a consequence of the structure being counted, not a list
-compiled from experience.
+The count is not asserted by enumeration; it follows from what a scheme
+*is*. A scheme realizes exactly two operative components, and each is
+where the model's abstractions bottom out in something physical. A third
+residual would require a third realized component in a scheme's
+signature, and none exists — the same discipline the trichotomy itself
+uses, where the count is a consequence of the structure being counted.
 
 Both residuals are, honestly, unmechanized: they concern physical
 realization, not the record-and-context model @sec-model formalizes, and

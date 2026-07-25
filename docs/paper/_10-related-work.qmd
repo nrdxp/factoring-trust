@@ -11,8 +11,8 @@ The thesis that trust occupies exactly the space verification cannot
 reach is old. For Frankel, trusting means "going beyond the mere
 assessment of probabilities," and trust takes that assessment's place
 precisely when it cannot easily be made or is too costly to attempt; it
-enters "where more exact knowledge is not available" [@frankel-1977]. The Lewis and
-Weigert formulation — trust "begins where prediction ends"
+enters "where more exact knowledge is not available" [@frankel-1977].
+The Lewis and Weigert formulation — trust "begins where prediction ends"
 [@lewis-weigert-1985] — reaches this paper through Möllering's
 genealogy, where the tradition's unfactored form is plainest: trust as a
 leap "across the gorge of the unknowable" that "brackets out uncertainty
@@ -29,23 +29,27 @@ formal near-miss: the residue is named explicitly and the inference from
 is a concrete, per-protocol component list, never factored by cause
 [@kremer-ryan-smyth-2010]. That treatment is field-standard rather than
 idiosyncratic: the systematization of verifiability notions across
-e-voting finds the residue carved throughout by *honest-principal sets* —
-who must behave — and never by the cause of the failure
-[@cortier-et-al-2016]. The requirements lineage reaches 2024 with the
-gap still open, in a theory of security-related assumptions built
-directly on the trust-assumption tradition above, where decidability,
+e-voting finds the residue carved throughout by *honest-principal sets*
+— who must behave — and never by the cause of the failure
+[@cortier-et-al-2016]. And the requirements lineage reaches 2024
+with the gap still open, in a theory of security-related assumptions
+built directly on the trust-assumption tradition, where decidability,
 monotonicity, and verifiability limits do not appear at all
 [@corallo-et-al-2024].
 
-Trust taxonomies come nearest to naming a structure and stop short.
-One decomposes trust in secure systems into seven attributes across six
-dimensions, but every dimension is a property of the *measurement
-apparatus* — how confidently, how recently, on whose authority an
-attribute was assessed — rather than an axis along which a claim can
-fail. Its bottom rung, "Assumed," is a single flat bucket with no
-account of why an attribute lands there; its closest approach to a limit
-result is an explicitly informal remark on bootstrapping circularity
-[@bradbury-et-al-2022].
+One neighbour sits closer than any of these, because it is itself a
+trust taxonomy and what this paper offers is a trust taxonomy *by
+cause*. It decomposes trust in secure systems into seven attributes
+across six dimensions, and its evidence dimension is graded
+*Assumed → Single → Sampled → Continual* — a scale of how much checking
+an attribute has received. The bottom rung is defined outright:
+"**Assumed** means that the system is designed trusted and/or
+trustworthy at all times **without evidence**"
+[@bradbury-et-al-2022]. That is the residue, named and given a place in
+a table, with no account of what puts an attribute there. The scale
+measures how much evidence was gathered; it does not ask which
+attributes admit evidence at all. Supplying that account is what this
+paper is.
 
 **Line:** the thesis is old, repeatedly operationalized down to the
 level of individual security arguments and protocol analyses, and still
@@ -150,15 +154,6 @@ result where the lineage offers positive constructions (reachability) or
 unbounded reduction (diversify the compiler, shrink the TCB) — the
 residue is bounded and proved minimal, not merely made smaller.
 
-## The pattern
-
-| Ingredient | Attested? | Where |
-|---|---|---|
-| Determination | yes — reasoned and empirically tested | Goodman 1968; InterPARES ~2002 (hypothesis falsified); Factor et al. 2009 (carried into CS) |
-| Certifiability $\times$ monotonicity, as one bundled algebra | yes — since 1983 | Smyth 1983; Abramsky 1987; Vickers 1989; Escardó 2004 |
-| Monotonicity $\Leftrightarrow$ coordination-freedom | yes — as an iff | Ameloot–Neven–Van den Bussche 2013; Hellerstein 2026 |
-| Trust as the residue of verification | yes — as a thesis, repeatedly, through 2024 | Frankel 1977; Lewis & Weigert 1985; Möllering 2001; Nguyen; operationalized by Haley et al., Kremer–Ryan–Smyth, Cortier et al. 2016, Corallo et al. 2024 |
-| **The composition of all four** | **not found in any venue reached** | — |
 
 Every ingredient has a home; the composition has none this sweep could
 reach. A further pattern corroborates that absence rather than merely

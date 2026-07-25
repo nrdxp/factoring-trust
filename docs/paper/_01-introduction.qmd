@@ -150,10 +150,20 @@ instantiates over a content-neutral one (`suretyRealization`,
 
 **C5.** The cell table: eight nominal cells, two empty *by theorem*
 rather than for want of a witness, six inhabited — one verifiable and
-five flavors of trust, each with its own anchor and minimal cure
-(@sec-cell-table: `undetermined_cell_empty`).
+five flavors of trust, each with its own anchor, and each cure a move
+along one of four coordinates (@sec-cell-table:
+`undetermined_cell_empty`).
 
-The remaining sections carry the scaffolding these five stand on:
+**C6.** Two usable forms of the theorem, each answering a question a
+designer asks on its own (@sec-theorem). $\EALM$ — *Endurance As
+Logical Monotonicity* — says what monotonicity buys: whether a
+guarantee can rest on one self-contained certificate forever, or needs
+refreshing (`endurance_iff_monotone`). The $\EON$ trilemma says what is
+permanently lost when it cannot: of *Eternal*, *Offline*, and *Now*, a
+verifier may have two (`eon_trilemma_impossibility`). Neither is deep,
+and depth is not what a specialization is for.
+
+The remaining sections carry the scaffolding these stand on:
 @sec-model fixes the vocabulary, @sec-floor states the two residuals,
-@sec-cures prices repair, @sec-scope-objections states what is not
-claimed, and @sec-related-work gives each ingredient its home.
+@sec-scope-objections states what is not claimed, and
+@sec-related-work gives each ingredient its home.

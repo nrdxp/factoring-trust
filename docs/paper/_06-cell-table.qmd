@@ -76,7 +76,37 @@ is an explicit modeling hypothesis about the fiber over the record:
 carried as an argument on every theorem that needs it, never proved,
 never introduced as an axiom.
 
+## The cures, as coordinate moves
+
 Each of the five trust rows names a distinct repair rather than a
-generic "trust more," and @sec-cures gives the coordinate move each one
-is. That the repairs stay distinct all the way down is the argument of
-@sec-scope-objections, for which this table is the exhibit.
+generic "trust more," and every repair in the table is a move along one
+of four coordinates. A verdict is a function of $(\varphi, R, Q, P)$ —
+the claim, the entry alphabet, the verifier's stratum, and $P$, a policy
+of external facts the verifier admits alongside its scheme. The stratum
+covers the whole verification apparatus, so strengthening a commitment
+is a $Q$-move rather than a fifth mechanism.
+
+- **Transport** moves $R$, re-expressing a claim over a different
+  alphabet. This one is mechanized rather than argued: the axes and the
+  theorem restate over an arbitrary alphabet and specialize back
+  (`transport_applies_to_eonEalm`).
+- **Upgrade** moves $Q$, strengthening the verifier or the commitment.
+- **Restriction** moves $\varphi$, narrowing the claim to a subclass
+  that does satisfy the conditions, at the cost of answering a weaker
+  question.
+- **Entailment** moves $P$, admitting a new trusted fact outright.
+
+Only entailment is debit-valued. The other three can be undone or
+strengthened without any standing commitment, while an entailment adds a
+fact the verifier must trust for as long as the admission stands. That
+asymmetry is why no ledger conserving "total trust spent" across the
+four can balance: they are heterogeneous, one carries a persistent cost,
+and a conservation law over all four is a category error rather than an
+open conjecture.
+
+Exhaustiveness here is **model-relative**, at the honesty grade
+@sec-theorem states for the trichotomy itself — these four account for
+every repair this model's mechanized verdicts distinguish, not for every
+repair any model could admit. That the five flavours stay distinct all
+the way down to their cures is the argument of @sec-scope-objections,
+for which this table is the exhibit.
