@@ -188,10 +188,9 @@ theorem comp_COMP_iff
 /-! ## The snapshot-only leg at the computable stratum (M2b) -/
 
 /-- The snapshot-only construction at the computable stratum (⟸ direction):
-    `Core.snapshotScheme` verbatim; no `Monotone` hypothesis anywhere, and — unlike
-    the decidable-Lean waypoint's `trichotomy_snap_P1` — no `Comm`-equality hypothesis
-    either, since equality on a `[Primcodable Comm]` type is `ComputablePred` for
-    free via `Primrec.eq`. -/
+    `Core.snapshotScheme` verbatim; no `Monotone` hypothesis anywhere, and no
+    `Comm`-equality hypothesis either, since equality on a `[Primcodable Comm]`
+    type is `ComputablePred` for free via `Primrec.eq`. -/
 theorem comp_snap_P1
     {Comm : Type} [Primcodable Comm] (Γ : Commitment Comm)
     (φ : Claim) (hd : Determined φ)
