@@ -37,9 +37,9 @@ Stating that dependency is cheaper than leaving a reader to find it.
 
 **What a checker must trust.** Nothing mathematical is assumed. The four
 declarations above are modeling opacity, not asserted theorems, and no
-result rests on an unproved mathematical fact: where this paper uses
-Rice and Rice–Shapiro it cites them (@sec-cell-table), and neither is
-axiomatized, so no Lean proof appeals to either. The dependency on a
+result rests on an unproved mathematical fact: where this paper leans on
+Rice and Rice–Shapiro it cites them, and neither is axiomatized, so no
+Lean proof appeals to either. The dependency on a
 mathematics library is confined to a single import in a single file,
 which brings in a computability development for the computable stratum.
 The core, the verification ceiling, the transport law, the cell-table
@@ -125,8 +125,7 @@ and, at the polynomial one, $\mathrm{NP}$ with genuine size and time
 bounds, in the intended-but-unmechanized sense just noted.
 The axis is defined on $\phihat$ rather than on $\Claim$, so it exists
 only where determination holds; @sec-cell-table turns on that
-dependency. (This axis was previously named "decidability";
-@sec-related-work explains the rename.)
+dependency.
 
 **Monotonicity** (`Monotone`).
 $\Mono(\Claim) := \forall\, w\; w'\; \xi,\ \Claim\ w\ \xi \to w \sqsubseteq w' \to \Claim\ w'\ \xi$

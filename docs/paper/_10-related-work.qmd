@@ -40,12 +40,16 @@ monotonicity, and verifiability limits do not appear at all
 One neighbour sits closer than any of these, because it is itself a
 trust taxonomy and what this paper offers is a trust taxonomy *by
 cause*. It decomposes trust in secure systems into seven attributes
-across six dimensions — but every dimension grades the *measurement
-apparatus*, how confidently and how recently and on whose authority an
-attribute was assessed, rather than naming an axis along which a claim
-can fail. Its bottom rung, "Assumed," is a single flat bucket, and it
-offers no account of why an attribute lands in it. That account is what
-this paper is [@bradbury-et-al-2022].
+across six dimensions, and its evidence dimension is graded
+*Assumed → Single → Sampled → Continual* — a scale of how much checking
+an attribute has received. The bottom rung is defined outright:
+"**Assumed** means that the system is designed trusted and/or
+trustworthy at all times **without evidence**"
+[@bradbury-et-al-2022]. That is the residue, named and given a place in
+a table, with no account of what puts an attribute there. The scale
+measures how much evidence was gathered; it does not ask which
+attributes admit evidence at all. Supplying that account is what this
+paper is.
 
 **Line:** the thesis is old, repeatedly operationalized down to the
 level of individual security arguments and protocol analyses, and still

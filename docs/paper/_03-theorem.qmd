@@ -149,10 +149,11 @@ context. What the impossibility removes is therefore *Eternal*: a
 non-monotone claim can be checked offline now, or checked forever, and
 not both.
 
-A companion theorem — the **verification ceiling** — generalizes the
-gate above from append-only records to any well-founded justification
-structure. @sec-instances introduces it, instantiates it twice, and
-states its relationship to the theorem above precisely: it shares the
-gate, but its completeness and minimality content is its own machinery
-over a disjoint vocabulary, and is not a corollary of
-$\TTsnap$/$\TTend$ in the sense the paragraphs above are.
+A companion theorem — the **verification ceiling** — carries the gate
+above from append-only records to any well-founded justification
+structure that supplies a record realization. @sec-instances introduces
+it, instantiates it twice, and states its relationship to the theorem
+above precisely: it shares the gate, and the realization is what joins
+its vocabulary to this one, but its completeness and minimality content
+is its own machinery and is not a corollary of $\TTsnap$/$\TTend$ in the
+sense the paragraphs above are.
